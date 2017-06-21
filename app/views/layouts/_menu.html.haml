@@ -375,4 +375,5 @@
                 - permitted_to? :read, :banks do
                   %li= link_to t('banks.title'), banks_path
                 %li= link_to "Asset Categories", '#'
+          %li=link_to content_tag(:i, "", :class => "icon-numb") +"Catechumen Legacy Support", assign_logins_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Release Notes", '#'

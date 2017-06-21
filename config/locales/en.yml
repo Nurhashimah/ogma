@@ -241,6 +241,15 @@ en:
         password_unchanged: "Your password won't change until you access the link above and create a new one."
         automated_email: "This is an automated email. Do not reply directly to this email."
         signatory: "Administration, New ICMS : Ogma."
+      login:
+        title: Catechumen Legacy Support
+        icno: MyKad No
+        astaff: This user is a staff
+        astudent: This user is a student
+        warning_irreversible: "Please choose <b>User Type</b> appropiately and click 'Update' button to apply.<br> "
+        warning_irreversible2: "WARNING: <b>User Type</b> assignment is irreversable."
+        search_usertype:  Search to check user type
+        delete: "Select checkbox and click 'Update' button to delete User."
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -365,6 +374,7 @@ en:
   not_active: Not Active
   must_exist: must exist
   click: Click
+  assign: Assign
 
   actions:
     new: New

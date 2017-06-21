@@ -1,0 +1,5 @@
+/=@login.id
+- if @login.isstaff==true 
+  = (t 'activerecord.attributes.login.astaff') 
+- elsif @login.isstaff==false
+  =(t 'activerecord.attributes.login.astudent')

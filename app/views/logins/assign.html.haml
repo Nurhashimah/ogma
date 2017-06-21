@@ -1,0 +1,115 @@
+- model_class = Login
+.page-header
+  %h1 Catechumen Legacy Support
+
+
+= render 'shared/flashes'
+
+.row.fluid
+  /= form_for @login, html: { multipart: true, class: 'form-horizontal' }  do |f| 
+  /= form_tag attendance_report_main_staff_staff_attendances_path, :method =>'get' do
+  /= form_tag assign_main_logins_path, :method =>'get' do 
+
+  = form_for :search, :url => { :action => "assign" }, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
+    %br
+    .row
+      .col-md-offset-4
+        .form-group
+          .col-sm-2.control-label
+            %label=(t 'activerecord.attributes.login.icno')
+          .col-md-3
+            .input-group
+              = f.text_field :icno, class: 'form-control'
+              %span.input-group-btn
+                %button.btn.btn-default{:type => "submit"}
+                  %i.fa.fa-search.fa-fw
+                  
+            %span.help-block.small=t('activerecord.attributes.login.search_usertype')
+            
+.row.fluid    
+  .row
+    .col-md-8.col-md-offset-3
+      - if @login
+        .col-md-8     
+          %BR
+          .row
+            .panel.panel-info
+              /.panel-heading Login Details
+              .panel-body 
+
+              %table.table.table-condensed
+                %head
+                  %tr
+                    %th{width: '8%'} &nbsp;
+                    %th{width: '25%'} Login
+                    %th{width: '25%'} MyKad No
+                    %th{width: '40%', colspan: 2} User Type
+                    %th{width: '2%'} &nbsp;
+                
+                %body
+                  %tr
+                    = form_for @login, html: { multipart: true, class: 'form-horizontal', remote: true, id: 'form1'}  do |f| 
+                      %td.centre{width: '8%'}=f.check_box :is_deleted, id: 'delete_this' if @login.deleted_at==nil 
+                      %td{width: '25%'}=@login.login
+                      %td{width: '25%'}=@login.icno
+                      %td{colspan: 2, width: '40%'}
+                        #usertype_span
+                          - if @login.deleted_at!=nil
+                            ="Deleted at #{@login.deleted_at}"
+                          - elsif [true, false].include?(@login.isstaff)
+                            .col-md-6=@login.isstaff==true ? (t 'activerecord.attributes.login.astaff') : (t 'activerecord.attributes.login.astudent')
+                            .col-md-6=f.submit (t 'update'), class: 'btn btn-primary'
+                          - else
+                            .col-md-6
+                              .form-inline
+                                .form-group
+                                  Staff
+                                  = f.radio_button :isstaff,'1'
+                                .form-group
+                                  Student
+                                  = f.radio_button :isstaff,'0'
+                            .col-md-6=f.submit (t 'update'), class: 'btn btn-primary'
+                   
+                      %td{width: '2%'} &nbsp;
+              %br
+              .panel-footer
+                #warning.small.centre
+                  - if @login.isstaff.blank? 
+                    =(t 'activerecord.attributes.login.warning_irreversible').html_safe
+                    %span{style: 'color: red;'}=(t 'activerecord.attributes.login.warning_irreversible2').html_safe
+                  - else
+                    ="\b".html_safe
+                  %br
+                  OR
+                  %br
+                  - if @login.deleted_at==nil
+                    =t('activerecord.attributes.login.delete')
+            
+:javascript
+  /*alert("vvv");*/
+  $("#login_isstaff_1").click(function(){
+    
+    var check=document.getElementById('delete_this');
+    
+    if(check.checked==true)
+    { check.checked=false;}
+  });
+  
+  $("#login_isstaff_0").click(function(){
+    var check2=document.getElementById('delete_this');
+    
+    if(check2.checked==true)
+    { check2.checked=false;}
+  });
+  
+  
+  $("#delete_this").click(function(){
+    var radio1=document.getElementById('login_isstaff_1');
+    var radio0=document.getElementById('login_isstaff_0');
+    if(radio1.checked==true)
+    { radio1.checked=false;}
+    if(radio0.checked==true)
+    { radio0.checked=false;}
+    
+  });
+  

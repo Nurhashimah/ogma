@@ -1,6 +1,15 @@
 class Login < ActiveRecord::Base         
   belongs_to :staff   
   has_and_belongs_to_many :roles   
+  
+  before_save :set_deleted
+  attr_accessor :is_deleted
+  
+  def set_deleted
+    if is_deleted=='1'
+      self.deleted_at=Time.now
+    end
+  end
 end
 
 # == Schema Information

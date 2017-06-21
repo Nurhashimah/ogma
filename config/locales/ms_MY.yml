@@ -222,6 +222,15 @@ ms_MY:
         password_unchanged: "Kata laluan anda tidak akan berubah selagi anda tidak mengakses pautan di atas dan mencipta kata laluan baru."
         automated_email: "Emel ini dijana secara automatik. Jangan balas secara terus ke emel ini."
         signatory: "Pentadbir, ICMS Versi Baru : Ogma."
+      login:
+        title: Sokongan Legasi Catechumen
+        icno: No MyKad
+        astaff: Pengguna adalah staf
+        astudent: Pengguna adalah pelajar
+        warning_irreversible: "Sila pilih <b>Jenis Pengguna</b> dengan tepat dan klik butang Kemaskini untuk menetapkan.<br> "
+        warning_irreversible2: "AMARAN: Penetapan <b>Jenis Pengguna</b> hanya boleh dibuat sekali sahaja."
+        search_usertype:  Cari untuk semak jenis pengguna
+        delete: "Pilih kotak semak dan klik butang 'Kemaskini' untuk memadam pengguna."
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -342,6 +351,7 @@ ms_MY:
   not_active: Tidak Aktif
   must_exist: mesti wujud
   click: Klik
+  assign: Tetapkan
  
   actions:
     new: Baru

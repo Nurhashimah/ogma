@@ -445,7 +445,13 @@ Ogma::Application.routes.draw do
     put :complete
    end
   end
-  resources :logins
+  resources :logins do
+    collection do
+      get :assign
+      post :assign
+      #get :assign_main
+    end
+  end
   resources :roles
   resources :banks
   
