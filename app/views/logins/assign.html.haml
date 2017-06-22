@@ -1,7 +1,6 @@
 - model_class = Login
 .page-header
-  %h1 Catechumen Legacy Support
-
+  %h1=t('activerecord.attributes.login.title')
 
 = render 'shared/flashes'
 
@@ -28,7 +27,7 @@
             
 .row.fluid    
   .row
-    .col-md-8.col-md-offset-3
+    .col-md-9.col-md-offset-3
       - if @login
         .col-md-8     
           %BR
@@ -41,32 +40,40 @@
                 %head
                   %tr
                     %th{width: '8%'} &nbsp;
-                    %th{width: '25%'} Login
-                    %th{width: '25%'} MyKad No
-                    %th{width: '40%', colspan: 2} User Type
+                    %th{width: '20%'}=t('activerecord.attributes.login.log')
+                    %th{width: '20%'}=t('activerecord.attributes.login.icno')
+                    %th{width: '50%', colspan: 2}=t('activerecord.attributes.login.usertype')
                     %th{width: '2%'} &nbsp;
                 
                 %body
                   %tr
                     = form_for @login, html: { multipart: true, class: 'form-horizontal', remote: true, id: 'form1'}  do |f| 
                       %td.centre{width: '8%'}=f.check_box :is_deleted, id: 'delete_this' if @login.deleted_at==nil 
-                      %td{width: '25%'}=@login.login
-                      %td{width: '25%'}=@login.icno
-                      %td{colspan: 2, width: '40%'}
+                      %td{width: '20%'}
+                        - if @login.deleted_at!=nil
+                          %span{style: 'text-decoration: line-through;'}=@login.login
+                        - else
+                          =@login.login
+                      %td{width: '20%'}
+                        - if @login.deleted_at!=nil
+                          %span{style: 'text-decoration: line-through;'}=@login.icno
+                        - else
+                          =@login.icno
+                      %td{colspan: 2, width: '50%'}
                         #usertype_span
                           - if @login.deleted_at!=nil
-                            ="Deleted at #{@login.deleted_at}"
+                            ="#{t('activerecord.attributes.login.deleted_at')}: #{@login.deleted_at.strftime("%H:%M, %d/%m/%Y")}"
                           - elsif [true, false].include?(@login.isstaff)
-                            .col-md-6=@login.isstaff==true ? (t 'activerecord.attributes.login.astaff') : (t 'activerecord.attributes.login.astudent')
-                            .col-md-6=f.submit (t 'update'), class: 'btn btn-primary'
+                            .col-md-7=@login.isstaff==true ? (t 'activerecord.attributes.login.astaff') : (t 'activerecord.attributes.login.astudent')
+                            .col-md-5=f.submit (t 'update'), class: 'btn btn-primary'
                           - else
                             .col-md-6
                               .form-inline
                                 .form-group
-                                  Staff
+                                  =t('activerecord.attributes.login.staff')
                                   = f.radio_button :isstaff,'1'
                                 .form-group
-                                  Student
+                                  =t('activerecord.attributes.login.student')
                                   = f.radio_button :isstaff,'0'
                             .col-md-6=f.submit (t 'update'), class: 'btn btn-primary'
                    
@@ -74,16 +81,14 @@
               %br
               .panel-footer
                 #warning.small.centre
-                  - if @login.isstaff.blank? 
-                    =(t 'activerecord.attributes.login.warning_irreversible').html_safe
-                    %span{style: 'color: red;'}=(t 'activerecord.attributes.login.warning_irreversible2').html_safe
-                  - else
-                    ="\b".html_safe
-                  %br
-                  OR
-                  %br
                   - if @login.deleted_at==nil
+                    - if @login.isstaff==nil
+                      =(t 'activerecord.attributes.login.warning_irreversible').html_safe
+                      %span{style: 'color: red;'}=(t 'activerecord.attributes.login.warning_irreversible2').html_safe
+                      ="<br> #{t('or').upcase}<br>".html_safe
+                    /above: not deleted & user type not assigned
                     =t('activerecord.attributes.login.delete')
+                  
             
 :javascript
   /*alert("vvv");*/

@@ -1,13 +1,11 @@
 <% if [true, false].include?(@login.isstaff) %>
 $("#warning").empty();
-$("#warning").append("\b");
 $("#usertype_span").empty();
 $("#usertype_span").append('<%=j render("display_usertype") %>'); 
 $("#delete_this").hide();
 <% end %>
 <% unless @login.deleted_at.blank? %>
 $("#warning").empty();
-$("#warning").append("\b");
 $("#usertype_span").empty();
 $("#usertype_span").append('<%=j "Deleted at #{@login.deleted_at}"%>')
 $("#delete_this").hide();

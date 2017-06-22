@@ -243,13 +243,18 @@ en:
         signatory: "Administration, New ICMS : Ogma."
       login:
         title: Catechumen Legacy Support
+        log: Login
         icno: MyKad No
+        usertype: User Type
+        staff: Staff
+        student: Student
         astaff: This user is a staff
         astudent: This user is a student
         warning_irreversible: "Please choose <b>User Type</b> appropiately and click 'Update' button to apply.<br> "
         warning_irreversible2: "WARNING: <b>User Type</b> assignment is irreversable."
         search_usertype:  Search to check user type
         delete: "Select checkbox and click 'Update' button to delete User."
+        deleted_at: "Deleted at "
     errors:
         template:
           body: "There were problems with the following fields:"
