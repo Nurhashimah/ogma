@@ -1,7 +1,7 @@
 class LoginsController < ApplicationController
   def assign
     if params[:search].present? && params[:search][:icno].present?
-      @login=Login.where(icno: params[:search][:icno]).first
+      @login=Login.where(icno: params[:search][:icno].split(" | ")[0]).first
     end
   end
   

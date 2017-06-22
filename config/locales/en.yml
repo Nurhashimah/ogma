@@ -245,11 +245,13 @@ en:
         title: Catechumen Legacy Support
         log: Login
         icno: MyKad No
+        email: Email
         usertype: User Type
         staff: Staff
         student: Student
         astaff: This user is a staff
         astudent: This user is a student
+        owned_by: Owned by
         warning_irreversible: "Please choose <b>User Type</b> appropiately and click 'Update' button to apply.<br> "
         warning_irreversible2: "WARNING: <b>User Type</b> assignment is irreversable."
         search_usertype:  Search to check user type

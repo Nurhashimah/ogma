@@ -10,6 +10,10 @@ class Login < ActiveRecord::Base
       self.deleted_at=Time.now
     end
   end
+  
+  def details
+    "#{icno} | #{email}"
+  end
 end
 
 # == Schema Information

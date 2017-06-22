@@ -226,11 +226,13 @@ ms_MY:
         title: Sokongan Legasi Catechumen
         log: Log Masuk
         icno: No MyKad
+        email: Emel
         usertype: Jenis Pengguna
         staff: Staf
         student: Pelajar
         astaff: Pengguna adalah staf
         astudent: Pengguna adalah pelajar
+        owned_by: Dimiliki Oleh
         warning_irreversible: "Sila pilih <b>Jenis Pengguna</b> dengan tepat dan klik butang Kemaskini untuk menetapkan.<br> "
         warning_irreversible2: "AMARAN: Penetapan <b>Jenis Pengguna</b> hanya boleh dibuat sekali sahaja."
         search_usertype:  Cari untuk semak jenis pengguna

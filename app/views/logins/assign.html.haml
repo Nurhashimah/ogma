@@ -12,13 +12,13 @@
   = form_for :search, :url => { :action => "assign" }, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
     %br
     .row
-      .col-md-offset-4
+      .col-md-offset-3
         .form-group
           .col-sm-2.control-label
-            %label=(t 'activerecord.attributes.login.icno')
-          .col-md-3
+            %label=(t 'activerecord.attributes.login.staff')+" / "+(t 'activerecord.attributes.login.student')
+          .col-md-6
             .input-group
-              = f.text_field :icno, class: 'form-control'
+              = f.text_field :icno, class: 'form-control', data: {autocomplete_source: Login.order(icno: :asc).map(&:details)}, placeholder: "#{(t 'activerecord.attributes.login.icno')} #{(t 'or')} #{(t 'activerecord.attributes.login.email')}"
               %span.input-group-btn
                 %button.btn.btn-default{:type => "submit"}
                   %i.fa.fa-search.fa-fw
@@ -50,15 +50,20 @@
                     = form_for @login, html: { multipart: true, class: 'form-horizontal', remote: true, id: 'form1'}  do |f| 
                       %td.centre{width: '8%'}=f.check_box :is_deleted, id: 'delete_this' if @login.deleted_at==nil 
                       %td{width: '20%'}
-                        - if @login.deleted_at!=nil
-                          %span{style: 'text-decoration: line-through;'}=@login.login
-                        - else
-                          =@login.login
+                        #login_span
+                          - if @login.deleted_at!=nil
+                            %span{style: 'text-decoration: line-through;'}=@login.login
+                          - else
+                            =@login.login
                       %td{width: '20%'}
-                        - if @login.deleted_at!=nil
-                          %span{style: 'text-decoration: line-through;'}=@login.icno
-                        - else
-                          =@login.icno
+                        #ic_span
+                          - if @login.deleted_at!=nil
+                            %span{style: 'text-decoration: line-through;'}=@login.icno
+                          - else
+                            =formatted_mykad(@login.icno)
+                            - if @login.isstaff.blank?
+                              - is_staff=Staff.where(icno: @login.icno)
+                              .small=is_staff.count > 0 ? "* #{(t 'activerecord.attributes.login.owned_by')} #{(t 'activerecord.attributes.login.staff')} " : "* #{(t 'activerecord.attributes.login.owned_by')} #{(t 'activerecord.attributes.login.student')}" 
                       %td{colspan: 2, width: '50%'}
                         #usertype_span
                           - if @login.deleted_at!=nil
@@ -75,7 +80,7 @@
                                 .form-group
                                   =t('activerecord.attributes.login.student')
                                   = f.radio_button :isstaff,'0'
-                            .col-md-6=f.submit (t 'update'), class: 'btn btn-primary'
+                            .col-md-6=f.submit (t 'update'), class: 'btn btn-primary', id: 'submit_button', :onclick => "return validateform();"
                    
                       %td{width: '2%'} &nbsp;
               %br
@@ -116,5 +121,15 @@
     if(radio0.checked==true)
     { radio0.checked=false;}
     
+  });
+  
+  $("#submit_button").click(function(){
+    var check3=document.getElementById('delete_this');
+    var radio12=document.getElementById('login_isstaff_1');
+    var radio02=document.getElementById('login_isstaff_0');
+    if(check3.checked==false && radio12.checked==false && radio02.checked==false)
+    { alert('x bole submit');}
+    else
+    { $("#form1").submit();}
   });
   
