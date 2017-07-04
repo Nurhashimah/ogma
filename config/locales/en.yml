@@ -259,6 +259,9 @@ en:
         delete2: "Select checkbox and click 'Delete' button to delete User."
         deleted_at: "Deleted at "
         usertype_or_delete: Choose User Type or Tick checkbox to delete account
+        mykad_notmatch_usertype: Mykad No owner is not match with selected User Type
+        mykad_notmatch_yet: MyKad No not yet matched with staff or student
+        to_match: "Select checkbox and click 'Update' to delete user<br> OR <br>Unselect checkbox and click 'Update' to match MyKad No with user"
     errors:
         template:
           body: "There were problems with the following fields:"

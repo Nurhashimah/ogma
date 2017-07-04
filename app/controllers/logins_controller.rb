@@ -23,6 +23,6 @@ class LoginsController < ApplicationController
   private
   # Never trust parameters from the scary internet, only allow the white list through.
     def login_params
-      params.require(:login).permit(:login, :icno, :isstaff, :is_deleted, :deleted_at)
+      params.require(:login).permit(:login, :icno, :isstaff, :is_deleted, :deleted_at, :staff_id, :student_id)
     end
 end

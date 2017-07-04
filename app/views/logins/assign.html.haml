@@ -47,6 +47,9 @@
                 
                 %body
                   %tr
+                    - is_staff=Staff.where(icno: @login.icno)
+                    - student=Student.where(icno: @login.icno)
+                    
                     = form_for @login, html: { multipart: true, class: 'form-horizontal', remote: true, id: 'form1'}  do |f| 
                       %td.centre{width: '8%'}=f.check_box :is_deleted, id: 'delete_this' if @login.deleted_at==nil 
                       %td{width: '20%'}
@@ -62,27 +65,45 @@
                           - else
                             =formatted_mykad(@login.icno)
                             - if @login.isstaff==true || @login.isstaff==false
+                              - if @login.student_id==nil && @login.staff_id==nil
+                                .small
+                                  %span{style: 'color: red;'}="* #{t('activerecord.attributes.login.mykad_notmatch_yet')}"
+                                - if is_staff.count > 0
+                                  = f.hidden_field :staff_id, value: is_staff.first.id
+                                - elsif student.count > 0
+                                  = f.hidden_field :student_id, value: student.first.id
                             - else
-                              - is_staff=Staff.where(icno: @login.icno)
-                              .small=is_staff.count > 0 ? "* #{(t 'activerecord.attributes.login.owned_by')} #{(t 'activerecord.attributes.login.staff')} " : "* #{(t 'activerecord.attributes.login.owned_by')} #{(t 'activerecord.attributes.login.student')}" 
+                              - if is_staff.count > 0
+                                .small="* #{(t 'activerecord.attributes.login.owned_by')} #{(t 'activerecord.attributes.login.staff')} "
+                                = f.hidden_field :staff_id, value: is_staff.first.id
+                              - elsif student.count > 0
+                                .small="* #{(t 'activerecord.attributes.login.owned_by')} #{(t 'activerecord.attributes.login.student')}" 
+                                = f.hidden_field :student_id, value: student.first.id
+                              /.small=is_staff.count > 0 ? "* #{(t 'activerecord.attributes.login.owned_by')} #{(t 'activerecord.attributes.login.staff')} " : "* #{(t 'activerecord.attributes.login.owned_by')} #{(t 'activerecord.attributes.login.student')}" 
                       %td{colspan: 2, width: '50%'}
                         #usertype_span
                           - if @login.deleted_at!=nil
                             ="#{t('activerecord.attributes.login.deleted_at')}: #{@login.deleted_at.strftime("%H:%M, %d/%m/%Y")}"
                           - elsif [true, false].include?(@login.isstaff)
                             .col-md-7=@login.isstaff==true ? (t 'activerecord.attributes.login.astaff') : (t 'activerecord.attributes.login.astudent')
-                            .col-md-5=f.submit (t 'delete'), class: 'btn btn-primary', id: 'submit_button2'
+                            - if (@login.student_id==nil && @login.staff_id==nil) && (is_staff.count > 0 || student.count > 0)
+                              .col-md-5=f.submit (t 'update'), class: 'btn btn-primary', id: 'submit_button3'
+                            - else
+                              .col-md-5=f.submit (t 'delete'), class: 'btn btn-primary', id: 'submit_button2'
                           - else
-                            .col-md-6
-                              .form-inline
-                                .form-group
-                                  =t('activerecord.attributes.login.staff')
-                                  = f.radio_button :isstaff,'1'
-                                .form-group
-                                  =t('activerecord.attributes.login.student')
-                                  = f.radio_button :isstaff,'0'
-                            .col-md-6=f.submit (t 'update'), class: 'btn btn-primary', id: 'submit_button'
-                            /, :onclick => "return validateform();"
+                            - if is_staff.count== 0 &&  student.count== 0
+                              .col-md-6.small{style: 'color: red;'} MyKad no has no matching staff or student
+                              .col-md-6=f.submit (t 'delete'), class: 'btn btn-primary', id: 'submit_button2'
+                            - else
+                              .col-md-6
+                                .form-inline
+                                  .form-group
+                                    =t('activerecord.attributes.login.staff')
+                                    = f.radio_button :isstaff,'1'
+                                  .form-group
+                                    =t('activerecord.attributes.login.student')
+                                    = f.radio_button :isstaff,'0'
+                              .col-md-6=f.submit (t 'update'), class: 'btn btn-primary', id: 'submit_button'
                    
                       %td{width: '2%'} &nbsp;
               %br
@@ -90,14 +111,19 @@
                 #warning.small.centre
                   - if @login.deleted_at==nil
                     - if @login.isstaff==nil
-                      =(t 'activerecord.attributes.login.warning_irreversible').html_safe
-                      %span{style: 'color: red;'}=(t 'activerecord.attributes.login.warning_irreversible2').html_safe
-                      ="<br> #{t('or').upcase}<br>".html_safe
+                      - unless is_staff.count== 0 &&  student.count== 0
+                        =(t 'activerecord.attributes.login.warning_irreversible').html_safe
+                        %span{style: 'color: red;'}=(t 'activerecord.attributes.login.warning_irreversible2').html_safe
+                        ="<br> #{t('or').upcase}<br>".html_safe
                     /above: not deleted & user type not assigned
                     - if [true, false].include?(@login.isstaff)
-                      =t('activerecord.attributes.login.delete2')
+                      - if (@login.student_id==nil && @login.staff_id==nil) && (is_staff.count > 0 || student.count > 0)
+                        =t('activerecord.attributes.login.to_match').html_safe
+                      - else
+                        =t('activerecord.attributes.login.delete2')
                     - else
                       =t('activerecord.attributes.login.delete')
+                   
                   
             
 :javascript
@@ -127,12 +153,19 @@
     
   });
   
-  $("#submit_button").click(function(){
+  $("#submit_button").click(function(event){
     var check3=document.getElementById('delete_this');
     var radio12=document.getElementById('login_isstaff_1');
     var radio02=document.getElementById('login_isstaff_0');
+    var student_val=document.getElementById('login_student_id');
+    var staff_val=document.getElementById('login_staff_id');
     if(check3.checked==false && radio12.checked==false && radio02.checked==false)
     { alert("#{t('activerecord.attributes.login.usertype_or_delete')}"); }
+    else if((radio12.checked==true && staff_val==null) || (radio02.checked==true && student_val==null))
+    {
+      alert("#{t('activerecord.attributes.login.mykad_notmatch_usertype')}");
+      event.preventDefault();
+    }
   });
   
   $("#submit_button2").click(function(event){
@@ -143,3 +176,4 @@
       event.preventDefault();
     }
   });
+  

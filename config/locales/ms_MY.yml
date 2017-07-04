@@ -240,6 +240,9 @@ ms_MY:
         delete2: "Pilih kotak semak dan klik butang 'Padam' untuk memadam pengguna."
         deleted_at: "Pengguna dipadam pada jam"
         usertype_or_delete: Pilih Jenis Pengguna atau Pilih kotak semak untuk memadam pengguna
+        mykad_notmatch_usertype: Pemilik No Mykad tidak sepadan dengan Jenis Pengguna yang dipilih
+        mykad_notmatch_yet: No MyKad belum dipadankan dengan mana-mana staf atau pelajar
+        to_match: "Pilih kotak semak dan klik butang 'Kemaskini' untuk memadam pengguna<br>ATAU<br> Nyahpilih kotak semak dan klik butang 'Kemaskini' untuk memadan No MyKad dengan pengguna"
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
