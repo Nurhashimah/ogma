@@ -256,7 +256,9 @@ en:
         warning_irreversible2: "WARNING: <b>User Type</b> assignment is irreversable."
         search_usertype:  Search to check user type
         delete: "Select checkbox and click 'Update' button to delete User."
+        delete2: "Select checkbox and click 'Delete' button to delete User."
         deleted_at: "Deleted at "
+        usertype_or_delete: Choose User Type or Tick checkbox to delete account
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -324,6 +326,7 @@ en:
   back: Back
   new: New
   update: Update
+  delete: Delete
   control: Control
   process: Process
   thank: "Staff was successfully created"

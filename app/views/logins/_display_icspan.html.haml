@@ -1,0 +1,5 @@
+=formatted_mykad(@login.icno)
+- if @login.isstaff==true || @login.isstaff==false
+- else
+  - is_staff=Staff.where(icno: @login.icno)
+  .small=is_staff.count > 0 ? "* #{(t 'activerecord.attributes.login.owned_by')} #{(t 'activerecord.attributes.login.staff')} " : "* #{(t 'activerecord.attributes.login.owned_by')} #{(t 'activerecord.attributes.login.student')}" 

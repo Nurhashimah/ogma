@@ -2,6 +2,8 @@
 $("#warning").empty();
 $("#usertype_span").empty();
 $("#usertype_span").append('<%=j render("display_usertype") %>'); 
+$("#ic_span").empty();
+$("#ic_span").append('<%=j render("display_icspan") %>');
 $("#delete_this").hide();
 <% end %>
 <% unless @login.deleted_at.blank? %>

@@ -233,11 +233,13 @@ ms_MY:
         astaff: Pengguna adalah staf
         astudent: Pengguna adalah pelajar
         owned_by: Dimiliki Oleh
-        warning_irreversible: "Sila pilih <b>Jenis Pengguna</b> dengan tepat dan klik butang Kemaskini untuk menetapkan.<br> "
+        warning_irreversible: "Sila pilih <b>Jenis Pengguna</b> dengan tepat dan klik butang 'Kemaskini'.<br> "
         warning_irreversible2: "AMARAN: Penetapan <b>Jenis Pengguna</b> hanya boleh dibuat sekali sahaja."
         search_usertype:  Cari untuk semak jenis pengguna
         delete: "Pilih kotak semak dan klik butang 'Kemaskini' untuk memadam pengguna."
+        delete2: "Pilih kotak semak dan klik butang 'Padam' untuk memadam pengguna."
         deleted_at: "Pengguna dipadam pada jam"
+        usertype_or_delete: Pilih Jenis Pengguna atau Pilih kotak semak untuk memadam pengguna
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -303,6 +305,7 @@ ms_MY:
   new: Cipta
   edit: Sunting
   update: Kemaskini
+  delete: Padam
   control: Tindakan
   process: Proses
   addmore: "Tambah Rekod"

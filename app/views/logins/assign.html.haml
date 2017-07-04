@@ -61,7 +61,8 @@
                             %span{style: 'text-decoration: line-through;'}=@login.icno
                           - else
                             =formatted_mykad(@login.icno)
-                            - if @login.isstaff.blank?
+                            - if @login.isstaff==true || @login.isstaff==false
+                            - else
                               - is_staff=Staff.where(icno: @login.icno)
                               .small=is_staff.count > 0 ? "* #{(t 'activerecord.attributes.login.owned_by')} #{(t 'activerecord.attributes.login.staff')} " : "* #{(t 'activerecord.attributes.login.owned_by')} #{(t 'activerecord.attributes.login.student')}" 
                       %td{colspan: 2, width: '50%'}
@@ -70,7 +71,7 @@
                             ="#{t('activerecord.attributes.login.deleted_at')}: #{@login.deleted_at.strftime("%H:%M, %d/%m/%Y")}"
                           - elsif [true, false].include?(@login.isstaff)
                             .col-md-7=@login.isstaff==true ? (t 'activerecord.attributes.login.astaff') : (t 'activerecord.attributes.login.astudent')
-                            .col-md-5=f.submit (t 'update'), class: 'btn btn-primary'
+                            .col-md-5=f.submit (t 'delete'), class: 'btn btn-primary', id: 'submit_button2'
                           - else
                             .col-md-6
                               .form-inline
@@ -80,7 +81,8 @@
                                 .form-group
                                   =t('activerecord.attributes.login.student')
                                   = f.radio_button :isstaff,'0'
-                            .col-md-6=f.submit (t 'update'), class: 'btn btn-primary', id: 'submit_button', :onclick => "return validateform();"
+                            .col-md-6=f.submit (t 'update'), class: 'btn btn-primary', id: 'submit_button'
+                            /, :onclick => "return validateform();"
                    
                       %td{width: '2%'} &nbsp;
               %br
@@ -92,7 +94,10 @@
                       %span{style: 'color: red;'}=(t 'activerecord.attributes.login.warning_irreversible2').html_safe
                       ="<br> #{t('or').upcase}<br>".html_safe
                     /above: not deleted & user type not assigned
-                    =t('activerecord.attributes.login.delete')
+                    - if [true, false].include?(@login.isstaff)
+                      =t('activerecord.attributes.login.delete2')
+                    - else
+                      =t('activerecord.attributes.login.delete')
                   
             
 :javascript
@@ -111,8 +116,7 @@
     if(check2.checked==true)
     { check2.checked=false;}
   });
-  
-  
+
   $("#delete_this").click(function(){
     var radio1=document.getElementById('login_isstaff_1');
     var radio0=document.getElementById('login_isstaff_0');
@@ -128,8 +132,14 @@
     var radio12=document.getElementById('login_isstaff_1');
     var radio02=document.getElementById('login_isstaff_0');
     if(check3.checked==false && radio12.checked==false && radio02.checked==false)
-    { alert('x bole submit');}
-    else
-    { $("#form1").submit();}
+    { alert("#{t('activerecord.attributes.login.usertype_or_delete')}"); }
   });
   
+  $("#submit_button2").click(function(event){
+    var check4=document.getElementById('delete_this');
+    if(check4.checked==false)
+    { 
+      alert("#{t('activerecord.attributes.login.delete2')}"); 
+      event.preventDefault();
+    }
+  });
