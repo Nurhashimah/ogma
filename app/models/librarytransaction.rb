@@ -41,6 +41,9 @@ class Librarytransaction < ActiveRecord::Base
 #   temporary disabled - 12Nov2017, for migration to be green,   
  # validates :accession_id, inclusion: {in: Accession.where('id NOT IN(?)', Librarytransaction.borrowed.pluck(:accession_id).compact-[""]).pluck(:id)+Accession.existing_reservations}, :unless => :returning_or_extending_or_loan_of_reserve
   
+  #a book copy should not be available for loan more than once (while still on loan)
+  validates :accession_id, uniqueness: { scope: :returned }, if: Proc.new { |b| b.returned.nil? }
+  
   validate :validate_due_date_before_checkout_date
 
   #scope transaction records for marine docs vs books - 4May2017
@@ -290,6 +293,12 @@ class Librarytransaction < ActiveRecord::Base
         return false
       end
     end
+    
+    #a book copy should not be available for loan more than once (while still on loan)
+#   validates :accession_id, uniqueness: { scope: :returned }, if: Proc.new { |b| b.returned.nil? }
+#     def acopy_loanable_once_at_one_time
+#       if id.nil? && accession
+#     end
 
 end
 
