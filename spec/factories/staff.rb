@@ -235,8 +235,8 @@ FactoryGirl.define do
   end
   
   factory :instructor_appraisal do
-    association :checker, factory: :basic_staff
-    association :instructor, factory: :basic_staff
+    association :checker, factory: :basic_staff_with_rank
+    association :instructor, factory: :basic_staff_with_rank
     association :college, factory: :college
     appraisal_date {Date.today+(366*rand()).to_f}
   end

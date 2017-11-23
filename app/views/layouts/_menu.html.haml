@@ -103,7 +103,7 @@
       %li.icon.icon-left
         = link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.title"), '#'
         .mp-level
-          %h2.icon=t ("asset.title")
+          %h2.icon=t("asset.title")
           %a.mp-back{:href => "#"}=t('back')
           %ul
             - permitted_to? :read, :asset_assets do
@@ -445,16 +445,18 @@
                     %li= link_to t('staff.travel_claim_mileage_rates.title'), staff_travel_claim_mileage_rates_path
                   - permitted_to? :read, :asset_assetcategories do
                     %li= link_to (t "asset.category.title"), asset_assetcategories_path
-                  - if current_user.college.code=='amsas'
-                    - permitted_to? :read, :staff_ranks do
+                  /- if current_user.college.code=='amsas'
+                  - permitted_to? :read, :staff_ranks do
+                    - if current_user.college.code=='amsas'
                       %li=link_to (t 'rank.title'), staff_ranks_path
                   - permitted_to? :read, :staff_employgrades do
                     %li= link_to t('staff.employgrades.title'), staff_employgrades_path
                   - permitted_to? :read, :staff_postinfos do
-                    - if current_user.college.code=='amsas'
-                      %li= link_to t('staff.postinfos.title2'), staff_postinfos_path
-                    - else
-                      %li= link_to t('staff.postinfos.title'), staff_postinfos_path
+                    %li= link_to t('staff.postinfos.title2'), staff_postinfos_path
+                    /- if current_user.college.code=='amsas'
+                    /  %li= link_to t('staff.postinfos.title2'), staff_postinfos_path
+                    /- else
+                    /  %li= link_to t('staff.postinfos.title'), staff_postinfos_path
                 
                 
                 

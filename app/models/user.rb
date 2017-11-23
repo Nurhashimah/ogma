@@ -563,7 +563,7 @@ class User < ActiveRecord::Base
   end
   
   def set_college
-    self.college_id=2 # TODO - rely on domain name
+    self.college_id=College.where(code: 'amsas').first.id # TODO - rely on domain name
   end
   
   def self.icms_acct

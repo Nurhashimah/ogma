@@ -10,7 +10,7 @@ describe "document pages" do
       @page=FactoryGirl.create(:page)
       @admin_user=FactoryGirl.create(:admin_user)
       sign_in(@admin_user)
-      @document = FactoryGirl.create(:document, stafffiled_id: @admin_user)
+      @document = FactoryGirl.create(:document, stafffiled_id: @admin_user.userable_id)
       visit documents_path
     end
     

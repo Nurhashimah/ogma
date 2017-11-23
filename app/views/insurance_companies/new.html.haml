@@ -5,7 +5,7 @@
 = render 'shared/flashes'
 
 .row.fluid
-  = form_for @insurance_company, html: { multipart: true, class: 'form-horizontal' }  do |f| 
+  = form_for @insurance_company, url: insurance_companies_path, html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     = render :partial => 'form', :locals => {:f => f}
     = f.hidden_field :college_id, value: current_user.college_id

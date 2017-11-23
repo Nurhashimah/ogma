@@ -123,4 +123,12 @@ FactoryGirl.define do
     expertise {"My expertise"}
   end
   
+  factory :insurance_company do
+    sequence(:short_name) {|n| "Short Name #{n}"}
+    sequence(:long_name) {|n| "Long Name #{n}"}
+    active {rand(2) == 1}
+    association :college, factory: :college
+    data "My Text" #{"Some string" }
+  end
+  
 end

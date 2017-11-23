@@ -53,7 +53,12 @@ RSpec.describe Staff::InstructorAppraisalsController, :type => :controller do
   end
 
   describe "GET new" do
+    before do
+      @admin_user=FactoryGirl.create(:admin_user)
+      sign_in(@admin_user)
+    end
     it "assigns a new instructor_appraisal as @instructor_appraisal" do
+      instructor_appraisal = InstructorAppraisal.create! valid_attributes
       get :new, {}, valid_session
       expect(assigns(:instructor_appraisal)).to be_a_new(InstructorAppraisal)
     end

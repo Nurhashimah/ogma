@@ -57,7 +57,7 @@ RSpec.configure do |config|
   #config.include ControllerHelpers, type: :controller
   Warden.test_mode!
 
-  config.after do
+  config.after(:each) do
     Warden.test_reset!
   end
 
