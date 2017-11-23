@@ -4,11 +4,11 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    - permitted_to? :create, :staff_infos do
+    - permitted_to? :create, :staff_staffs do
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_info_path
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    - permitted_to? :staff_list, :staff_infos do
+    - permitted_to? :staff_list, :staff_staffs do
       %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), staff_list_staff_infos_path(params.merge(format: 'pdf'))
 
 .row
