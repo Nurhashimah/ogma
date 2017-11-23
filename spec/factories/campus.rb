@@ -41,6 +41,7 @@ FactoryGirl.define do
   
   factory :address_book do
     sequence(:name) { |n| "external_co_#{n}" }
+    sequence(:shortname) { |n| "ext_co_#{n}" }
   end
 
   factory :bulletin do

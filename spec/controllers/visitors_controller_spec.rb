@@ -53,7 +53,12 @@ RSpec.describe Campus::VisitorsController, :type => :controller do
   end
 
   describe "GET new" do
+    before do
+      @admin_user=FactoryGirl.create(:admin_user)
+      sign_in(@admin_user)
+    end
     it "assigns a new visitor as @visitor" do
+      visitor = Visitor.create! valid_attributes
       get :new, {}, valid_session
       expect(assigns(:visitor)).to be_a_new(Visitor)
     end

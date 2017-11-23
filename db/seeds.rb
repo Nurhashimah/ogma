@@ -5,3 +5,18 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+# 
+# Page.create(id: 1, name: 'home', title: 'Homepage', navlabel: 'label1', position: 1, college_id: 1)
+# College.create(id: 1, code: 'amsas', name: 'Kolej 2')
+# 
+
+# $ psql
+# psql (9.3.4)
+# Type "help" for help.
+# 
+# postgres=# \c icms_demo_test
+# You are now connected to database "icms_demo_test" as user "postgres".
+# icms_demo_test=# insert into colleges(id, code, name) values (1, 'amsas','Kolej 2');
+# INSERT 0 1
+# icms_demo_test=# insert into pages(id, name, title, navlabel, position, college_id) values (1,'home', 'Homepage', 'label1', 1,1);
+# INSERT 0 1

@@ -53,7 +53,12 @@ RSpec.describe EqueryReport::RepositorysearchesController, :type => :controller 
   end
 
   describe "GET new" do
+    before do
+      @admin_user=FactoryGirl.create(:admin_user)
+      sign_in(@admin_user)
+    end
     it "assigns a new repositorysearch as @repositorysearch" do
+      repositorysearch = Repositorysearch.create! valid_attributes
       get :new, {}, valid_session
       expect(assigns(:repositorysearch)).to be_a_new(Repositorysearch)
     end

@@ -53,7 +53,12 @@ RSpec.describe Staff::AverageInstructorsController, :type => :controller do
   end
 
   describe "GET new" do
+    before do
+      @admin_user=FactoryGirl.create(:admin_user)
+      sign_in(@admin_user)
+    end
     it "assigns a new average_instructor as @average_instructor" do
+      average_instructor = AverageInstructor.create! valid_attributes
       get :new, {}, valid_session
       expect(assigns(:average_instructor)).to be_a_new(AverageInstructor)
     end
