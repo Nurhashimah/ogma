@@ -87,7 +87,10 @@ describe StaffAppraisal do
   it { should be_valid }
   
   describe "evaluation year is not present" do
-    before { @staff_appraisal.evaluation_year=nil}
+    before do
+      @staff_appraisal.evaluation_year=""
+      @staff_appraisal.is_skt_submit=true
+    end
     it {should_not be_valid}
   end
   
