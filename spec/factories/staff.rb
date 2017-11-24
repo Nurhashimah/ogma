@@ -241,6 +241,103 @@ FactoryGirl.define do
     appraisal_date {Date.today+(366*rand()).to_f}
   end
   
+  factory :average_instructor do
+    association :college, factory: :college
+    association :instructor, factory: :basic_staff_with_rank
+    association :programme, factory: :programme
+    association :evaluator, factory: :basic_staff_with_rank
+    evaluator_id 1
+    delivery_type 1 #{ [1,2,3].sample}  1-Teori, 2-Praktikal, 3-Lain-lain
+    evaluate_date "2017-11-24"
+    start_at "08:00:00"
+    end_at "08:30:00"
+    title "My Title"
+    objective "Objective line"
+    pbq1 3
+    pbq2 3
+    pbq3 3
+    pbq4 3
+    pbq1review "pbq1review"
+    pbq2review "pbq2review"
+    pbq3review "pbq3review" 
+    pbq4review "pbq4review" 
+    pdq1 3 
+    pdq2 3 
+    pdq3 3
+    pdq4 3
+    pdq5 3
+    pdq1review "pdq1review"
+    pdq2review "pdq2review"
+    pdq3review "pdq3review"
+    pdq4review "pdq4review"
+    pdq5review "pdq5review"
+    dq1 3
+    dq2 3
+    dq3 3
+    dq4 3 
+    dq5 3 
+    dq6 3 
+    dq7 3 
+    dq8 3  
+    dq9 3 
+    dq10 3 
+    dq11 3 
+    dq12 3 
+    dq1review "dq1review" 
+    dq2review "dq2review" 
+    dq3review "dq3review" 
+    dq4review "dq4review" 
+    dq5review "dq5review" 
+    dq6review "dq6review" 
+    dq7review "dq7review" 
+    dq8review "dq8review" 
+    dq9review "dq9review" 
+    dq10review "dq10review" 
+    dq11review "dq11review" 
+    dq12review "dq12review" 
+    uq1 3
+    uq2 3 
+    uq3 3 
+    uq4 3 
+    uq1review "uq1review" 
+    uq2review "uq2review" 
+    uq3review "uq3review" 
+    uq4review "uq4review" 
+    vq1 3 
+    vq2 3 
+    vq3 3 
+    vq4 3 
+    vq5 3 
+    vq1review "vq1review" 
+    vq2review "vq2review" 
+    vq3review "vq3review" 
+    vq4review "vq4review" 
+    vq5review "vq5review" 
+    gttq1 3 
+    gttq2 3 
+    gttq3 3 
+    gttq4 3 
+    gttq5 3 
+    gttq6 3 
+    gttq7 3 
+    gttq8 3 
+    gttq9 3 
+    gttq1review "gttq1review" 
+    gttq2review "gttq2review" 
+    gttq3review "gttq3review" 
+    gttq4review "gttq4review" 
+    gttq5review "gttq5review" 
+    gttq6review "gttq6review" 
+    gttq7review "gttq7review" 
+    gttq8review "gttq8review" 
+    gttq9review "gttq9review" 
+    review "Overall review" 
+    data "My text"
+    
+#     => AverageInstructor(id: integer, programme_id: integer, instructor_id: integer, evaluate_date: date, title: string, objective: text, start_at: time, end_at: time, delivery_type: integer, pbq1: integer, pbq2: integer, pbq3: integer, pbq4: integer, pbq1review: string, pbq2review: string, pbq3review: string, pbq4review: string, pdq1: integer, pdq2: integer, pdq3: integer, pdq4: integer, pdq5: integer, pdq1review: string, pdq2review: string, pdq3review: string, pdq4review: string, pdq5review: string, dq1: integer, dq2: integer, dq3: integer, dq4: integer, dq5: integer, dq6: integer, dq7: integer, dq8: integer, dq9: integer, dq10: integer, dq11: integer, dq12: integer, dq1review: string, dq2review: string, dq3review: string, dq4review: string, dq5review: string, dq6review: string, dq7review: string, dq8review: string, dq9review: string, dq10review: string, dq11review: string, dq12review: string, uq1: integer, uq2: integer, uq3: integer, uq4: integer, uq1review: string, uq2review: string, uq3review: string, uq4review: string, vq1: integer, vq2: integer, vq3: integer, vq4: integer, vq5: integer, vq1review: string, vq2review: string, vq3review: string, vq4review: string, vq5review: string, gttq1: integer, gttq2: integer, gttq3: integer, gttq4: integer, gttq5: integer, gttq6: integer, gttq7: integer, gttq8: integer, gttq9: integer, gttq1review: string, gttq2review: string, gttq3review: string, gttq4review: string, gttq5review: string, gttq6review: string, gttq7review: string, gttq8review: string, gttq9review: string, review: text, evaluator_id: integer, created_at: datetime, updated_at: datetime, college_id: integer, data: text)
+
+  end
+  
 #   factory :leaveforstaff do
 #     association :applicant, factory: :basic_staff
 #     association :replacement, factory: :basic_staff

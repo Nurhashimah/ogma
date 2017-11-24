@@ -30,7 +30,7 @@ class Staff::AverageInstructorsController < ApplicationController
     #respond_with(@average_instructor)
     respond_to do |format|
       if @average_instructor.save
-        format.html { redirect_to staff_average_instructors_url, notice: (t 'average_instructor.title')+(t 'actions.updated')  }
+        format.html { redirect_to staff_average_instructors_path, notice: (t 'average_instructor.title')+(t 'actions.created')  }
         format.json { render action: 'show', status: :created, location: @average_instructor}
       else
         format.html { render action: 'new' }
