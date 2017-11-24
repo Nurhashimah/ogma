@@ -246,7 +246,6 @@ FactoryGirl.define do
     association :instructor, factory: :basic_staff_with_rank
     association :programme, factory: :programme
     association :evaluator, factory: :basic_staff_with_rank
-    evaluator_id 1
     delivery_type 1 #{ [1,2,3].sample}  1-Teori, 2-Praktikal, 3-Lain-lain
     evaluate_date "2017-11-24"
     start_at "08:00:00"
