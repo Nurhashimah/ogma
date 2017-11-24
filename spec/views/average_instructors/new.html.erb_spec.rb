@@ -100,9 +100,9 @@ RSpec.describe "staff/average_instructors/new", :type => :view do
 
     assert_select "form[action=?][method=?]", staff_average_instructors_path, "post" do
 
-      assert_select "input#average_instructor_programme_id[name=?]", "average_instructor[programme_id]"
+      assert_select "select#average_instructor_programme_id[name=?]", "average_instructor[programme_id]"
 
-      assert_select "input#average_instructor_instructor_id[name=?]", "average_instructor[instructor_id]"
+      assert_select "select#average_instructor_instructor_id[name=?]", "average_instructor[instructor_id]"
 
       assert_select "input#average_instructor_title[name=?]", "average_instructor[title]"
 
@@ -111,7 +111,7 @@ RSpec.describe "staff/average_instructors/new", :type => :view do
       assert_select "input#average_instructor_start_at[name=?]", "average_instructor[start_at]"
       assert_select "input#average_instructor_end_at[name=?]", "average_instructor[end_at]"
 
-      assert_select "input#average_instructor_delivery_type[name=?]", "average_instructor[delivery_type]"
+      assert_select "select#average_instructor_delivery_type[name=?]", "average_instructor[delivery_type]"
 
       assert_select "input#average_instructor_pbq1_5[name=?]", "average_instructor[pbq1]"
       assert_select "input#average_instructor_pbq1_4[name=?]", "average_instructor[pbq1]"
