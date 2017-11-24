@@ -36,11 +36,11 @@
         = t 'evaluation.skt.submit_notify'
     %br
     
-  - if @current_user.userable.positions.first.is_root? == true
-    = f.hidden_field :eval1_by, :value => @current_user.userable_id
+  - if current_user.userable.positions.first.is_root? == true
+    = f.hidden_field :eval1_by, :value => current_user.userable_id
   - else
     /= f.hidden_field :eval1_by, :value => Login.current_login.staff.position.parent.staff_id 
-    = f.hidden_field :eval1_by, :value => @staff_appraisal.set_approver1(@current_user)
+    = f.hidden_field :eval1_by, :value => @staff_appraisal.set_approver1(current_user)
 
 :javascript
 $(document).ready(function(){

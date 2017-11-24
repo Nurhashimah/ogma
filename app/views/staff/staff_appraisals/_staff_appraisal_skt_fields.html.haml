@@ -38,7 +38,9 @@
   - else
     - if params[:job_level]=="skt_revision"
       .row 
-        .col-sm-1= f.select :priority, 1..8, {:include_blank=>"-"}, {class: 'form-control'}
+        .col-sm-1
+          = f.hidden_field :_destroy
+          = f.select :priority, 1..8, {:include_blank=>"-"}, {class: 'form-control'}
         .col-sm-2= f.text_area:description, :size=>"30x8", placeholder: 'Activity / Project', class: 'form-control'
         .col-sm-2
           = f.text_area :indicator_desc_quality, :size => "20x1", placeholder: t('evaluation.skt.quality'), class: 'form-control'
@@ -65,14 +67,18 @@
           = f.text_area :notes_time, :size => "20x1", placeholder: t('evaluation.skt.time'), class: 'form-control'
           = f.text_area :notes_quantity, :size => "20x1", placeholder: t('evaluation.skt.quantity'), class: 'form-control'
           = f.text_area :notes_cost, :size => "20x1", placeholder: t('evaluation.skt.cost'), class: 'form-control'
+        .col-sm-1
+          = link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
           /.col-sm-1
-          = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+          /= link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
           /= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f 
           /= link_to content_tag(:i,"", class: "fa-fa-trash-o"), '#', :onclick => 'rmv_field($(this))', title: "Delete", class: "btn btn-danger remove_fields"
           = f.hidden_field :is_dropped, :value=> "0"
     - else
       .row 
-        .col-sm-1= f.select :priority, 1..8, {:include_blank=>"-"}, {class: 'form-control'}
+        .col-sm-1
+          = f.hidden_field :_destroy
+          = f.select :priority, 1..8, {:include_blank=>"-"}, {class: 'form-control'}
         .col-sm-5= f.text_area:description, :size=>"30x3", placeholder: 'Activity / Project', class: 'form-control'
         .col-sm-3
           = f.text_area :indicator_desc_quality, :size => "20x1", placeholder: t('evaluation.skt.quality'), class: 'form-control'
@@ -84,17 +90,15 @@
           = f.text_area :target_time, :size => "20x1", placeholder: t('evaluation.skt.time'), class: 'form-control'
           = f.text_area :target_quantity, :size => "20x1", placeholder: t('evaluation.skt.quantity'), class: 'form-control'
           = f.text_area :target_cost, :size => "20x1", placeholder: t('evaluation.skt.cost'), class: 'form-control'
+        .col-sm-1
+          = link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
           /.col-sm-1
-          = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+          /= link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
           /= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f 
           /= link_to content_tag(:i,"", class: "fa-fa-trash-o"), '#', :onclick => 'rmv_field($(this))', title: "Delete", class: "btn btn-danger remove_fields"
           = f.hidden_field :is_dropped, :value=> "0"
 :javascript
   
-  function rmv_field(curr_fieldset) {
-    $(curr_fieldset).parent().parent().hide();
-  }
-
   $('.date_picker').datetimepicker({
     timepicker:false,
     format:'Y-m-d',
@@ -105,10 +109,25 @@
     format:'H:i',
     step:5,
   });
-
-  function remove_fields(link,fm) {
-    $(link).parent().parent().hide();
-    $(fm).$("input[type=hidden]").value = "1";
-  }
+  
+  $('.removing_fields').click(function(){
+    var fieldset=$(this).parent().parent().parent();
+    var row=$(this).parent().parent();
+    var all_fields=row.children().children();
+    var destroyer=all_fields[0];
+    destroyer.value=true;    
+    fieldset.hide();
+  });
+  
+  
+/   function rmv_field(curr_fieldset) {
+/     $(curr_fieldset).parent().parent().hide();
+/   }
+/   
+/   function remove_fields(link,fm) {
+/     $(link).parent().parent().hide();
+/     $(fm).$("input[type=hidden]").value = "1";
+/   }
+  
 /document.getElementByName(fm+'[_destroy]').val()=true;
 /$(fm).value= '1'; 

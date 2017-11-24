@@ -109,9 +109,9 @@ FactoryGirl.define do
     association :eval1_officer, factory: :basic_staff
     association :eval2_officer, factory: :basic_staff
     evaluation_year {(Date.today+(366*rand()).to_f).at_beginning_of_month}
-    is_skt_submit true #{rand(2) == 1}
+    is_skt_submit false #true #{rand(2) == 1}
     skt_submit_on {Date.today+(366*rand()).to_f}
-    is_skt_endorsed true #{rand(2) == 1}
+    is_skt_endorsed false # true #{rand(2) == 1}
     skt_endorsed_on {Date.today+(366*rand()).to_f}
     skt_pyd_report "Some PYD Report"
     is_skt_pyd_report_done true #{rand(2) == 1}
@@ -147,8 +147,8 @@ FactoryGirl.define do
     e1g4 {rand(0..10).to_f}
     e1g4_percent {rand(0..5).to_f}
     e1_total {rand(0..100).to_f}
-    e1_years{rand(0..45)}
-    e1_months {rand(0..12)}
+    e1_years 0 #{rand(0..45)}
+    e1_months {rand(1..12)}
     e1_performance "Some Performance"
     e1_progress "Some Progress"
     is_submit_e2 true # {rand(2)==1}
@@ -177,12 +177,49 @@ FactoryGirl.define do
     e2g4 {rand(0..10).to_f}
     e2g4_percent {rand(0..5).to_f}
     e2_total {rand(0..100).to_f}
-    e2_years{rand(0..45)}
-    e2_months {rand(0..12)}
+    e2_years 0 #{rand(0..45)}
+    e2_months {rand(1..12)}
     e2_performance "Some Performance 2"
     evaluation_total 1.0
     is_complete true #{rand(2)==1}
     is_completed_on {Date.today+(366*rand()).to_f}
+    
+    after(:create) {|appraisal| appraisal.staff_appraisal_skts = [create(:staff_appraisal_skt, staff_appraisal_id: appraisal.id)]}
+  end
+  
+  factory :staff_appraisal_skt do
+    association :staff_appraisal, factory: :staff_appraisal
+    priority 1
+    half 1
+    is_dropped false
+    dropped_on nil
+    drop_reasons ""
+    indicator_desc_cost "cost indicator"
+    indicator_desc_quality "quality indicator"
+    indicator_desc_quantity "quantity indicator"
+    indicator_desc_time "time indicator"
+    target_cost "cost target"
+    target_quality "quality target"
+    target_quantity "quantity target"
+    target_time "time target"
+    achievement_cost "cost achievement"
+    achievement_quality "quality achievement"
+    achievement_quantity "quantity achievement"
+    achievement_time  "time achievement"
+    progress_cost 80.0
+    progress_quality 80.0
+    progress_quantity 80.0
+    progress_time 80.0
+    notes_cost "cost notes"
+    notes_quality "quality notes"
+    notes_quantity "quantity notes"
+    notes_time "time quantity"
+    description "SKT description"
+    data "My Text"
+    #college_id 1
+    
+#     => StaffAppraisalSkt(id: integer, staff_appraisal_id: integer, priority: integer, half: integer, is_dropped: boolean, dropped_on: date, drop_reasons: string, created_at: datetime, updated_at: datetime, indicator_desc_quality: string, indicator_desc_time: string, indicator_desc_quantity: string, indicator_desc_cost: string, target_quality: string, target_time: string, target_quantity: string, target_cost: string, achievement_quality: string, achievement_time: string, achievement_quantity: string, achievement_cost: string, progress_quality: decimal, progress_time: decimal, progress_quantity: decimal, progress_cost: decimal, notes_quantity: string, notes_time: string, notes_quality: string, notes_cost: string, description: text, college_id: integer, data: string)
+
   end
 
   factory :travel_request, :class => 'TravelRequest' do

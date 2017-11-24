@@ -17,7 +17,7 @@
         %th= sort_link(@search, :appraised_name, (t 'staff.name'))
         %th{style: "width:20%;"}= sort_link(@search, :appraised_positions_name,(t 'staff.position'))
         %th{style: "width:10%;"}= sort_link(@search, :evaluation_year, (t 'helpers.label.staff_appraisal.evaluation_year'))
-        %th= (t 'staff_appraisal.status')
+        %th Status
 
       %tbody 
       = render "index_search"
