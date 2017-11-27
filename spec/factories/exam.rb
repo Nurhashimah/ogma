@@ -1,56 +1,86 @@
 FactoryGirl.define do
-  # exams
   factory :exam do
-    sequence(:name) { |n| "Some Name_#{n}" }
-    description "Some Description"
+    name "F" #{ ["M", "F", "R"].sample } #Repeat require additional validations - model line #168
+    description "Exam Description"
     association :creator, factory: :basic_staff
-    programme_id 5#1
-    association :subject, factory: :programme  #- not ready
+    association :subject, factory: :subject
+    association :exam_template, factory: :exam_template
+    association :college, factory: :college
+    klass_id 1 #0 #{[1,0].sample} #(with question / use of examtemplate)
     #subject_id 100 #if 1 is use - will failed - refer exams_controller.rb, line 92 (@programme_id = @exam.subject.root.id)
     exam_on {Date.today+(183*rand()).to_f}
     #full_marks rand(1..100) #{rand(1..100).to_f} - refer full_marks method in model/exam.rb
-    starttime {Time.at(rand * Time.now.to_f)}
-    endtime {Time.at(rand * Time.now.to_f)}   
-    sequ "1,2,3,4,5,6,7,8,9,10" 
+    starttime "08:00:00"#{Time.at(rand * Time.now.to_f)}
+    endtime "10:00:00" #{Time.at(rand * Time.now.to_f)}   
+    sequ "1,2,3,4,5,6,7,8,9,10" #"" #value is "", if klass_id==0
+#     examquestions {[FactoryGirl.create(:examquestion)]} #HABTM - NOTE - use either one
   end
+ 
+#   => Exam(id: integer, name: string, description: text, created_by: integer, course_id: integer, subject_id: integer, klass_id: integer, exam_on: date, duration: integer, full_marks: integer, starttime: time, endtime: time, topic_id: integer, sequ: string, created_at: datetime, updated_at: datetime, college_id: integer, data: string)
+# >> 
+#   
+#   factory :examquestion_exam do
+#     exam_id 1
+#     examquestion_id 1
+#   end
+
+  #to use in examquestions views -> create topic first
   
+#   Examquestion.create(creator_id: 87, approver_id: 88, editor_id: 89, programme_id: 146, subject_id: 148, topic_id: 149, questiontype: "MCQ", question: "Some question", answer: "Some answer", marks: 1, category: "Some category", qkeyword: "Some keyword", qstatus: "New", createdt: "2017-11-27")
+  
+#   FactoryGirl.create(:examquestion, creator_id: 87, approver_id: 88, editor_id: 89, programme_id: 146, subject_id: 148, topic_id: 149, questiontype: "MCQ", question: "Some question", answer: "Some answer", marks: 1, category: "Some category", qkeyword: "Some keyword", qstatus: "New", createdt: "2017-11-27")
+
   factory :examquestion do
-    #association :subject, factory: :programme
-    subject_id 1
-    questiontype "Some Question Type"
+    association :college, factory: :college
+    association :creator, factory: :basic_staff
+    association :approver, factory: :basic_staff
+    association :editor, factory: :basic_staff
+    association :course, factory: :programme
+    association :subject, factory: :subject
+    association :topic, factory: :topic
+
+    questiontype "MCQ" #{["MCQ", "MEQ", "SEQ", "ACQ", "OSCI", "OSCII", "OSCE", "OSPE", "VIVA", "TRUEFALSE" ]}
     question "Some Question"
     answer "Some Answer"
-    marks {rand(1.0..30.0).round(2)}
+    marks 1 #{rand(1.0..30.0).round(2)}
     category "Some Category"
     qkeyword "Some Keyword"
-    qstatus "Some Status"
-    association :creator, factory: :staff
+    qstatus "Created" #{  ["Created", "Submitted", "Edited", "Approved", "Reject at College", "Sent to KKM", "Sent to KKM", "Re-Edit", "Rejected" ] }
+    #{ ["New", "Submit", "Editing", "Ready For Approval", "Re-Edit", "For Approval", "Approved", "Rejected"] } #"Some Status"
+    
     createdt {Date.today+(183*rand()).to_f}
-    difficulty "Some Difficulty"
+    difficulty "1" #{ ["1", "2", "3"] } #"Some Difficulty"
     statusremark "Some Status Remark"
-    association :editor, factory: :staff
+    
     editdt {Date.today+(183*rand()).to_f}
-    association :approver, factory: :staff
+    
     approvedt {Date.today+(183*rand()).to_f}
-    bplreserve "True or False"
-    bplsent "True or False"
+    bplreserve true #{rand(2)==1}
+    bplsent true #{rand(2)==1}
     bplsentdt {Date.today+(183*rand()).to_f}
     diagram_file_name "Some Diagram Name"
-    diagram_content_type "Some Content Type"
-    diagram_file_size 1
+    diagram_content_type "image/jpg"
+    diagram_file_size 49000
     diagram_updated_at {Time.at(rand * Time.now.to_f)}
-    association :topic, factory: :programme
+    
     construct "Some Construct"
-    conform_curriculum "True or False"
-    conform_specification "True or False"
-    conform_opportunity "True or False"
-    accuracy_construct "True or False"
-    accuracy_topic "True or False"
-    accuracy_component "True or False"
-    fit_difficulty "True or False"
-    fit_important "True or False"
-    fit_fairness "True or False"
+    conform_curriculum {rand(2)==1}
+    conform_specification {rand(2)==1}
+    conform_opportunity {rand(2)==1}
+    accuracy_construct {rand(2)==1}
+    accuracy_topic {rand(2)==1}
+    accuracy_component {rand(2)==1}
+    fit_difficulty {rand(2)==1}
+    fit_important {rand(2)==1}
+    fit_fairness {rand(2)==1}
     diagram_caption "Some diagram caption"
+    exams {[FactoryGirl.create(:exam)]} #HABTM
+  end
+  
+  factory :exam_template do
+    association :creator, factory: :staff_user
+    sequence(:name) { |n| "Template #{n}" }
+    data {{:question_count=>{"mcq"=>{"count"=>"2", "weight"=>"40", "full_marks"=>"2"}}}}
   end
 end
 

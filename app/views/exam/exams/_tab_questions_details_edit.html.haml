@@ -85,10 +85,7 @@
                       - else 
                         = select_tag "exam[seq][]", options_for_select(@sequence)
                     %td=h examquestion.questiontype
-                    %td
-                      =h examquestion.topic.parent.code
-                      | 
-                      =examquestion.topic.subject_list
+                    %td=h "#{examquestion.topic.parent.code}|#{examquestion.topic.subject_list}"
                     %td=render 'question_by_type', :item => examquestion
                     %td=h examquestion.marks
                     %td= check_box_tag "exam[examquestion_ids][]", examquestion.id, @exam.examquestions.include?(examquestion)

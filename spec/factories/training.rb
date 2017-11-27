@@ -41,25 +41,64 @@ FactoryGirl.define do
     is_break {rand(2) == 1}
   end
 
+  #Programme
   factory :programme do
-    sequence(:code) { |n| "#{n}" }
-    sequence(:combo_code) {|n| "0-#{n}"}
-    sequence(:ancestry_depth) {|n| "#{n}"}
+    sequence(:code) { |n| "0#{n}" }
+    ancestry_depth 0
     sequence(:name) { |n| "Programme_#{n}"}
     duration 1
     durationtype {["hours", "weeks", "days", "months", "years"].sample}
-    sequence(:course_type) { |n| "Course Type #{n}"}
-#     course_type {["Diploma", "Pos Basik Diploma Lanjutan", "Semester", "Subject", "Commonsubject", "Topic", "Subtopic", "Asas", "Pertengahan", "Lanjutan"].sample}
-#     college_id 1
-    #sequence(:ancestry) { |n| "#{n}"}
-    #sequence(:combo_code) { |n| "0#{n}-"+code}
+    course_type {["Asas", "Pertengahan", "Lanjutan"].sample}
     association :college, factory: :college
     level "llp"
   end
 
-    #if programme --> course type diploma/pos basik/diploma lanjutan && ancestry depth=0
-    #if programme --> course type semester ancestry_depth=1
+#   kskbjb
+#   if programme --> course type=diploma/pos basik/diploma lanjutan, ancestry depth=0
+#   if semester --> course type=semester, ancestry_depth=1
+#   if subject --> course_type=subject, ancestry_depth=2
+#   if topic / subtopic --> course_type=topic, ancestry_depth=3
 
+  factory :module, :class => 'Programme' do
+    sequence(:code) {|n| "0#{n}"}
+    association :parent, factory: :programme
+    ancestry_depth 1
+    sequence(:name) {|n| "Module_#{n}"}
+    duration 1
+    durationtype {["hours", "weeks", "days", "months"].sample}
+    course_type "Module"
+  end
+  
+  factory :subject, :class => 'Programme' do
+    sequence(:code) {|n| "0#{n}"}
+    association :parent, factory: :module
+    ancestry_depth 2
+    sequence(:name) {|n| "Subject_#{n}"}
+    duration 1
+    durationtype {["hours", "weeks", "days", "months"].sample}
+    course_type "Subject"
+  end
+  
+  factory :topic, :class => 'Programme' do
+    sequence(:code) {|n| "0#{n}"}
+    association :parent, factory: :subject
+    ancestry_depth 3
+    sequence(:name) {|n| "Topic_#{n}"}
+    duration 1
+    durationtype {["hours", "weeks", "days"].sample}
+    course_type "Topic"
+  end
+  
+  factory :subtopic, :class => 'Programme' do
+    sequence(:code) {|n| "0#{n}"}
+    association :parent, factory: :topic
+    ancestry_depth 3
+    sequence(:name) {|n| "Subtopic_#{n}"}
+    duration 1
+    durationtype {["hours", "weeks", "days"].sample}
+    course_type "Subtopic"
+  end
+  
 # Weeklytimetable.create(intake_id: 22, startdate: "2017/01/01", enddate: "2017/03/31", prepared_by:1588, format1: 228, format2: 229, college_id: 3143, programme_id: 70)
 
     factory :weeklytimetable, class: Weeklytimetable do
