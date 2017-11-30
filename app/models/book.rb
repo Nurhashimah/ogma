@@ -1,6 +1,6 @@
 class Book < ActiveRecord::Base
   
-  before_save :update_tag_no, :extract_roman_into_size_pages
+  before_save :update_tag_no, :extract_roman_into_size_pages, :restrict_acc_removal_when_not_available
   
   belongs_to :college
   belongs_to :staff, :foreign_key => 'receiver_id'
@@ -18,7 +18,7 @@ class Book < ActiveRecord::Base
                               :styles => { :original => "250x300>", :thumbnail => "50x60" }
   validates_attachment_size :photo, :less_than => 500.kilobytes
   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png', 'image/gif']
-  validates_presence_of :isbn, :title, :language
+  validates_presence_of :isbn, :title, :language, :accessions
   validates_uniqueness_of :isbn
   
   def update_tag_no
@@ -171,6 +171,31 @@ class Book < ActiveRecord::Base
 #     2) On loan / Pinjam
 #     3) Weeding / Hapuskira
 #     4) Reference / Rujukan
+  
+  def restrict_acc_removal_when_not_available 
+    accs_no=[]
+    for acc in accessions
+      if acc.marked_for_destruction?
+	accs_no << acc.accession_no if [2,3,4].include?(acc.status) 
+      end
+    end
+    if accs_no.count > 0
+      str=""
+      accs_no.each{|x|str+=x+", "}
+      errors.add(:base, "#{I18n.t('library.book.accessionno')} : #{str} #{I18n.t('library.book.acc_deletion_restricted')}.  #{I18n.t('actions.click')}  <i class='fa fa-arrow-left' aria-hidden='true'></i> #{I18n.t('actions.reset_form')}".html_safe)
+      return false
+    end
+  end
+  
+#   sample - https://github.com/rails/rails/issues/6812
+#   before_save :mark_children_for_removal
+#   
+# def mark_children_for_removal
+#   children.each do |child|
+#     child.mark_for_destruction if child.name.blank?
+#   end
+# end
+    
 end
 
 # == Schema Information

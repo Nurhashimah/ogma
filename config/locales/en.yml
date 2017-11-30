@@ -666,6 +666,7 @@ en:
     uncheck: Uncheck
     are_you_sure: "Are you sure?"
     click: Click
+    reset_form: " to reset form."
 
   views:
     pagination:
@@ -3592,6 +3593,7 @@ en:
       range: Range
       physical_description: Physical Description
       starting_with: Starting with
+      acc_deletion_restricted: " not allowed for deletion (on-loan / weeding / reference)"
       
     reservation:
       list: Book Reservation List

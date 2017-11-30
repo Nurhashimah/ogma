@@ -646,6 +646,7 @@ ms_MY:
     uncheck: Nyahpilih
     are_you_sure: "Anda pasti?"
     click: Klik
+    reset_form: " reset semula borang."
   
   views:
     pagination:
@@ -3484,6 +3485,7 @@ ms_MY:
       range: Julat
       physical_description: Deskripsi Fizikal
       starting_with: Bermula dengan
+      acc_deletion_restricted: " tidak boleh dipadam (pinjam / hapuskira / rujukan)."
       
     reservation:
       list: Senarai Tempahan Buku
