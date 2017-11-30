@@ -4,12 +4,11 @@ FactoryGirl.define do
     sequence(:isbn) { |n| "isbn_#{n}" }
     sequence(:title) { |n| "My title_#{n}" }
     language {['BM','BI'].sample}
-#     after(:create) {|book| accession=[create(:accession, book: book)]}
+    before(:create) {|book| book.accessions << build(:accession, book_id: book.id) }
   end
 
   factory :accession do
     sequence(:accession_no) { |n| "0#{n}" }
-    association :book, factory: :book
   end
   
   factory :librarytransaction do
