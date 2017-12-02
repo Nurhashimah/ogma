@@ -60,7 +60,7 @@ FactoryGirl.define do
 #   agrade=Employgrade.new(name: 'grade 11', group_id: 1)
   factory :employgrade do
 #     name {|n| "Grade Name #{[1,2].sample}#{n}"}
-    name {|n| "Grade Name 4#{n}" }
+    sequence(:name) {|n| "Grade Name 4#{n}" }
     group_id {[1,2,4].sample}
   end
 

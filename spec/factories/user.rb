@@ -11,37 +11,40 @@ FactoryGirl.define do
     password_confirmation '12345678'
     association :college, factory: :college
     userable factory: :basic_staff_with_position  #polymorphic (userable_type & userable_id)
-    after(:create) {|user| user.roles = [create(:admin_role)]}
+    after(:create) do |user| 
+      user.roles = [create(:admin_role), create(:staff_role), create(:student_discipline_module_admin), create(:training_budget_module_admin), create(:training_courses_module_admin), create(:training_schedule_module_admin), create(:training_attendance_module_admin), create(:tenants_module_admin), create(:locations_module_admin), create(:location_damages_module_admin), create(:bookingfacilities_module_admin), create(:staffs_module_admin), create(:positions_module_admin), create(:staff_appraisals_module_admin), create(:staff_leaves_module_admin), create(:travel_claims_module_admin), create(:travel_requests_module_admin), create(:stationeries_module_admin), create(:asset_losses_module_admin), create(:asset_loans_module_admin), create(:asset_disposals_module_admin), create(:asset_defect_module_admin), create(:asset_list_module_admin), create(:student_intake_module_admin), create(:instructor_appraisals_module_admin), create(:average_instructors_module_admin) , create(:staff_ranks_module_admin), create(:staff_employgrades_module_admin), create(:staff_postinfos_module_admin)]
+    end
+#     after(:create) {|user| user.roles = [create(:admin_role)]}
 #     after(:create) {|user| user.roles = [create(:staff_role)]}
-    after(:create) {|user| user.roles = [create(:student_discipline_module_admin)]}
-    after(:create) {|user| user.roles = [create(:training_budget_module_admin)]}
-    after(:create) {|user| user.roles = [create(:training_courses_module_admin)]}
-    after(:create) {|user| user.roles = [create(:training_schedule_module_admin)]}
-    after(:create) {|user| user.roles = [create(:training_attendance_module_admin)]}
-    after(:create) {|user| user.roles = [create(:tenants_module_admin)]}
-    after(:create) {|user| user.roles = [create(:locations_module_admin)]}
-    after(:create) {|user| user.roles = [create(:location_damages_module_admin)]}
-    after(:create) {|user| user.roles = [create(:bookingfacilities_module_admin)]}
-    after(:create) {|user| user.roles = [create(:staffs_module_admin)]}
-    after(:create) {|user| user.roles = [create(:positions_module_admin)]}
-    after(:create) {|user| user.roles = [create(:staff_appraisals_module_admin)]}
-    after(:create) {|user| user.roles = [create(:staff_leaves_module_admin)]}
-    after(:create) {|user| user.roles = [create(:travel_claims_module_admin)]}
-    after(:create) {|user| user.roles = [create(:travel_requests_module_admin)]}
-    after(:create) {|user| user.roles = [create(:stationeries_module_admin)]}
-    after(:create) {|user| user.roles = [create(:asset_losses_module_admin)]}
-    after(:create) {|user| user.roles = [create(:asset_loans_module_admin)]}
-    after(:create) {|user| user.roles = [create(:asset_disposals_module_admin)]}
-    after(:create) {|user| user.roles = [create(:asset_defect_module_admin)]}
-    after(:create) {|user| user.roles = [create(:asset_list_module_admin)]}
-    after(:create) {|user| user.roles = [create(:student_intake_module_admin)]}
-    
-    after(:create) {|user| user.roles = [create(:instructor_appraisals_module_admin)]}
-    after(:create) {|user| user.roles = [create(:average_instructors_module_admin)]}
-    
-    after(:create) {|user| user.roles = [create(:staff_ranks_module_admin)]}
-    after(:create) {|user| user.roles = [create(:staff_employgrades_module_admin)]}
-    after(:create) {|user| user.roles = [create(:staff_postinfos_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:student_discipline_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:training_budget_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:training_courses_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:training_schedule_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:training_attendance_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:tenants_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:locations_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:location_damages_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:bookingfacilities_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:staffs_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:positions_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:staff_appraisals_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:staff_leaves_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:travel_claims_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:travel_requests_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:stationeries_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:asset_losses_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:asset_loans_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:asset_disposals_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:asset_defect_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:asset_list_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:student_intake_module_admin)]}
+#     
+#     after(:create) {|user| user.roles = [create(:instructor_appraisals_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:average_instructors_module_admin)]}
+#     
+#     after(:create) {|user| user.roles = [create(:staff_ranks_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:staff_employgrades_module_admin)]}
+#     after(:create) {|user| user.roles = [create(:staff_postinfos_module_admin)]}
   end
 
   factory :staff_user, :class => 'User' do

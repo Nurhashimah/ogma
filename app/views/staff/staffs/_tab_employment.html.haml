@@ -26,7 +26,7 @@
     %dt= t 'staff.age', :default => model_class.human_attribute_name(:age) + ":"
     %dd= @staff.age
 
-    %dt= t 'staff.grade', :default => model_class.human_attribute_name(:staffgrade_id) + ":"
+    %dt= t 'staff.grade_id', :default => model_class.human_attribute_name(:staffgrade_id) + ":"
     %dd= @staff.staffgrade.try(:name_and_group)
 
     %dt= t 'staff.position', :default => model_class.human_attribute_name(:position_id) + ":"
@@ -101,5 +101,5 @@
     %dt= t 'staff.pension_confirm_date', :default => model_class.human_attribute_name(:pension_confirm_date) + ":"
     %dd= l(@staff.pension_confirm_date) rescue '-'
 
-    %dt= t 'staff.pensionstat', :default => model_class.human_attribute_name(:pensionstat) + ":"
+    %dt= t 'staff.uniformstat', :default => model_class.human_attribute_name(:pensionstat) + ":"
     %dd= (DropDown::UNIFORM.find_all{|disp, value| value == @staff.uniformstat }).map {|disp, value| disp}[0]

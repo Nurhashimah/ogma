@@ -1299,6 +1299,7 @@ en:
     poskod_id: Post Code
     address: Address
     mrtlstatuscd: Marital Status
+    staffgrade_id: Staff Grade
     statecd: State of Birth
     race: Race
     religion: Religion

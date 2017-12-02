@@ -177,7 +177,7 @@
             .col-sm-2.control-label
               = f.label t 'staff.mrtlstatuscd', for: :mrtlstatuscd
             .col-md-2
-              = f.select :bloodtype, DropDown::MARITAL_STATUS, {prompt: t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.select :mrtlstatuscd, DropDown::MARITAL_STATUS, {prompt: t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label
@@ -245,7 +245,7 @@
 
           .help-block.small
             =(t 'staff.training.mycpd.inserted_values')
-            = link_to ((t 'staff.training.application_status.viewsummary')+" "+Date.today.year.to_s), show_total_days_staff_training_ptdos_path(:id=>@current_user.userable_id)
+            = link_to ((t 'staff.training.application_status.viewsummary')+" "+Date.today.year.to_s), show_total_days_staff_training_ptdos_path(:id=>current_user.userable_id)
           .col-sm-2
             /= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :vehicles
             /= link_to_add_fields t('addmore'), f, :mycpds, "",  t('addmore')
@@ -430,7 +430,7 @@
             .col-sm-2.control-label
               = f.label t 'staff.svchead', for: :svchead
             .col-md-2
-              = f.select :appointby, DropDown::HOS, {include_blank: true, prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.select :svchead, DropDown::HOS, {include_blank: true, prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label

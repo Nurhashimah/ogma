@@ -27,6 +27,9 @@ RSpec.describe "training/weeklytimetables/index", :type => :view do
     
 #     should have_link(@weeklytimetable1.schedule_programme.programme_list), href: training_weeklytimetable_path(@weeklytimetable1.id) + "?locale=en" 
     
+#     TODO -- USE THIS format 
+    #assert_select "a[href=?]", staff_staff_appraisal_path(@staff_appraisal), :text => @staff_appraisal1.appraised.try(:formatted_mykad), :count => 1
+    
     assert_select "tr>td>a", :text => @weeklytimetable1.schedule_programme.programme_list, :count => 1
     assert_select "tr>td>a", :text => @weeklytimetable2.schedule_programme.programme_list, :count => 1
     assert_select "td", :text => @weeklytimetable1.schedule_intake.siri_name, :count => 1
