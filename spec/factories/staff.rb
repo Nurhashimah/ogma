@@ -88,6 +88,50 @@ FactoryGirl.define do
     berhormat {rand(2) == 1}
     association :college, factory: :college
   end
+  
+  factory :qualification_level, :class => 'Qualification' do
+    level_id {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17].sample}
+    sequence(:qname) { |n| "Qualification #{n}" }
+    sequence(:institute) { |n| "Institute Name #{n}" }
+    factory :staff_qualification do
+      association :staff, factory: :basic_staff
+    end
+#     HOLD FIRST - student (factory to create)
+#     factory :qualification_student do
+#       association :student, factory: :student
+#     end
+  end
+  
+  factory :bankaccount do
+    sequence(:account_no) {|n| "Account #{n}"}
+    account_type {[1,2,3,4].sample}
+    association :bank, factory: :bank
+    factory :staff_bankaccount do
+      association :staff, factory: :basic_staff
+    end
+#     NOTE - student_id field in table
+#     factory :student_bankaccount do
+#     end
+  end
+  
+  factory :insurance_policy do
+    association :staff, factory: :basic_staff
+    association :insurance_company, factory: :insurance_company
+    sequence(:policy_no) {|n| }
+  end
+  
+  factory :loan do
+    association :staff, factory: :basic_staff
+    sequence(:accno) {|n| "Loan No #{n}"}
+    amount 1200.00
+    deductions 120.00
+    durationmn 12
+    enddate "2018-10-01"
+    enddeduction 120.00
+    firstdate "2017-12-01"
+    ltype 1 #{[1,2,3,4,99]}
+    startdt "2018-01-01"
+  end
 
   factory :staff_attendance do
     #sequence(:thumb_id) { |n| }

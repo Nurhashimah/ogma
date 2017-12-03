@@ -6,8 +6,8 @@
       %dd
         %strong= (DropDown::QUALIFICATION_LEVEL.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp}[0]
 
-      %dt= t 'staff.qname' + ":"
+      %dt= t('staff.qualifications.qname') + ":"
       %dd= qualification.qname
 
-      %dt= t 'staff.institute' + ":"
+      %dt= t('staff.qualifications.institute') + ":"
       %dd= qualification.institute

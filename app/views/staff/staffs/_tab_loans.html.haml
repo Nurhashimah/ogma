@@ -10,19 +10,25 @@
       %dd= loan.accno
 
       %dt= t('staff.loans.startdt') + ":"
-      %dd= l(@staff.schemedt) rescue '-'
-
+      %dd=l(loan.startdt) rescue '-'
+      
+      /= l(@staff.schemedt) rescue '-'
+        
       %dt= t('staff.loans.durationmn') + ":"
-      %dd  #{loan.durationmn} Months
+      %dd=loan.durationmn.to_s+" Months"
 
       %dt= t('staff.loans.deductions') + ":"
       %dd= ringgols(loan.deductions)
 
       %dt= t('staff.loans.firstdate') + ":"
-      %dd= l(@staff.firstdate) rescue '-'
-
+      %dd=l(loan.firstdate) rescue '-'
+     
+      /= l(@staff.firstdate) rescue '-'
+   
       %dt= t('staff.loans.enddate') + ":"
-      %dd= l(@staff.enddate) rescue '-'
+      %dd=l(loan.enddate) rescue '-'
+      
+      /= l(@staff.enddate) rescue '-'
 
       %dt= t('staff.loans.enddeduction') + ":"
       %dd= ringgols(loan.enddeduction)

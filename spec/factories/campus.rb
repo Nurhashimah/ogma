@@ -132,4 +132,10 @@ FactoryGirl.define do
     data "My Text" #{"Some string" }
   end
   
+  factory :bank do
+    association :college, factory: :college
+    sequence(:long_name) {|n| "Bank long name #{n}"}
+    sequence(:short_name) {|n| "Bank short name #{n}"}
+  end
+  
 end

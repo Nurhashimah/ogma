@@ -6,15 +6,15 @@ RSpec.describe "staff/staffs/show", :type => :view do
     @grade=FactoryGirl.create(:employgrade)
     @rank=FactoryGirl.create(:rank)
     @parent_staff=FactoryGirl.create(:basic_staff, name: "Parent Staff")
-    @staff=FactoryGirl.create(:basic_staff, college: @college, staffgrade: @grade, rank: @rank, cooftelno: "12345678", cooftelext: "90")
+    @qualification=FactoryGirl.create(:staff_qualification)
+    @bankaccount=FactoryGirl.create(:bankaccount)
+    @insurance_policy=FactoryGirl.create(:insurance_policy)
+    @loan=FactoryGirl.create(:loan)
+    @staff=FactoryGirl.create(:basic_staff, college: @college, staffgrade: @grade, rank: @rank, cooftelno: "12345678", cooftelext: "90", qualifications: [@qualification], bankaccounts: [@bankaccount], insurance_policies: [@insurance_policy], loans: [@loan])
     @parent_position=FactoryGirl.create(:position, staff: @parent_staff, ancestry_depth: 0,  name: "Position1 Orgchart")
     @position=FactoryGirl.create(:position, staff: @staff, name: "Position2 Orgchart", ancestry_depth: 1, parent_id: @parent_position.id)
     @info=@staff
     @admin_user=FactoryGirl.create(:admin_user, userable: @staff, college: @college)
-#     factory :staffs_module_admin, :class => 'Role' do
-#     name 'Staffs Module Admin'
-#     authname 'staffs_module_admin'
-#   end
     sign_in(@admin_user)
   end
 
@@ -137,11 +137,69 @@ RSpec.describe "staff/staffs/show", :type => :view do
     
     assert_select "dl>dt", :text => I18n.t('staff.pensiondt')    
     assert_select "dl>dt", :text => I18n.t('staff.pension_confirm_date')
-    assert_select "dd", :text => "-", :count => 9
+    
+    assert_select "dd", :text => "-", :count => 9#10 #9(tab_employment) + 3(tab_loan)
     
     assert_select "dl>dt", :text => I18n.t('staff.uniformstat')
     assert_select "dd", :text => (DropDown::UNIFORM.find_all{|disp, value| value == @staff.uniformstat }).map {|disp, value| disp}[0]
     
+    # tab_qualifications
+    assert_select "dl>dt", :text => I18n.t('staff.qualifications.level_id') + ":"
+    assert_select "dd>strong", :text => (DropDown::QUALIFICATION_LEVEL.find_all{|disp, value| value == @qualification.level_id}).map {|disp, value| disp}[0]
+    assert_select "dl>dt", :text => I18n.t('staff.qualifications.qname') + ":"
+    assert_select "dd", :text => @qualification.qname
+    assert_select "dl>dt", :text => I18n.t('staff.qualifications.institute') + ":"
+    assert_select "dd", :text => @staff.qualifications.first.institute
+    
+    #tab_finance
+    assert_select "dl>dt", :text => I18n.t('staff.finance.kwspcode') + ":"
+    assert_select "dd", :text => @staff.kwspcode
+    
+    assert_select "dl>dt", :text => I18n.t('staff.finance.taxcode') + ":"
+    assert_select "dd", :text => @staff.taxcode
+    
+    assert_select "dl>dt", :text => I18n.t('banks.long_name') + ":"
+    assert_select "dd", :text => @staff.bankaccounts.first.bank.long_name
+    
+    assert_select "dl>dt", :text => I18n.t('staff.banks.bankaccno') + ":"
+    assert_select "dd", :text => @staff.bankaccounts.first.account_no
+
+    assert_select "dl>dt", :text => I18n.t('staff.banks.bankacctype') + ":"
+    assert_select "dd", :text =>  (DropDown::BANKTYPE.find_all{|disp, value| value == @staff.bankaccounts.first.account_type }).map {|disp, value| disp}[0]
+  
+    assert_select "dl>dt", :text => I18n.t('staff.insurance_policies.company_id') + ":"
+    assert_select "dd>strong", :text => @staff.insurance_policies.first.insurance_company.try(:long_name)
+    
+    assert_select "dl>dt", :text => I18n.t('staff.insurance_policies.policy_no') + ":"
+    assert_select "dd", :text => @staff.insurance_policies.first.policy_no
+    
+    assert_select "dl>dt", :text => I18n.t('staff.insurance_policies.insurance_type') + ":"
+    assert_select "dd", :text => @staff.insurance_policies.first.render_insurance_type
+
+    #tab_loan
+    assert_select "dl>dt", :text => I18n.t('staff.loans.ltype') + ":"
+    assert_select "dd>strong", :text => (DropDown::LOAN_TYPE.find_all{|disp, value| value == @staff.loans.first.ltype }).map {|disp, value| disp}[0]
+
+    assert_select "dl>dt", :text => I18n.t('staff.loans.accno') + ":"
+    assert_select "dd", :text => @staff.loans.first.accno
+        
+    assert_select "dl>dt", :text => I18n.t('staff.loans.startdt') + ":"
+    assert_select "dd", :text => l(@staff.loans.first.startdt)
+    
+    assert_select "dl>dt", :text => I18n.t('staff.loans.durationmn') + ":"
+    assert_select "dd", :text => @staff.loans.first.durationmn.to_s+" Months"
+    
+    assert_select "dl>dt", :text => I18n.t('staff.loans.deductions') + ":"
+    assert_select "dd", :text => ringgols(@staff.loans.first.deductions)
+    
+    assert_select "dl>dt", :text => I18n.t('staff.loans.firstdate') + ":"
+    assert_select "dd", :text => l(@staff.loans.first.firstdate) 
+    
+    assert_select "dl>dt", :text => I18n.t('staff.loans.enddate') + ":"
+    assert_select "dd", :text => l(@staff.loans.first.enddate)
+    
+    assert_select "dl>dt", :text => I18n.t('staff.loans.enddeduction') + ":"
+    assert_select "dd", :text => ringgols(@staff.loans.first.enddeduction)
     
 #     assert_select "dl>dt", :text => I18n.t()
 #     assert_select "dd", :text => @staff.
