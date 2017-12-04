@@ -138,4 +138,19 @@ FactoryGirl.define do
     sequence(:short_name) {|n| "Bank short name #{n}"}
   end
   
+  factory :kin do
+    kintype_id 4 #{[1,2,3,4,5,9,11,12,13,14,98,99].sample}
+    sequence(:name) {|n| "Kin name #{n}"}
+    kinbirthdt "1990-01-01"
+    phone "12345678"
+    kinaddr "Kin Address"
+    profession "Kin Profession"
+    mykadno "Kin Mykadno"
+    factory :staff_kin do
+      association :staff, factory: :basic_staff
+    end
+#     factory :student_kins do
+#     end
+  end
+  
 end

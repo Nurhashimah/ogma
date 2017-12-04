@@ -16,7 +16,7 @@ class Employgrade < ActiveRecord::Base
   end
   
   def name_and_group
-    "#{name}  (#{grade_group})"
+    "#{name} (#{grade_group})"
   end
   
   def gred_no

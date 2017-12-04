@@ -1260,6 +1260,7 @@ ms_MY:
     cobirthdt: Tarikh Lahir
     birthcertno: No Surat Beranak
     age: Umur
+    grade_id: Gred Perkhidmatan
     bloodtype: Jenis Darah
     gender: Jantina
     coemail: Emel
