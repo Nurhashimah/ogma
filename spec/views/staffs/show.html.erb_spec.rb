@@ -30,8 +30,8 @@ RSpec.describe "staff/staffs/show", :type => :view do
 
   it "renders attributes in <dl>" do
     render
-    puts "#{@grade.name}:#{@grade.group_id} ~#{@grade.grade_group} ~#{@grade.name_and_group} --> #{@staff.staffgrade_id} #{@staff.staffgrade.grade_group}"
-    puts "#{@staff.staffgrade.try(:name_and_group)}"
+#     puts "#{@grade.name}:#{@grade.group_id} ~#{@grade.grade_group} ~#{@grade.name_and_group} --> #{@staff.staffgrade_id} #{@staff.staffgrade.grade_group}"
+#     puts "#{@staff.staffgrade.try(:name_and_group)}"
     
     assert_select "h1", :text => @staff.name
       

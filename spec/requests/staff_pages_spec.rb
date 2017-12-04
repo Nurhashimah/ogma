@@ -1,19 +1,19 @@
-require 'spec_helper'
-
-describe "staff pages" do
-  
-  subject { page }
-  
-
-  describe "Staff Index page" do
-    before  { @college = FactoryGirl.create(:college) }
-    before  { @staff = FactoryGirl.create(:basic_staff) }
-    before { visit staff_infos_path }
-    
-    it { should have_selector('h1', text: 'List') }
-    it { should have_selector('th', text: 'MyKad No') }
-    it { should have_selector('th', text: 'Name') }
-    it { should have_selector('th', text: 'Position')}
-    #it { should have_link(formatted_mykad(@staff.icno), href: staff_info_path(@staff) + "?locale=en" ) }
-  end
-end
+# require 'spec_helper'
+# 
+# describe "staff pages" do
+#   
+#   subject { page }
+#   
+# 
+#   describe "Staff Index page" do
+#     before  { @college = FactoryGirl.create(:college) }
+#     before  { @staff = FactoryGirl.create(:basic_staff) }
+#     before { visit staff_infos_path }
+#     
+#     it { should have_selector('h1', text: 'List') }
+#     it { should have_selector('th', text: 'MyKad No') }
+#     it { should have_selector('th', text: 'Name') }
+#     it { should have_selector('th', text: 'Position')}
+#     #it { should have_link(formatted_mykad(@staff.icno), href: staff_info_path(@staff) + "?locale=en" ) }
+#   end
+# end

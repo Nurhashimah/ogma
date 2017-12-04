@@ -1,12 +1,19 @@
 require 'spec_helper'
 
 describe Exam do
-  before {@programme=FactoryGirl.create(:programme)}
-  before { @exam = FactoryGirl.create(:exam, :programme_id => @programme.id) } 
+  
+  before(:each) do
+    @admin_user=FactoryGirl.create(:admin_user)
+    sign_in(@admin_user)
+    @basic_staff=FactoryGirl.create(:basic_staff)
+    @topic=FactoryGirl.create(:topic)
+    @exam=FactoryGirl.create(:exam, programme: @topic.root, name: "F", subject_id: @topic.parent_id, exam_on: "2017-12-01", starttime: "08:00:00",endtime: "10:00:00", created_by: @basic_staff.id, sequ: "1,")
+    @examquestion=FactoryGirl.create(:examquestion, topic_id: @topic.id, subject_id: @topic.parent_id, course: @topic.root, exams: [@exam])
+  end
   
   subject { @exam }
   
-  it { should respond_to(:programme_id)}
+  it { should respond_to(:course_id)}
   it { should respond_to(:name) } 
   it { should respond_to(:description) } 
   it { should respond_to(:created_by) } 
@@ -18,12 +25,13 @@ describe Exam do
   it { should respond_to(:sequ) }
   it { should be_valid }
 
-  describe "when programme id is not present" do
-    before { @exam.programme_id = nil }
-    it { should_not be_valid }
-  end
+#   NOTE - validation already remove since subject_id validation added
+#   describe "when programme id is not present" do
+#     before {@exam.course_id = nil}
+#     it { should_not be_valid }
+#   end
   
-  describe "when subject id is not present" do
+  describe "when subject id is not present" do  # NOTE - name is "F" (not a repeat paper)
     before { @exam.subject_id = nil }
     it { should_not be_valid }
   end
@@ -32,16 +40,35 @@ describe Exam do
     before { @exam.name = nil }
     it { should_not be_valid }
   end
+  
+  describe "when exam_on is not present" do
+    before { @exam.exam_on = nil }
+    it { should_not be_valid }
+  end
+  
+  describe "when starttime is not present" do
+    before { @exam.starttime = nil }
+    it { should_not be_valid }
+  end
+  
+  describe "when endtime is not present" do
+    before { @exam.endtime = nil }
+    it { should_not be_valid }
+  end
+  
+  describe "when description is not present for repeat paper" do 
+    before { @exam.name="R" }
+    before { @exam.description = nil }
+    it { should_not be_valid }
+  end
  
-  describe "when name is not unique within the same subject" do
-    before do 
-      @exam.subject_id = 1
-      @exam.name = "Some Name_test"
-      @exam2 = FactoryGirl.create(:exam, name: "Some Name_test", subject_id: 1)
-    end
+  describe "when name is not unique within the same subject and exam date" do
+    before { @exam2=FactoryGirl.build(:exam, programme: @topic.root, name: "F", subject_id: @topic.parent_id, exam_on: @exam.exam_on) }
+    subject { @exam2 }
     it { should_not be_valid}
   end
   
+  # TODO - next
   #didn't work yet - note - att_accessor : seq, table field : sequ
   #describe "when sequence is not present" do
     #before { @exam.sequ = "Select"} #before { @exam.seq == "Select"}

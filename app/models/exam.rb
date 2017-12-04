@@ -1,6 +1,6 @@
 class Exam < ActiveRecord::Base
   belongs_to  :creator,       :class_name => 'Staff',   :foreign_key => 'created_by'
-  #belongs_to  :programme,   :foreign_key => 'course_id'
+  belongs_to  :programme,   :foreign_key => 'course_id'
   belongs_to :subject,  :class_name => 'Programme', :foreign_key => 'subject_id'
   belongs_to :exam_template, :foreign_key => 'topic_id'  #temporary use 'topic_id' field
   belongs_to :college, :foreign_key => 'college_id'
