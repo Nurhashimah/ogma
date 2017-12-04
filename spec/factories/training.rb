@@ -13,7 +13,9 @@ FactoryGirl.define do
     description "Some Description"
     association :creator, factory: :basic_staff  #(user not ready)
     association :college, factory: :college
-    after(:create) {|timetable| timetable_period = [create(:timetable_period, timetable: timetable)]}
+    factory :timetable_w_period do
+      after(:create) {|timetable| timetable_period = [create(:timetable_period, timetable: timetable)]}
+    end
   end
 
   factory :intake do
@@ -110,8 +112,8 @@ FactoryGirl.define do
       enddate {Date.today+(366*rand())+(4*rand()).to_f}
       association :schedule_creator, factory: :basic_staff
 #       association :schedule_approver, factory: :basic_staff
-      association :timetable_monthurs, factory: :timetable
-      association :timetable_friday, factory: :timetable
+      association :timetable_monthurs, factory: :timetable_w_period
+      association :timetable_friday, factory: :timetable_w_period
 #       format1 1
 #       format2 2
       association :college, factory: :college

@@ -4,8 +4,8 @@ RSpec.describe "training/weeklytimetables/index", :type => :view do
   before(:each) do
     @staff_user=FactoryGirl.create(:staff_user)
     sign_in(@staff_user)
-    @timetable_monthurs = FactoryGirl.create(:timetable)
-    @timetable_friday = FactoryGirl.create(:timetable)
+    @timetable_monthurs = FactoryGirl.create(:timetable_w_period)
+    @timetable_friday = FactoryGirl.create(:timetable_w_period)
     @weeklytimetable1 = FactoryGirl.create(:weeklytimetable, :timetable_monthurs => @timetable_monthurs, :timetable_friday => @timetable_friday) 
     @weeklytimetable2 = FactoryGirl.create(:weeklytimetable, :timetable_monthurs => @timetable_monthurs, :timetable_friday => @timetable_friday) 
     @search=Weeklytimetable.search(params[:q])
