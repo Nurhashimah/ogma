@@ -24,7 +24,7 @@ RSpec.describe "staff/staff_appraisals/show", :type => :view do
     assert_select "dd", :text => (@staff_appraisal.evaluation_year).year
     
     assert_select "a[href=?]", staff_staff_appraisals_path, {text: I18n.t("helpers.links.back")}
-    assert_select "a", 3
+    assert_select "a", 4
     
 #     assert_select "a[href=?]", edit_staff_staff_appraisal_path(@staff_appraisal), {text: I18n.t("helpers.links.edit")}
 #     assert_select "a[href=?]", staff_staff_appraisal_path(@staff_appraisal), {text: I18n.t("helpers.links.destroy")}

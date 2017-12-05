@@ -21,7 +21,8 @@ FactoryGirl.define do
   factory :intake do
 #     name {Date.new(2014,rand(1..12),1).strftime("%b")+" "+(Date.today.year+rand(1..3)).to_s}
     sequence(:name) {|n| "#{n}/"+Date.today.year.to_s}
-    description {rand(1..1000).to_s}
+    description 4 #total division
+    data {{:division =>{"0"=>{"name"=>"Bendahara", "total_student"=>"32"}, "1"=>{"name"=>"Temengong", "total_student"=>"32"}, "2"=>{"name"=>"Laksamana", "total_student"=>"32"}, "3"=>{"name"=>"Panglima", "total_student"=>"32"}}}}
     register_on {Date.today+(366*rand()).to_f}
     association :programme, factory: :programme
     is_active {rand(2) == 1}
