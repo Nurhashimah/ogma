@@ -4,7 +4,10 @@ describe "Travel Claim pages" do
   
   before { @college = FactoryGirl.create(:college) }
   before { @travel_claim = FactoryGirl.create(:travel_claim) }
-  
+  before do
+    @admin_user=FactoryGirl.create(:admin_user)
+    sign_in(@admin_user)
+  end
   subject { page }
 
   describe "Travel Claim Index page" do 

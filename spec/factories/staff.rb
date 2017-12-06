@@ -316,6 +316,18 @@ FactoryGirl.define do
     approved_on {Date.today+(366*rand()).to_f}
   end
   
+  factory :travel_claim_log do
+    association :travel_request, factory: :travel_request
+    travel_on {Date.today-2.days}
+    start_at {DateTime.now-2.days} #"2000-01-01 23:15:00"
+    finish_at {DateTime.now-2.days+1.hours}
+    destination "From A to B"
+    mileage 50.0
+    km_money nil
+    checker {rand(2)==1}
+    checker_notes "Some notes"
+  end
+  
   factory :instructor_appraisal do
     association :checker, factory: :basic_staff_with_rank
     association :instructor, factory: :basic_staff_with_rank
