@@ -270,6 +270,7 @@ FactoryGirl.define do
     association :applicant, factory: :staff_with_login
     association :replacement, factory: :basic_staff
     association :headofdept, factory: :basic_staff
+    association :college, factory: :college
     #association :travel_claim, factory: :travel_claim
     #association :document, factory: :document
     destination "Some destination"

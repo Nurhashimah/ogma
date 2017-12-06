@@ -220,13 +220,13 @@ class TravelRequest < ActiveRecord::Base
     if applicant.nil? || applicant.blank?
       #app2 = Staff.where(id: User.current.userable.id).first
       app2 = Staff.where(id: curr.userable.id).first
-      if app2.vehicles && app2.vehicles.count>0
+      if own_car==true && app2.vehicles && app2.vehicles.count>0
         TravelClaimsTransportGroup.transport_class(app2.vehicles.first.id, app2.current_salary, abc, de, mid)
       else
         'Z'
       end
     else
-      if applicant.vehicles && applicant.vehicles.count>0
+      if own_car==true && applicant.vehicles && applicant.vehicles.count>0
         TravelClaimsTransportGroup.transport_class(applicant.vehicles.first.id, applicant.current_salary, abc, de, mid)
       else
         'Z'

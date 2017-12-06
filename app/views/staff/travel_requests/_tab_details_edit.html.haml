@@ -40,7 +40,7 @@
       #tr_my_car
         /display own car notes & registered vehicle (if any + it's transport class)
         - if @travel_request.new_record?
-          - staff_apply = @current_user.userable
+          - staff_apply = current_user.userable
         - else
           - staff_apply = @travel_request.applicant
         .row
@@ -52,7 +52,7 @@
             - staffvehicle = staff_apply.vehicles[0].reg_no
             .col-sm-3= f.text_field :staff_own_car, :value => staffvehicle, :readonly => 'readonly', class: 'form-control'
             .col-sm-3=f.label t 'staff.transportclass_id'
-            .col-sm-2=f.text_field :tpt_class,:value=>@travel_request.transport_class2(@current_user), :readonly => 'readonly', class: 'form-control'
+            .col-sm-2=f.text_field :tpt_class,:value=>@travel_request.transport_class2(current_user), :readonly => 'readonly', class: 'form-control'
         - else
           %font{:style => "color: red;"}=t('staff.travel_request.no_registered_vehicle')
           
