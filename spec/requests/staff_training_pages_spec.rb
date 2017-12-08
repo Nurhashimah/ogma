@@ -16,12 +16,14 @@ describe "Staff Training Cycle " do
   
   context "Delete Training Budget" do
     before do
+      @admin_user=FactoryGirl.create(:admin_user)
+      sign_in(@admin_user)
       @college=FactoryGirl.create(:college)
-      @budget = FactoryGirl.create(:ptbudget)
+      @budget = FactoryGirl.create(:ptbudget,  fiscalstart: Date.today.tomorrow)
       visit staff_training_ptbudget_path(@budget)
     end
     it "should delete budget" do
-      expect { click_link 'Destroy' }.to change(Ptbudget, :count).by(-1)
+      expect { click_link I18n.t("helpers.links.destroy") }.to change(Ptbudget, :count).by(-1)
     end
   end
 end
