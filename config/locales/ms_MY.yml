@@ -1445,6 +1445,7 @@ ms_MY:
         overseas: Luar Negara
         cost: Kos
         refer_address_book: "Rujuk modul buku alamat untuk senarai penuh / tambahan."
+        status: Status
       schedule:
         title_schedule: Jadual Latihan
         new: Penjadualan Baru

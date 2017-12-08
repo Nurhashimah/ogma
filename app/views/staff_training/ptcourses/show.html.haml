@@ -36,7 +36,7 @@
       %dd= ringgols(@ptcourse.cost)
       
       %dt= t 'staff.training.course.status', :default => model_class.human_attribute_name(:status) + ":"
-      %dd= @ptcourse.approved? ? "Approved" : "Not Approved"
+      %dd= @ptcourse.approved? ? t('approved') : t('not_approved')
       
 .row
   .col-md-4.col-md-offset-2
