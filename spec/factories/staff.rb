@@ -328,6 +328,15 @@ FactoryGirl.define do
     checker_notes "Some notes"
   end
   
+  factory :travel_claim_receipt do
+    association :travel_claim, factory: :travel_claim
+    expenditure_type {[00, 11, 12, 13, 14, 15, 19, 40, 41, 42, 43, 44, 45, 99].sample}# 11 #teksi
+    sequence(:receipt_code) {|n| "Receipt code #{n}"}
+    spent_on {Date.today+(366*rand()).to_f} #"2017-09-03"
+    amount 20.00
+    quantity 1.00
+  end
+  
   factory :instructor_appraisal do
     association :checker, factory: :basic_staff_with_rank
     association :instructor, factory: :basic_staff_with_rank
