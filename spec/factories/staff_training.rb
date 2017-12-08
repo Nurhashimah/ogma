@@ -24,7 +24,6 @@ FactoryGirl.define do
   
   factory :ptschedule do
     association :course, factory: :ptcourse
-    #, class: "Ptcourse", factory: :ptcourse
     start {Time.at(rand * Time.now.to_f)}
     location "location name"
     min_participants 1
@@ -33,9 +32,17 @@ FactoryGirl.define do
   
   factory :ptdo do
     association :college, factory: :college
-    association :staff, factory: :basic_staff
+#     association :staff, factory: :basic_staff
     association :applicant, factory: :basic_staff
     association :replacement, factory: :basic_staff
+    association :ptschedule, factory: :ptschedule
+    justification "My justification"
+    #unit_review - not applicable -> default for amsas
+    #unit_approve true - not applicable -> default for amsas
+    #dept_review - not applicable -> default for amsas
+    #dept_approve true - not applicable -> default for amsas
+    final_approve nil
+    trainee_report nil
   end
   
   
