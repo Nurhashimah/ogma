@@ -12,7 +12,7 @@
       %dt= t 'staff.training.course.name', :default => model_class.human_attribute_name(:name) + ":"
       %dd=h @ptschedule.course.name
       
-      %dt= t 'staff.training.course.descripton', :default => model_class.human_attribute_name(:description) + ":"
+      %dt= t 'staff.training.course.description', :default => model_class.human_attribute_name(:description) + ":"
       %dd=h @ptschedule.course.description 
      
       %dt= t 'staff.training.schedule.start', :default => model_class.human_attribute_name(:start) + ":"
@@ -20,7 +20,7 @@
         =h @ptschedule.start.try(:strftime, '%d-%m-%Y')
         =t('for')+" "+@ptschedule.course.course_total_days
       
-      %dt= t 'staff.training.schedule.location.', :default => model_class.human_attribute_name(:location) + ":"
+      %dt= t 'staff.training.schedule.location', :default => model_class.human_attribute_name(:location) + ":"
       %dd=h @ptschedule.location
       
       %dt= t 'staff.training.schedule.min_participants', :default => model_class.human_attribute_name(:description) + ":"
