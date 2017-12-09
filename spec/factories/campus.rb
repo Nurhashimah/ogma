@@ -34,9 +34,15 @@ FactoryGirl.define do
   end
   
   factory :cofile do
-    sequence(:name) { |n| "cofile_name_#{n}" }
-    location 1
+    sequence(:cofileno) {|n| "Cofile No #{}"} 
+    sequence(:name) { |n| "Cofile Name #{n}" }
+    location "Bilik fail 1"
+    onloan true
+    onloandt { Date.today.yesterday }
+    onloanxdt { Date.today }
     association :owner, factory: :basic_staff
+    association :borrower, factory: :basic_staff
+    association :college, factory: :college
   end
   
   factory :address_book do

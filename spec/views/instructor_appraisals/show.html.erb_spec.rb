@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "staff/instructor_appraisals/show", :type => :view do
   before(:each) do
+    @admin_user=FactoryGirl.create(:admin_user)
+    sign_in(@admin_user)
     @instructor_appraisal=FactoryGirl.create(:instructor_appraisal, appraisal_date: "2017-10-20", qc_sent: false, checked: nil, total_mark: 0)
     
 #     @basic_staff_with_rank1=FactoryGirl.create(:basic_staff_with_rank)
