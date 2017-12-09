@@ -1,7 +1,7 @@
 - model_class = AssetDefect
 .page-header
   %h1
-    = t 'edit'
+    = t 'actions.edit'
     = @defective.asset.assetcode
 
 .row
@@ -9,7 +9,7 @@
     = render 'shared/error_messages', object: f.object
     
     .col-md-offset-1
-      - if (@defective.reported_by == @current_user.userable_id) || @is_admin
+      - if (@defective.reported_by == current_user.userable_id) || @is_admin
         %ul.nav.nav-tabs
           %li.active= link_to (t "asset.defect.details"), "#details_edit",   "data-toggle" => "tab"
 

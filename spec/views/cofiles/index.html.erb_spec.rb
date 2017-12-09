@@ -20,8 +20,8 @@ RSpec.describe "cofiles/index", :type => :view do
     assert_select "th>a", :text => I18n.t('cofile.onloan_to'), :count => 1
     assert_select "th>a", :text => I18n.t('cofile.onloandt'), :count => 1
     
-    assert_select "tr>td>a[href=?]", cofile_path(@cofile1), :text => @cofile1.cofileno
-    assert_select "tr>td>a[href=?]", cofile_path(@cofile2), :text => @cofile1.cofileno
+    assert_select "tr>td>a[href=?]", cofile_path(@cofile1), :text => @cofile1.cofileno.strip
+    assert_select "tr>td>a[href=?]", cofile_path(@cofile2), :text => @cofile2.cofileno.strip
     assert_select "td", :text => @cofile1.name
     assert_select "td", :text => @cofile2.name
     assert_select "td", :text => @cofile1.location

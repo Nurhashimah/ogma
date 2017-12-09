@@ -159,4 +159,12 @@ FactoryGirl.define do
 #     end
   end
   
+  factory :location do
+    association :college, factory: :college
+    association :administrator, factory: :basic_staff
+    ancestry_depth 0 #root location
+    sequence(:code) {|n| "0#{n}"}
+    sequence(:name) {|n| "Location #{n}"}
+  end
+  
 end

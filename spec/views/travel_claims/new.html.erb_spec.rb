@@ -25,7 +25,10 @@ puts "#{@my_approved_unclaimed_requests.count}"
       assert_select "select#travel_claim_staff_id[name=?]", "travel_claim[staff_id]"
       assert_select "input#travel_request_ids_[name=?]", "travel_request_ids[]"
       assert_select "input#travel_claim_advance[name=?]", "travel_claim[advance]"
-      assert_select "input#submit1[name=?]", "travel_claim[is_submitted]"
+#       NOTE - single test OK, full test failed (ID - element not matching) - use name, type,value instead
+#       assert_select "input#submit1[name=?]", "travel_claim[is_submitted]"
+      assert_select "input[type=?][name=?][value=?]", "hidden", "travel_claim[is_submitted]", "0"
+      assert_select "input[type=?][name=?][value=?]", "checkbox", "travel_claim[is_submitted]", "1"
       
       assert_select "a[href=?]", staff_travel_claims_path, {text: I18n.t("helpers.links.back")}
       assert_select "input.btn.btn-primary[name=?][type=?][value=?]", "commit", "submit", I18n.t('create')
