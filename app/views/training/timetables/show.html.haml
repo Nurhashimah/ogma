@@ -19,7 +19,7 @@
       #timetable_details.tab-pane.active  
         .col-md-8.col-md-offset-1
           %dl.dl-horizontal
-            %BR
+            /%BR
             %dt= t'training.timetable.code'
             %dd=h @timetable.code 
 
@@ -36,6 +36,7 @@
             %dd
               %b=t 'training.timetable.period_timings'
 
+        .col-md-8.col-md-offset-1
           - period_count = @timetable.timetable_periods.count
           - if @timetable.timetable_periods.count > 0
             - @timetable.timetable_periods.order(sequence: :asc).in_groups_of(period_count, false) do |row_things|

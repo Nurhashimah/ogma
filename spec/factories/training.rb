@@ -38,7 +38,7 @@ FactoryGirl.define do
     seq 1 # --OK 4 ... >> FactoryGirl.create(:lesson_plan), NOT OK 4 .. >>FactoryGirl.create(:timetable_period)
     #seq { rand(1..15) }  #-- reverse of above
     sequence(:sequence) { |n| "#{n}"}#+rand(1..15).to_s }     #NOTE - field name is 'sequence'
-    day_name { rand(1..7) }
+    day_name {[1,2].sample}
     end_at {Time.at(rand * Time.now.to_f)}
     start_at {Time.at(rand * Time.now.to_f)}
     is_break {rand(2) == 1}
