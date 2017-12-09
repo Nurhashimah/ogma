@@ -6,7 +6,7 @@
 
 .page-header
   %h1
-    = t 'edit'
+    = t('actions.edit')
     = h (course_type.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]
     = @programme.name
 

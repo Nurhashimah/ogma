@@ -9,7 +9,6 @@
 .page-header
   %h1
     - if !@programme.course_type.nil? && !@programme.name.nil?
-      /=(DropDown::COURSE_TYPES.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]+" : "+@programme.name
       =@programme.course_type+": "+@programme.name
     - else
       = @programme.name
@@ -25,7 +24,7 @@
       %dt=t 'training.programme.course_type', :default => model_class.human_attribute_name(:course_type) + ":"
       %dd
         =h @programme.is_root? ?  (course_type.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0] :  (course_type_sub.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]
-        /= h (course_type.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]
+      /= h (course_type.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]
        
       - if ['Topic', 'Subtopic'].include?(@programme.course_type)
         %dt=t 'training.programme.method', :default => model_class.human_attribute_name(:course_type) + ":"
