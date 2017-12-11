@@ -4,6 +4,8 @@ class Stationery < ActiveRecord::Base
   validates :unittype, presence: true
   validates_uniqueness_of :code
   
+  belongs_to :college
+  
   has_many :stationery_adds, :foreign_key => 'stationery_id' , :dependent => :destroy
   accepts_nested_attributes_for :stationery_adds, :allow_destroy => true
   validates_associated :stationery_adds

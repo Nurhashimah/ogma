@@ -1,4 +1,5 @@
 class StationeryUse < ActiveRecord::Base
+ belongs_to :college
  belongs_to :stationery
  belongs_to :issuesupply,       :class_name => 'Staff', :foreign_key => 'issuedby'
  belongs_to :receivesupply,       :class_name => 'Staff', :foreign_key => 'receivedby'

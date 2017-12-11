@@ -1,7 +1,7 @@
 - model_class = Stationery
 .page-header
   %h1
-    = t 'edit'
+    = t 'actions.edit'
     = @stationery.category
 
 .row
@@ -12,6 +12,6 @@
     .col-md-offset-1
       .form-group
         .col-sm-offset-2.col-sm-1
-          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_stationeries_path(@stationery), :class => 'btn btn-default'
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_stationery_path(@stationery), :class => 'btn btn-default'
         .col-sm-2
           = f.submit t('update'), class: "btn btn-primary"

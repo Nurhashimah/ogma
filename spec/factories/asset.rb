@@ -32,12 +32,42 @@ FactoryGirl.define do
     current_value 1
   end
 
+  # NOTE - 11Dec2017 for has many relationship - 2 method available: refer stationery (method1), asset_placement / maint (method 2) & it's usage in views tests
   factory :stationery do
-    #category "some_name"
-    #code "some_code"
+    association :college, factory: :college
+    sequence(:code) { |n| "code#{n}" }
     sequence(:category) { |n| "category#{n}" }
     unittype "some unit type"
-    sequence(:code) { |n| "code#{n}" }
+    maxquantity 500
+    minquantity 10
+    
+    #remark between these lines - start(for method2)
+    after(:create) do |stationery| 
+      stationery.stationery_adds = [create(:stationery_add, stationery: stationery)]
+    end
+    after(:create) do |stationery| 
+      stationery.stationery_uses = [create(:stationery_use, stationery: stationery)]
+    end
+    #remark between these lines - end (for method2)
+  end
+  
+  factory :stationery_add do
+    association :college, factory: :college
+#     association :stationery, factory: :stationery #unremark this line (for method 1)
+    sequence(:lpono) {|n| "Lpo No #{n}"}
+    sequence(:document) { |n| "Supplier #{n}"}
+    quantity 100
+    unitcost 1.0
+    received { Date.today-2.days }  
+  end
+  
+  factory :stationery_use do
+    association :college, factory: :college
+#     association :stationery, factory: :stationery #unremark this line (for method 1)
+    association :issuesupply, factory: :basic_staff_with_rank
+    association :receivesupply, factory: :basic_staff_with_rank
+    issuedate { Date.today }
+    quantity 1
   end
   
   factory :asset_placement do

@@ -1,4 +1,5 @@
 class StationeryAdd < ActiveRecord::Base
+  belongs_to :college
   belongs_to :stationery
   
   validates_presence_of :document, :unitcost, :received, :quantity #, :lpono
