@@ -19,7 +19,9 @@ class Asset < ActiveRecord::Base
   
   belongs_to :category,     :class_name => 'Assetcategory', :foreign_key => 'category_id'
   has_many :asset_defects
-  has_many :maints
+  has_many :maints, :dependent => :destroy
+  accepts_nested_attributes_for :maints, :allow_destroy => true , :reject_if => lambda { |a| a[:maintainer_id].blank? || a[:maintcost].blank? || a[:workorderno].blank?}
+  
   has_many :asset_loans
   has_many :asset_disposals #kewpa3 - multiple
   has_many :asset_loss

@@ -4,6 +4,7 @@ class AddressBook < ActiveRecord::Base
   validates :name, presence: :true
   has_many :suppliers,    :class_name => 'Asset', :foreign_key => 'supplier_id'
   has_many :visitors
+  has_many :maints
 end
 
 # == Schema Information

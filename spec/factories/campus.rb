@@ -162,9 +162,80 @@ FactoryGirl.define do
   factory :location do
     association :college, factory: :college
     association :administrator, factory: :basic_staff
-    ancestry_depth 0 #root location
-    sequence(:code) {|n| "0#{n}"}
-    sequence(:name) {|n| "Location #{n}"}
+    factory :building do
+      ancestry_depth 0 #root location
+      sequence(:code) {|n| "B#{n}"}
+      factory :admin_building do #education
+	lclass 1
+	sequence(:name) {|n| "Blok #{n}"} #Pusat Latihan (code: PL)
+      end
+      factory :student_residence do
+	lclass 4
+	sequence(:name) {|n| "Blok #{n}"} #Blok Tok Gajah (Asas pegawai) (code: BTG)
+      end
+      factory :staff_residence do
+	lclass 1
+	sequence(:name) {|n| "Apartment #{n}"} #Apartment F1 (code: AF)
+      end
+    end
+    
+    factory :floor do
+      ancestry_depth 1
+      lclass 2
+      sequence(:name) {|n| "Floor #{n}"}
+      sequence(:code) {|n| "#{n}F"}
+      factory :admin_floor do
+	association :parent, factory: :admin_building
+      end
+      factory :student_floor do
+	association :parent, factory: :student_residence
+      end
+      factory :staff_floor do
+	association :parent, factory: :staff_residence
+      end
+    end
+    
+    factory :staff_unit do
+      ancestry_depth 2
+      lclass 3
+      typename 1
+      sequence(:code) {|n| "0#{n}"}
+      sequence(:name) {|n| "House #{n}"} #Rumah Staf 1 (code: 01)
+      association :parent, factory: :staff_floor
+    end
+    
+    factory :room do
+      ancestry_depth 2
+      lclass 3
+      typename 6
+      sequence(:code) {|n| "0#{n}"}
+      sequence(:name) {|n| "Room #{n}"}  #Bilik Kuliah (code: BK-1), Bilik 106 (code: B106)
+      factory :admin_room do                                                             
+        association :parent, factory: :admin_floor
+      end
+      factory :student_room do
+        association :parent, factory: :student_floor
+      end
+    end
+    
+    factory :bed do
+      ancestry_depth 3
+      lclass 3
+      sequence(:code) {|n| "0#{n}"}
+      sequence(:name) {|n| "Bed #{n}"} 
+      association :parent, factory: :student_room
+      factory :male_bed do
+	typename 8
+      end
+      factory :female_bed do
+	typename 2
+      end
+
+    end
+    # NOTE 
+    #staff_unit > staff_floor > staff_residence
+    #admin_room > admin_floor > admin_building
+    #male_bed/female_bed > student_room > student_floor > student_residence
   end
   
 end

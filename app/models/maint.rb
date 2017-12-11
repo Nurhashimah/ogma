@@ -1,6 +1,7 @@
 class Maint < ActiveRecord::Base
-   
+   belongs_to :college
    belongs_to :asset
+   belongs_to :maintainer, :class_name => 'AddressBook'
 end
 
 # == Schema Information

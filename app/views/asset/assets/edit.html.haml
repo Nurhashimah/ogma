@@ -1,7 +1,7 @@
 - model_class = Asset
 .page-header
   %h1
-    = t 'edit'
+    = t 'actions.edit'
     = @asset.assetcode
 
 
@@ -158,13 +158,13 @@
               .col-sm-2.control-label
                 = f.label t 'asset.receivedby', for: :receiver_id
               .col-md-5
-                = f.text_field :receiver_id, class: 'form-control input-xxlarge'
+                = f.collection_select :receiver_id, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id,  :staff_with_rank_unit, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
   
             .form-group
               .col-sm-2.control-label
                 = f.label t 'asset.suppliedby', for: :supplier_id
               .col-md-5
-                = f.text_field :supplier_id, class: 'form-control input-xxlarge'			  
+                = f.collection_select :supplier_id, AddressBook.all, :id, :name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'} 
 
         #placement.tab-pane.fade
           .row
@@ -188,21 +188,32 @@
               .col-md-5
                 = f.text_field :remark, class: 'form-control input-xxlarge' 
   
-            %table.table.table-condensed.table-hover{:style => "width: 50%; "}
-              %thead
-                %tr
-                  %th= t 'asset.maint.maintainer_id'
-                  %th= t 'asset.maint.workorderno' 
-                  %th= t 'asset.maint.maintcost' 
-                  %th= t 'asset.maint.details' 
-              %tbody	  
-                - for maint in @asset.maints
-                  %tr
-                    %td= maint.maintainer_id  
-                    %td= maint.workorderno
-                    %td= maint.maintcost
-                    %td= maint.details
-			  
+            .row
+              .col-sm-2=f.label t 'asset.maint.maintainer_id', for: :maintainer_id
+              .col-sm-2=f.label t 'asset.maint.workorderno' , for: :workorderno
+              .col-sm-2=f.label t 'asset.maint.maintcost' , for: :maintcost
+              .col-sm-1=f.label t 'asset.maint.details' , for: :details
+
+            = f.fields_for :maints do |builder|
+              = render 'maint_fields', :f => builder
+            .row
+              = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :maints, "", t('addmore')
+          
+            /%table.table.table-condensed.table-hover{:style => "width: 50%; "}
+            /  %thead
+            /    %tr
+            /      %th= t 'asset.maint.maintainer_id'
+            /      %th= t 'asset.maint.workorderno' 
+            /      %th= t 'asset.maint.maintcost' 
+            /      %th= t 'asset.maint.details' 
+            /  %tbody	  
+            /    - for maint in @asset.maints
+            /      %tr
+            /        %td= maint.maintainer_id  
+            /        %td= maint.workorderno
+            /        %td= maint.maintcost
+            /        %td= maint.details
+  
         .col-md-offset-1
           //= render :partial => 'form', :locals => {:f => f}
           .form-group

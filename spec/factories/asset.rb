@@ -41,7 +41,7 @@ FactoryGirl.define do
   end
   
   factory :asset_placement do
-    association :location, factory: :location
+    association :location, factory: :admin_room          #OR student_room OR staff_unit
     association :staff, factory: :basic_staff
     quantity 1
     reg_on {Date.today}
@@ -51,6 +51,15 @@ FactoryGirl.define do
     factory:inventory_placement do
       association :asset, factory: :inventory
     end
+  end
+  
+  factory :maint do
+    association :college, factory: :college
+    association :asset, factory: :fixed_asset
+    association :maintainer, factory: :address_book
+    sequence(:details) {|n| "Maintainance details line #{n}"}
+    maintcost 250.00
+    workorderno "po11229"
   end
 
 end

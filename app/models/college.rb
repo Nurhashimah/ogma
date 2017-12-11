@@ -80,6 +80,7 @@ class College < ActiveRecord::Base
   has_many :groups
   has_many :ranks
   has_many :titles
+  has_many :maints
   # staffs
   
   serialize :data, Hash

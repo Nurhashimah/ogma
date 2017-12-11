@@ -85,41 +85,41 @@ describe "asset pages" do
   describe "Inventory Edit Page" do
   end
 
-  describe "Report New Defect Page" do
-    
-    before { sign_in(@staff_user)}
-    before { visit new_asset_defect_path(:asset_id => @asset.id, :reported_by => @staff_user.userable_id ) }
-    
-    it { should have_selector('h1', text: I18n.t('asset.defect.new')) }
-    #it { should have_field("asset_defect[asset_show]", :disabled => true) }
-    #it { should have_field("asset_defect[description]") }
-    #it { should have_link(I18n.t("helpers.links.cancel"), href: asset_assets_path + "?locale=en")}
-    #it { should have_selector(:link_or_button, "Create")}
-  end
-
-  describe "Report Defect Show Page" do
-    
-    before { sign_in(@admin_user)}
-    
-  end
-
-  describe "Report Defect Index Page" do
-    
-    before { sign_in(@admin_user)}
-    before  { @asset_defect = FactoryGirl.create(:asset_defect)}
-    before { visit asset_defects_path }
-
-    it { should have_selector('h1', text: "Asset Defect") }
-    it { should have_selector('th', text: 'Registration Serial No') }
-    it { should have_selector('th', text: I18n.t('asset.category.type_name_model')) }
-    it { should have_selector('th', text: I18n.t('asset.serial_no'))}
-    it { should have_selector('th', text: I18n.t('location.title'))}
-    it { should have_selector('th', text: 'Notes')}
-    it { should have_selector(:link_or_button, "New")}
-    it { should have_selector(:link_or_button, "Search")}
-    it { should have_selector(:link_or_button, "Print")}
-    #it { should have_link((@asset_defect.asset.assetcode).to_s, href: asset_defect_path(@asset_defect.id) + "?locale=en" )}
-  end
+#   describe "Report New Defect Page" do
+#     
+#     before { sign_in(@staff_user)}
+#     before { visit new_asset_defect_path(:asset_id => @asset.id, :reported_by => @staff_user.userable_id ) }
+#     
+#     it { should have_selector('h1', text: I18n.t('asset.defect.new')) }
+#     #it { should have_field("asset_defect[asset_show]", :disabled => true) }
+#     #it { should have_field("asset_defect[description]") }
+#     #it { should have_link(I18n.t("helpers.links.cancel"), href: asset_assets_path + "?locale=en")}
+#     #it { should have_selector(:link_or_button, "Create")}
+#   end
+# 
+#   describe "Report Defect Show Page" do
+#     
+#     before { sign_in(@admin_user)}
+#     
+#   end
+# 
+#   describe "Report Defect Index Page" do
+#     
+#     before { sign_in(@admin_user)}
+#     before  { @asset_defect = FactoryGirl.create(:asset_defect)}
+#     before { visit asset_defects_path }
+# 
+#     it { should have_selector('h1', text: "Asset Defect") }
+#     it { should have_selector('th', text: 'Registration Serial No') }
+#     it { should have_selector('th', text: I18n.t('asset.category.type_name_model')) }
+#     it { should have_selector('th', text: I18n.t('asset.serial_no'))}
+#     it { should have_selector('th', text: I18n.t('location.title'))}
+#     it { should have_selector('th', text: 'Notes')}
+#     it { should have_selector(:link_or_button, "New")}
+#     it { should have_selector(:link_or_button, "Search")}
+#     it { should have_selector(:link_or_button, "Print")}
+#     #it { should have_link((@asset_defect.asset.assetcode).to_s, href: asset_defect_path(@asset_defect.id) + "?locale=en" )}
+#   end
 
 end
 

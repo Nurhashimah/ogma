@@ -1,0 +1,24 @@
+%fieldset   
+  
+  .row
+    .col-sm-2
+      = f.hidden_field :_destroy
+      = f.collection_select :maintainer_id, AddressBook.all, :id, :name, {include_blank: (t 'select')}, {class: 'selectpicker'}
+    .col-sm-2= f.text_field :workorderno, class: 'form-control'
+    .col-sm-2= f.text_field :maintcost, class: 'form-control'
+    .col-sm-3= f.text_area :details, class: 'form-control'
+    .col-sm-1
+      = link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
+
+:javascript
+  $('.selectpicker').selectpicker('render');
+  
+  $('.removing_fields').click(function(){
+    var fieldset=$(this).parent().parent().parent();
+    var row=$(this).parent().parent();
+    var all_fields=row.children().children();
+    var destroyer=all_fields[0];
+    destroyer.value=true;    
+    /*row.hide();*/
+    fieldset.hide();
+  });
