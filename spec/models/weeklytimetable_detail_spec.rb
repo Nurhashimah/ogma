@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe WeeklytimetableDetail do
   
-  before { @weeklytimetable_detail = FactoryGirl.create(:weeklytimetable_detail) }
+  before { @weeklytimetable = FactoryGirl.create(:weeklytimetable) }
+  before { @weeklytimetable_detail = FactoryGirl.create(:weeklytimetable_detail, weeklytimetable: @weeklytimetable) }
   
   subject { @weeklytimetable_detail }
   

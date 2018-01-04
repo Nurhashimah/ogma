@@ -4,7 +4,7 @@ class Campus::VisitorsController < ApplicationController
   
   before_action :set_visitor, only: [:show, :edit, :update, :destroy]
 
-#   respond_to :html
+  respond_to :html
 
   def index
     @search = Visitor.search(params[:q])

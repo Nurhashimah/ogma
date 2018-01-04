@@ -1,8 +1,12 @@
  require 'spec_helper'
 
 describe LessonPlan do
-
-  before { @lesson_plan = FactoryGirl.create(:lesson_plan) }
+  
+  before do
+    @weeklytimetable = FactoryGirl.create(:weeklytimetable)
+    @weeklytimetable_detail = FactoryGirl.create(:weeklytimetable_detail, weeklytimetable: @weeklytimetable)
+    @lesson_plan = FactoryGirl.create(:lesson_plan, schedule_item: @weeklytimetable_detail)
+  end
 
   subject { @lesson_plan }
 

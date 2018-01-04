@@ -78,11 +78,13 @@ class WeeklytimetableDetail < ActiveRecord::Base
 #      timeslot = time_slot if is_friday == true 
 #      "#{weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: timeslot).first.start_at.strftime("%l:%M %p")}"
      if is_friday == false || is_friday == nil
-#        "#{weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: time_slot2).first.start_at.strftime("%l:%M %p")}"
-       "#{TimetablePeriod.where(timetable: weeklytimetable.timetable_monthurs).where(seq: time_slot2).first.start_at.strftime("%l:%M %p")}"
+       "#{weeklytimetable.timetable_monthurs.timetable_periods.where(seq: time_slot2).first.start_at.strftime("%l:%M %p")}"
+#         "#{weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: time_slot2).first.start_at.strftime("%l:%M %p")}"
+#        "#{TimetablePeriod.where(timetable: weeklytimetable.timetable_monthurs).where(seq: time_slot2).first.start_at.strftime("%l:%M %p")}"
      else
+       "#{weeklytimetable.timetable_friday.timetable_periods.where(seq: time_slot).first.start_at.strftime("%l:%M %p")}"
 #        "#{weeklytimetable.timetable_friday.timetable_periods.where(sequence: time_slot).first.start_at.strftime("%l:%M %p")}"
-       "#{TimetablePeriod.where(timetable: weeklytimetable.timetable_monthurs).where(seq: time_slot).first.start_at.strftime("%l:%M %p")}"
+#        "#{TimetablePeriod.where(timetable: weeklytimetable.timetable_monthurs).where(seq: time_slot).first.start_at.strftime("%l:%M %p")}"
      end
    end   
    
@@ -92,11 +94,13 @@ class WeeklytimetableDetail < ActiveRecord::Base
 #      timeslot = time_slot if is_friday == true 
 #      "#{weeklytimetable.timetable_friday.timetable_periods.where(sequence: timeslot).first.end_at.strftime("%l:%M %p")}"
      if is_friday == false || is_friday == nil
+       "#{weeklytimetable.timetable_monthurs.timetable_periods.where(seq: time_slot2).first.end_at.strftime("%l:%M %p")}"
 #        "#{weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: time_slot2).first.end_at.strftime("%l:%M %p")}"
-       "#{TimetablePeriod.where(timetable: weeklytimetable.timetable_monthurs).where(seq: time_slot2).first.end_at.strftime("%l:%M %p")}"
+#        "#{TimetablePeriod.where(timetable: weeklytimetable.timetable_monthurs).where(seq: time_slot2).first.end_at.strftime("%l:%M %p")}"
      else
+       "#{weeklytimetable.timetable_friday.timetable_periods.where(seq: time_slot).first.end_at.strftime("%l:%M %p")}"
 #        "#{weeklytimetable.timetable_friday.timetable_periods.where(sequence: time_slot).first.end_at.strftime("%l:%M %p")}"
-       "#{TimetablePeriod.where(timetable: weeklytimetable.timetable_monthurs).where(seq: time_slot).first.end_at.strftime("%l:%M %p")}"
+#        "#{TimetablePeriod.where(timetable: weeklytimetable.timetable_monthurs).where(seq: time_slot).first.end_at.strftime("%l:%M %p")}"
      end
    end   
    

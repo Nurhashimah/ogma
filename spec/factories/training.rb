@@ -147,45 +147,46 @@ FactoryGirl.define do
     end
 
     factory :lesson_plan, class: LessonPlan do
-#       association :lessonplan_owner, factory: :basic_staff
-      #association :lessonplan_intake, factory: :intake
+      association :lessonplan_owner, factory: :basic_staff
+      association :lessonplan_creator, factory: :basic_staff
+      association :lessonplan_intake, factory: :intake #redundant with WT
       sequence(:student_qty) { |n| "#{n}" }
-      #semester {rand(1..6)}
-      #topic {|n| "#{n}"}#depends on relationship with weeklytimetable_details table
-      #lecture_title "Some Lecture Title"
-      #lecture_date {Date.today+(366*rand()).to_f}
-      #start_time {Time.at(rand * Time.now.to_f)}
-      #end_time {Time.at(rand * Time.now.to_f)}
-      #reference "Some Reference"
-      #is_submitted {rand(2) == 1}
-      #submitted_on {Date.today+(366*rand()).to_f}
-      #hod_approved {rand(2) == 1}
-      #hod_approved_on {Date.today+(366*rand()).to_f}
-      #hod_rejected {rand(2) == 1}
-      #hod_rejected_on {Date.today+(366*rand()).to_f}
-      #data_file_name "Some Name"
-      #data_content_type { |n| "Some Content Type #{n}"}
-      #data_content_type "text/plain"
-      #data_file_size {rand(5242880)}
-      #data_updated_ot {Date.today+(366*rand()).to_f}
-      #prerequisites "Some prerequisite"
-      #year {rand(1..3)}
-      #reason "Some Reason"
-      #association :endorser, factory: :staff
-      #condition_isgood {rand(2) == 1}
-      #condition_isnotgood {rand(2) == 1}
-      #condition_desc "Some conditon description"
-      #training_aids "Some Training Aids"
-      #summary "Some Summary"
-      #sequence(:total_absent) {|n| "#{n}"}
-      #report_submit {rand(2) == 1}
-      #report_submit_on {Date.today+(366*rand()).to_f}
-      #report_endorsed {rand(2) == 1}
-      #report_endorsed_on {Date.today+(366*rand()).to_f}
-      #report_summary "Some Summary"
+      semester {rand(1..6)}
+      topic {|n| "#{n}"}#depends on relationship with weeklytimetable_details table
+      lecture_title "Some Lecture Title"
+      lecture_date {Date.today+(366*rand()).to_f}
+      start_time {Time.at(rand * Time.now.to_f)}
+      end_time {Time.at(rand * Time.now.to_f)}
+      reference "Some Reference"
+      is_submitted true
+      association :endorser, factory: :basic_staff
+      submitted_on {Date.today+(366*rand()).to_f}
       
-      #association :schedule, factory: :weeklytimetable_detail
-      #schedule 1
+      hod_approved true #{rand(2) == 1}
+      hod_approved_on {Date.today+(366*rand()).to_f}
+#       hod_rejected {rand(2) == 1}
+#       hod_rejected_on {Date.today+(366*rand()).to_f}
+      data_file_name "Some Name"
+#       data_content_type { |n| "Some Content Type #{n}"}
+      data_content_type "text/plain"
+      data_file_size {rand(5242880)}
+      data_updated_ot {Date.today+(366*rand()).to_f}
+      prerequisites "Some prerequisite"
+      year {rand(1..3)}
+      reason "Some Reason"
+      
+      condition_isgood {rand(2) == 1}
+      condition_isnotgood {rand(2) == 1}
+      condition_desc "Some conditon description"
+      training_aids "Some Training Aids"
+      summary "Some Summary"
+      sequence(:total_absent) {|n| "#{n}"}
+      report_submit true #{rand(2) == 1}
+      report_submit_on {Date.today+(366*rand()).to_f}
+      report_endorsed true #{rand(2) == 1}
+      report_endorsed_on {Date.today+(366*rand()).to_f}
+      report_summary "Some Summary"
+      
       association :schedule_item, factory: :weeklytimetable_detail
     end
 

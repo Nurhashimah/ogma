@@ -69,9 +69,9 @@ class LessonPlan < ActiveRecord::Base
    
     #--start--3Nov2013-schedule no longer compulsory
     if schedule != nil
-      self.lecture_date = WeeklytimetableDetail.find(schedule).get_date_for_lesson_plan
-      self.start_time = WeeklytimetableDetail.find(schedule).get_start_time
-      self.end_time = WeeklytimetableDetail.find(schedule).get_end_time
+      self.lecture_date = schedule_item.get_date_for_lesson_plan
+      self.start_time = schedule_item.get_start_time #WeeklytimetableDetail.find(schedule).get_start_time
+      self.end_time = schedule_item.get_end_time
     end
     #--end--3Nov2013-schedule no longer compulsory
     
@@ -83,8 +83,8 @@ class LessonPlan < ActiveRecord::Base
 
    def assign_topic_intake_id
      if schedule != nil
-         self.topic = WeeklytimetableDetail.find(schedule).topic
-         self.intake_id = Weeklytimetable.find(WeeklytimetableDetail.find(schedule).weeklytimetable_id).intake_id
+         self.topic = schedule_item.topic
+         self.intake_id = Weeklytimetable.find(schedule_item.weeklytimetable_id).intake_id
      end
    end
   #---------------------------
