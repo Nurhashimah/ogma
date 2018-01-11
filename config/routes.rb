@@ -356,7 +356,7 @@ Ogma::Application.routes.draw do
       get :kumpulan_etnik_excel
       post :import
       get 'import_excel', to: "students#import_excel"
-      get 'import_excel_amsas', to: "students#import_excel_amsas"
+      get 'import_excel_second', to: "students#import_excel_second"
     end
     member do
       get :borang_maklumat_pelajar
@@ -365,6 +365,7 @@ Ogma::Application.routes.draw do
 
   match '/public/excel_format/student_import.xls', to: 'students#download_excel_format', via: 'get', target: '_self'
   match '/public/excel_format/student_import_amsas.xls', to: 'students#download_excel_format_amsas', via: 'get', target: '_self'
+  match '/public/excel_format/student_import_second.xls', to: 'students#download_excel_format_second', via: 'get', target: '_self'
   
   namespace :student do
     resources :tenants do

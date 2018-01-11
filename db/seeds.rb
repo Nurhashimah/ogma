@@ -6,8 +6,6 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 # 
-# Page.create(id: 1, name: 'home', title: 'Homepage', navlabel: 'label1', position: 1, college_id: 1)
-# College.create(id: 1, code: 'amsas', name: 'Kolej 2')
 # 
 
 # $ psql

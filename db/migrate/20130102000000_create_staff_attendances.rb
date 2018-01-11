@@ -31,6 +31,13 @@ class CreateStaffAttendances < ActiveRecord::Migration
       t.time     :end_at
       t.timestamps
     end
+    
+    create_table :staffattendancesearches do |t|
+      t.string   :department
+      t.integer :thumb_id
+      t.time :logged_at
+      t.timestamps
+    end
   end
   
   def self.down

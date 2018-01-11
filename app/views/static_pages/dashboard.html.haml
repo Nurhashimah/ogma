@@ -22,7 +22,8 @@
      =t('dashboard.warning')
      %ul
       /%li Pn Maslinda binti Wahab (Unit : Teknologi Maklumat)
-      %li Pn Beby Rossdianty binti Ramli (Unit : Teknologi Maklumat)
+      /%li Pn Beby Rossdianty binti Ramli (Unit : Teknologi Maklumat)
+      %li=User.joins(:roles).where('roles.authname=?', 'developer').first.userable.name+" (Unit : Teknologi Maklumat)"
 
 .row
  .col-md-3
@@ -45,9 +46,10 @@
   .panel.panel-primary
    .panel-heading=t('dashboard.day_calendar')
    .panel-body{:style => "min-height:150px;"}
-    Calendar Goes Here <BR>
+    /Calendar Goes Here <BR>
     - @bulletins.each do |bulletin|
      = bulletin.content
+     <BR><BR>
 
 
  .col-md-3

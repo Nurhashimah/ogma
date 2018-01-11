@@ -105,14 +105,16 @@ class Programme < ActiveRecord::Base
       if parent.parent.course_type=="Semester"
         #kskb
         "Sem #{parent.parent.code}"+"-"+"#{parent.code}"+" | "+"#{name}"
-      elsif parent.parent.course_type=="Subject"
+      #elsif parent.parent.course_type=="Subject"
+      elsif parent.course_type=="Subject"
         #amsas
         "#{root.programme_list} | #{parent.parent.code} #{parent.parent.name} >> #{name}"
       end
     elsif ancestry_depth == 4
       if parent.parent.parent.course_type=="Semester"
         ">>Sem #{parent.parent.parent.code}"+"-"+"#{parent.parent.code}"+" | "+"#{code} "+"#{name}"
-      elsif parent.parent.parent.course_type=="Subject"
+      #elsif parent.parent.parent.course_type=="Subject"
+      elsif parent.parent.course_type=="Subject"
        #amsas???
         "#{root.programme_list} | #{parent.parent.parent.code} #{parent.parent.parent.name} >>> #{name} "
       end 

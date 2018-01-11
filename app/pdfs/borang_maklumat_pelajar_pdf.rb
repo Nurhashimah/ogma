@@ -160,7 +160,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
          ["3.", "", "", "", "", ""],
          ["4.", "", "", "", "", ""],
          ["B.", {content: "MAKLUMAT KURSUS / PENGINAPAN / SAJIAN", colspan: 5}],
-         [{content: "Nama Kursus : #{@student.course.programme_list}", colspan: 6}],
+         [{content: "Nama Kursus : #{@student.course.nil? ? @student.intakestudent.programme.programme_list : @student.try(:course).try(:programme_list)}", colspan: 6}],
           [{content: "Tarikh Mula : #{@student.regdate.try(:strftime, '%d-%m-%Y')}", colspan: 6}],
           [{content: "Tarikh Tamat : #{@student.end_training.try(:strftime, '%d-%m-%Y')}", colspan: 6}],
           [{content: "Keperluan Penginapan :", colspan: 6}],

@@ -6,7 +6,7 @@
       - if @college.new_record? 
         =f.text_field :code, class: 'form-control'
       - else
-        %b{style: 'color: blue;'}=@college.code
+        %b{style: 'color: blue;'}=@college.code if ['kskbjb', 'amsas'].include?(@college.code) == false 
     
   .form-group
     .col-sm-2.control-label

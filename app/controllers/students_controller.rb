@@ -53,7 +53,7 @@ class StudentsController < ApplicationController
           flash[:notice]= msg if a[:svs].count>0
           flash[:error] = msg2
 	  if current_user.college.code=='amsas'
-            format.html { redirect_to import_excel_amsas_students_url}
+            format.html { redirect_to import_excel_second_students_url}
 	  else
 	    format.html { redirect_to import_excel_students_url}
 	  end
@@ -64,9 +64,9 @@ class StudentsController < ApplicationController
     else
       respond_to do |format|
 	if current_user.college.code=='amsas'
-          format.html { redirect_to import_excel_amsas_students_url, :notice => (t 'select_excel_file')}
+          format.html { redirect_to import_excel_second_students_url, :notice => (t 'select_excel_file')}
 	else
-          format.html { redirect_to import_excel_amsas_students_url, :notice => (t 'select_excel_file')}
+          format.html { redirect_to import_excel_students_url, :notice => (t 'select_excel_file')}
 	end
       end
     end
@@ -78,6 +78,10 @@ class StudentsController < ApplicationController
   
   def download_excel_format_amsas
     send_file ("#{::Rails.root.to_s}/public/excel_format/student_import_amsas.xls")
+  end
+  
+  def download_excel_format_second
+    send_file ("#{::Rails.root.to_s}/public/excel_format/student_import_second.xls")
   end
   #end - import excel
   

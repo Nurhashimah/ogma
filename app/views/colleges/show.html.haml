@@ -7,8 +7,9 @@
 .row
   .col-md-8.col-md-offset-1
     %dl.dl-horizontal
-      %dt=t 'college.code'
-      %dd{style: 'color: blue; font-weight: bold;'}=@college.code
+      - if ['kskbjb', 'amsas'].include?(@college.code) == false 
+        %dt=t 'college.code'
+        %dd{style: 'color: blue; font-weight: bold;'}=@college.code
       
       %dt=t 'college.name'
       %dd=@college.name

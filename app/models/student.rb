@@ -145,11 +145,11 @@ class Student < ActiveRecord::Base
   end
   
   def college_is_amsas?
-    college_id==2
+    college.code=='amsas' #college_id==2
   end
   
   def college_is_not_amsas?
-    college_id!=2
+    college.code!='amsas' #college_id!=2
   end
   
   def self.year_and_sem(intake)

@@ -2263,7 +2263,7 @@ ActiveRecord::Schema.define(version: 20171111115637) do
   create_table "staffattendancesearches", force: true do |t|
     t.string   "department"
     t.integer  "thumb_id"
-    t.datetime "logged_at"
+    t.time     "logged_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "college_id"
