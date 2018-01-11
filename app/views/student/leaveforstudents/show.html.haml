@@ -26,7 +26,7 @@
               =h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.formatted_mykad_and_student_name
           
           %dt= t 'student.leaveforstudent.programme'
-          %dd=h @leaveforstudent.student.course.programme_list
+          %dd=h @leaveforstudent.student.intakestudent.programme.programme_list
             
           %dt= t 'student.leaveforstudent.group'
           %dd=h @leaveforstudent.group_intake

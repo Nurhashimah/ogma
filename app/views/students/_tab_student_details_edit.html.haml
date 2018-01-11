@@ -1,7 +1,7 @@
 .col-md-offset-2  
   .form-group
     .col-sm-2.control-label
-      - if current_user.college.code=="amsas"
+      - if current_user.college.name.include?("amsas") == true
         = f.label t 'student.students.apmmno', for: :apmmno
       - else
         = f.label t 'student.students.matrixno', for: :matrixno

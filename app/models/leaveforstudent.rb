@@ -88,7 +88,7 @@ class Leaveforstudent < ActiveRecord::Base
   end
   
   def student_submit?
-    studentsubmit==true && college_id!=College.where(code: 'kskbjb').first.id
+    studentsubmit==true && college.code=="amsas" #college_id!=College.where(code: 'kskbjb').first.id
   end
   
   def self.find_main

@@ -3,7 +3,7 @@
   %h1 #{@document.refno} :  #{@document.title.capitalize}
 
 - if @document.college.code=='amsas'
-  - tab_title=(t 'document.director_action')
+  - tab_title=@document.college.name.include?('amsas') == true ? (t 'document.director_action') : (t 'document.first_action')
   - tab_title2=(t 'document.staff_action')
 - else
   - tab_title=(t 'document.circulation_details')

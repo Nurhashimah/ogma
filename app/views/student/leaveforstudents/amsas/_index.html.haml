@@ -20,7 +20,7 @@
         %td
           - programmes=Programme.roots.where(college_id: current_user.college_id)
           - pnames=programmes.pluck(:name)
-          = pnames.count==pnames.uniq.count ? leaveforstudent.student.course.name :  leaveforstudent.student.course.programme_list
+          = pnames.count==pnames.uniq.count ? leaveforstudent.student.intakestudent.programme.name :  leaveforstudent.student.intakestudent.programme.programme_list
         %td.centre=h leaveforstudent.student.intakestudent.siri_name
         %td.centre=h leaveforstudent.student.tenants.last.location.root.code if !leaveforstudent.student.tenants.nil? && leaveforstudent.student.tenants.count > 0 
         %td=h ((DropDown::STUDENTLEAVETYPE.find_all{|disp, value| value ==leaveforstudent.leavetype }).map {|disp, value| disp}).first

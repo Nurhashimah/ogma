@@ -53,7 +53,7 @@
             - if current_user.college.code=="kskbjb"
               = f.collection_select :assigned_to, Staff.where('id IN (?)', @myhod), :id, :name, {:prompt => t('helpers.prompt.select_hod')},{class: 'selectpicker mandatory'}
             - elsif current_user.college.code=="amsas"
-              = f.collection_select :assigned_to, Staff.joins(:positions).where('positions.name ILIKE?', "%komandan%").order(rank_id: :asc, name: :asc), :id, :staff_with_rank_unit, {prompt: (t 'select')}, {class: 'selectpicker mandatory'}
+              = f.collection_select :assigned_to, Staff.joins(:positions).where('positions.name ILIKE? OR positions.name ILIKE?', "%komandan%", "%pengetua%").order(rank_id: :asc, name: :asc), :id, :staff_with_rank_unit, {prompt: (t 'select')}, {class: 'selectpicker mandatory'}
         = f.hidden_field :assigned_on, :value => Date.today
         = f.fields_for :student_counseling_sessions do |builder| 
           = builder.hidden_field :c_scope, :value => "case"

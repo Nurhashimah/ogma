@@ -3698,6 +3698,7 @@ en:
     cc1staff_id: Forwarded to
     cc1date: Date forwarded
     director_action: Director / Comandant Action
+    first_action: Director Action
     staff_action: Staff Action
     other_staffs: Other Staff
     circulation1_action: Action by Recipient
