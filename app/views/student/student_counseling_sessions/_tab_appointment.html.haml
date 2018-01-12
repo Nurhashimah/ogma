@@ -22,7 +22,7 @@
       - elsif @student_counseling_session.c_scope=="academic"
         = t 'student.counseling.academic'
       - elsif @student_counseling_session.c_scope=="case"
-        = t 'student.counseling.case'
+        /= (t 'student.counseling.case')+" (#{@student_counseling_session.student_discipline_case.render_infraction})"
         /= link_to (t 'student.counseling.case'), student_student_discipline_case_path(StudentDisciplineCase.where(id:@student_counseling_session.case_id).first)
     %dt=t 'student.counseling.c_type'
     %dd

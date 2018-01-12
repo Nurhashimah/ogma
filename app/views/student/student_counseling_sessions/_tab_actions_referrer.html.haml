@@ -22,7 +22,7 @@
       %dt
         =t 'student.counseling.related_sessions1'
         %br=t 'student.counseling.related_sessions2'
-      %dd
+      %dd{style: 'padding-left: 70px;'}
         - @other_sessions.each_with_index do |session,index| 
           =(index+1).to_s+") "+session.confirmed_at.try(:strftime, "%d %b %y, %l:%M %P")
           %br

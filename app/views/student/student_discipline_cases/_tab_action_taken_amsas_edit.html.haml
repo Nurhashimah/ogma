@@ -49,7 +49,7 @@
           =f.label (t 'student.discipline.session_feedback')
         .col-sm-8
           %ol
-            - for session in @student_discipline_case.student_counseling_sessions
+            - for session in @student_discipline_case.student_counseling_sessions.order(confirmed_at: :asc)
               %li=session.confirmed_at.strftime('%d-%m-%Y %H:%M')+" | "+session.remark
           %b=(t 'student.discipline.final_feedback')+" : "
           =@student_discipline_case.counselor_feedback

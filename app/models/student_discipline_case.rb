@@ -20,7 +20,8 @@ class StudentDisciplineCase < ActiveRecord::Base
   
   validates_presence_of :reported_by, :student_id, :status, :infraction_id, :assigned_to, :reported_on
   validates :case_created_on, :investigation_notes, :closed_at_college_on , presence: true, :if => :case_is_closed?
-  validates :case_created_on, :investigation_notes, :assigned2_to, :assigned2_on, presence: true, :if => :case_is_referred_to_mentor_counselor?
+  validates :case_created_on, :investigation_notes, :assigned2_to, :assigned2_on, presence: true, :if => :case_is_referred_to_mentor?
+  validates :case_created_on, :investigation_notes, :is_counselor, :assigned2_on, presence: true, :if => :case_is_referred_to_counselor?
   validates :other_info, :action, :closed_at_college_on, presence: true, :if => :action_by_mentor_counselor?
   validates :other_info, presence: true, :if => :case_referred_to_comandant?
   validates :action, :closed_at_college_on, presence: true, :if => :action_by_comandant?
@@ -117,8 +118,12 @@ class StudentDisciplineCase < ActiveRecord::Base
     status=="Closed" && college.code=="amsas"
   end
   
-  def case_is_referred_to_mentor_counselor?
-    (status=="Refer to Counselor" || status=="Refer to Mentor") && college.code=="amsas"
+  def case_is_referred_to_mentor?
+    (status=="Refer to Mentor") && college.code=="amsas"
+  end
+  
+  def case_is_referred_to_counselor?
+    (status=="Refer to Counselor" && college.code=="amsas")
   end
   
   def action_by_mentor_counselor?

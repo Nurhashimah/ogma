@@ -65,6 +65,7 @@ class Student::StudentCounselingSessionsController < ApplicationController
       @feedback = params[:student_counseling_session][:feedback]
       if @feedback==1|| @feedback=='1'
 	@abc.counselor_feedback = params[:student_counseling_session][:feedback_final]
+	@abc.is_counselor = @abc.assigned2_to
       else
 	@abc.counselor_feedback =''
       end

@@ -4,7 +4,7 @@
   .row
     .col-md-1.col-sm-offset-2
       = f.hidden_field :_destroy
-      = f.select :sequence, 1..15, { :prompt => (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+      = f.select :seq, 1..15, { :prompt => (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
     .col-md-2= f.select :day_name, TimetablePeriod::DAY_CHOICE2,{ :prompt => (t 'select')}, {class: 'selectpicker',"data-width"=>"auto"}
     .col-md-1
       - unless f.object.start_at.blank?
