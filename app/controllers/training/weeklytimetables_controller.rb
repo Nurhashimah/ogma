@@ -182,8 +182,8 @@ class Training::WeeklytimetablesController < ApplicationController
     #start-remove from partial : tab_daily_details_edit
     @count1=@weeklytimetable.timetable_monthurs.timetable_periods.count
     @count2=@weeklytimetable.timetable_friday.timetable_periods.count 
-    @break_format1 = @weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).pluck(:is_break)
-    @break_format2 = @weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).pluck(:is_break)
+    @break_format1 = @weeklytimetable.timetable_monthurs.timetable_periods.order(seq: :asc).pluck(:is_break)
+    @break_format2 = @weeklytimetable.timetable_friday.timetable_periods.order(seq: :asc).pluck(:is_break)
     @weeklytimetable = Weeklytimetable.find(params[:id])
     #start-remove from partial : tab_daily_details_edit
     #start-remove from partial : subtab_class_details_edit
@@ -312,8 +312,8 @@ class Training::WeeklytimetablesController < ApplicationController
     #start-copy from edit
     @count1=@weeklytimetable.timetable_monthurs.timetable_periods.count
     @count2=@weeklytimetable.timetable_friday.timetable_periods.count 
-    @break_format1 = @weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).pluck(:is_break)
-    @break_format2 = @weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).pluck(:is_break)
+    @break_format1 = @weeklytimetable.timetable_monthurs.timetable_periods.order(seq: :asc).pluck(:is_break)
+    @break_format2 = @weeklytimetable.timetable_friday.timetable_periods.order(seq: :asc).pluck(:is_break)
     @weeklytimetable = Weeklytimetable.find(params[:id])
     #start-remove from partial : tab_daily_details_edit
     #start-remove from partial : subtab_class_details_edit

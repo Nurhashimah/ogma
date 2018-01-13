@@ -139,8 +139,8 @@ class Weeklytimetable < ActiveRecord::Base
           current_date = (sdate+4).try(:strftime, "%d%b%Y")
 #           period_start = TimetablePeriod.where(id:x.time_slot)[0].start_at
 #           period_end = TimetablePeriod.where(id:x.time_slot)[0].end_at
-	  period_start = TimetablePeriod.where(timetable_id: tp_2, sequence: x.time_slot)[0].start_at
-          period_end = TimetablePeriod.where(timetable_id: tp_2, sequence: x.time_slot)[0].end_at
+	  period_start = TimetablePeriod.where(timetable_id: tp_2, seq: x.time_slot)[0].start_at
+          period_end = TimetablePeriod.where(timetable_id: tp_2, seq: x.time_slot)[0].end_at
           period = period_start.try(:strftime, "%H:%M%P")+"-"+period_end.try(:strftime, "%H:%M%P")
           unless x.subject.nil? || x.subject.blank?
             current_date_period << current_date +" "+ period+" "+x.subject.to_s+" "+lecturer.to_s#+" "+x.id.to_s
@@ -156,8 +156,8 @@ class Weeklytimetable < ActiveRecord::Base
           current_date2 = (sdate+3).try(:strftime, "%d%b%Y") if x.day2==4
           current_date2 = (sdate+5).try(:strftime, "%d%b%Y") if x.day2==6    #weekends
           current_date2 = (sdate+6).try(:strftime, "%d%b%Y") if x.day2==7  
-          period_start = TimetablePeriod.where(timetable_id: tp_1, sequence: x.time_slot2)[0].start_at
-          period_end = TimetablePeriod.where(timetable_id: tp_1, sequence: x.time_slot2)[0].end_at
+          period_start = TimetablePeriod.where(timetable_id: tp_1, seq: x.time_slot2)[0].start_at
+          period_end = TimetablePeriod.where(timetable_id: tp_1, seq: x.time_slot2)[0].end_at
           period2 = period_start.try(:strftime, "%H:%M%P")+"-"+period_end.try(:strftime, "%H:%M%P")
           unless x.subject.nil? || x.subject.blank?
             current_date_period << current_date2 +" "+ period2+" "+x.subject.to_s+" "+lecturer.to_s#+" "+x.id.to_s
@@ -183,8 +183,8 @@ class Weeklytimetable < ActiveRecord::Base
         tp_2 = Weeklytimetable.where(id: wt).first.format2    #Thurs/Firday
         if y.is_friday == true
           current_date = (startdate+4).try(:strftime,"%d%b%Y")
-          period_start = TimetablePeriod.where(timetable_id: tp_2, sequence: y.time_slot)[0].start_at 
-          period_end = TimetablePeriod.where(timetable_id: tp_2, sequence: y.time_slot)[0].end_at
+          period_start = TimetablePeriod.where(timetable_id: tp_2, seq: y.time_slot)[0].start_at 
+          period_end = TimetablePeriod.where(timetable_id: tp_2, seq: y.time_slot)[0].end_at
           period = period_start.try(:strftime, "%H:%M%P")+"-"+period_end.try(:strftime, "%H:%M%P")
           unless y.subject.nil? || y.subject.blank?
             current_date_period << current_date +" "+ period+" "+y.subject.to_s+" "+l.to_s#+" "+y.id.to_s
@@ -200,8 +200,8 @@ class Weeklytimetable < ActiveRecord::Base
           current_date2 = (startdate+3).try(:strftime, "%d%b%Y") if y.day2==4
           current_date2 = (startdate+5).try(:strftime, "%d%b%Y") if y.day2==6    #weekends
           current_date2 = (startdate+6).try(:strftime, "%d%b%Y") if y.day2==7 
-          period_start = TimetablePeriod.where(timetable_id: tp_1, sequence: y.time_slot2)[0].start_at
-          period_end = TimetablePeriod.where(timetable_id: tp_1, sequence: y.time_slot2)[0].end_at
+          period_start = TimetablePeriod.where(timetable_id: tp_1, seq: y.time_slot2)[0].start_at
+          period_end = TimetablePeriod.where(timetable_id: tp_1, seq: y.time_slot2)[0].end_at
           period2 = period_start.try(:strftime, "%H:%M%P")+"-"+period_end.try(:strftime, "%H:%M%P")
           unless y.subject.nil? || y.subject.blank?
             current_date_period << current_date2 +" "+ period2+" "+y.subject.to_s+" "+l.to_s#+" "+y.id.to_s    
@@ -390,7 +390,7 @@ class Weeklytimetable < ActiveRecord::Base
   
   def self.empty_slot(timeslot,weeklytimetable,special)
     #1a-available time slots - Sun-Wed
-    atsw = timeslot.pluck(:sequence)
+    atsw = timeslot.pluck(:seq)
     rev_all_timeslot_sun_wed = atsw+atsw.map{|x|x+=special}+atsw.map{|x|x+=(special*2)}+atsw.map{|x|x+=(special*3)}
 
     #0a-NEW weekdays (sun-wed)
@@ -436,7 +436,7 @@ class Weeklytimetable < ActiveRecord::Base
   
   def self.exist_timeslot_thurs(timeslot2,weeklytimetable,count1)
     #1b-available time slots - Thurs
-    all_timeslot_thurs = timeslot2.pluck(:sequence)
+    all_timeslot_thurs = timeslot2.pluck(:seq)
     rev_all_timeslot_thurs = all_timeslot_thurs.map{|x|x+count1}
 
     #0b-NEW thursday
@@ -464,7 +464,7 @@ class Weeklytimetable < ActiveRecord::Base
   end
   
   def self.empty_slot_weekend(timeslot,weeklytimetable,daycount_check)
-    atsw = timeslot.pluck(:sequence)
+    atsw = timeslot.pluck(:seq)
     @special = weeklytimetable.timetable_monthurs.timetable_periods.count       #=@count1
     @count2 = weeklytimetable.timetable_friday.timetable_periods.count 
     #1c-available time slots - Weekends
@@ -563,7 +563,7 @@ class Weeklytimetable < ActiveRecord::Base
         if item_type==3 
           weekdays_slots.each do |slot|
             if slot.start_at.strftime("%H:%M:%S")==estart_at && slot.end_at.strftime("%H:%M:%S")==eend_at && slot.day_name==dayyname  #==1
-              a_etimeslot2<< slot.sequence #slot.id
+              a_etimeslot2<< slot.seq #slot.id
               a_etimeslot<< 0
             end
           end
@@ -571,7 +571,7 @@ class Weeklytimetable < ActiveRecord::Base
         if item_type==2 
           thursday_slots.each do |slot|
             if slot.start_at.strftime("%H:%M:%S")==estart_at && slot.end_at.strftime("%H:%M:%S")==eend_at && slot.day_name==dayyname #==2
-              a_etimeslot<< slot.sequence #slot.id
+              a_etimeslot<< slot.seq #slot.id
               a_etimeslot2<< 0
             end
           end

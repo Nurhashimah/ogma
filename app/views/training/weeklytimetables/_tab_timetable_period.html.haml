@@ -9,14 +9,14 @@
     %dt= t 'training.weeklytimetable.format1' , :default => model_class.human_attribute_name(:format1) + ":"
     %dd
       =@weeklytimetable.timetable_monthurs.name
-      - @weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@count1, false) do |row_things|
+      - @weeklytimetable.timetable_monthurs.timetable_periods.order(seq: :asc).in_groups_of(@count1, false) do |row_things|
         .showform
           %table#subtable
             %tr
               %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:11px;font-weight: bold;"}= (day_display.find_all{|disp, value| value == (row_things.map(&:day_name)[0]) }).map {|disp, value| disp}[0]
               - for periods in row_things
                 %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:10px;"}
-                  %b= periods.sequence
+                  %b= periods.seq
                   %br= @weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
                   %br
                     /= periods.is_break? ? "Break" : ""
@@ -29,14 +29,14 @@
     %dt= t 'training.weeklytimetable.format2' , :default => model_class.human_attribute_name(:format2) + ":"
     %dd
       =@weeklytimetable.timetable_friday.name
-      - @weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).in_groups_of(@count2, false) do |row_things|
+      - @weeklytimetable.timetable_friday.timetable_periods.order(seq: :asc).in_groups_of(@count2, false) do |row_things|
         .showform
           %table#subtable
             %tr
               %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:11px;font-weight: bold;"}= (day_display.find_all{|disp, value| value == (row_things.map(&:day_name)[0]) }).map {|disp, value| disp}[0]
               - for periods in row_things
                 %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:10px;"}
-                  %b= periods.sequence
+                  %b= periods.seq
                   %br= @weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
                   %br
                     /= periods.is_break? ? "Break" : ""
