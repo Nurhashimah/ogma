@@ -64,7 +64,7 @@
                           = periods.end_at.try(:strftime, "%H:%M %P") 
                           %BR
                             - if @timetable.college.code=='amsas'
-                              = periods.is_break? ? periods.render_no_class : "SSSSS"
+                              = periods.is_break? ? periods.render_no_class : ""
                             - else
                               = periods.is_break? ? (t 'training.timetable_period.is_break') : "" 
 

@@ -27,9 +27,25 @@
     %dd= @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"
 	  
     %dt= t 'training.weeklytimetable.format1' , :default => model_class.human_attribute_name(:format1) + ":"
-    %dd= @weeklytimetable.timetable_monthurs.name
+    %dd
+      /=current_user.college.name.include?("amsas") == true ? @weeklytimetable.timetable_monthurs.name : @weeklytimetable.timetable_monthurs.name.gsub("BK-LAT-URK-01-01", "")
+      - if current_user.college.name.include?("amsas") == false
+        - if @weeklytimetable.timetable_monthurs.name.include?("BK-LAT-URK-01-01")
+          = @weeklytimetable.timetable_monthurs.name.gsub("BK-LAT-URK-01-01", "") 
+        - if @weeklytimetable.timetable_monthurs.name.include?("BK-LAT-RAN-01-01")
+          = @weeklytimetable.timetable_monthurs.name.gsub("BK-LAT-RAN-01-01", "") 
+      - else
+        =@weeklytimetable.timetable_monthurs.name
 
     %dt= t 'training.weeklytimetable.format2' , :default => model_class.human_attribute_name(:format2) + ":"
-    %dd= @weeklytimetable.timetable_friday.name
-	
+    %dd
+      /=current_user.college.name.include?("amsas") == true ? @weeklytimetable.timetable_friday.name : @weeklytimetable.timetable_friday.name.gsub("BK-LAT-URK-01-01", "")
+      - if current_user.college.name.include?("amsas") == false
+        - if @weeklytimetable.timetable_friday.name.include?("BK-LAT-URK-01-01")
+          = @weeklytimetable.timetable_friday.name.gsub("BK-LAT-URK-01-01", "") 
+        - if @weeklytimetable.timetable_friday.name.include?("BK-LAT-RAN-01-01")
+          = @weeklytimetable.timetable_friday.name.gsub("BK-LAT-RAN-01-01", "") 
+      - else
+        =@weeklytimetable.timetable_friday.name     
+
     %br	  

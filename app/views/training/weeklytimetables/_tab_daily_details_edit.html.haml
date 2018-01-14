@@ -37,7 +37,12 @@
                   //1)Amsas - to display non_class items accordingly
                   - if @weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
                     - non_class_value=@weeklytimetable.timetable_monthurs.timetable_periods.where(seq: col).first.non_class
-                    =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                    //Fixed - 14Jan2017 "BK-LAT-URK-01-01", "BK-LAT-RAN-01-01" - start - 
+                    - if @weeklytimetable.timetable_monthurs.name.include?("BK-LAT-RAN-01-01")
+                      =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                    - else
+                      =TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                    //Fixed - 14Jan2017 "BK-LAT-URK-01-01", "BK-LAT-RAN-01-01" - end -
                   - else
                     = t 'training.weeklytimetable.break'
               - elsif @break_format1[col-1]==true && row!=1
@@ -72,7 +77,13 @@
                   //3)Amsas - to display non_class items accordingly
                   - if @weeklytimetable.timetable_friday.timetable_periods.where('non_class is not null').count > 0
                     - non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(seq: col2).first.non_class
-                    =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                    /=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                    //Fixed - 14Jan2017 "BK-LAT-URK-01-01", "BK-LAT-RAN-01-01" - start - 
+                    - if @weeklytimetable.timetable_monthurs.name.include?("BK-LAT-RAN-01-01")
+                      =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                    - else
+                      =TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                    //Fixed - 14Jan2017 "BK-LAT-URK-01-01", "BK-LAT-RAN-01-01" - end -
                   - else
                     = t 'training.weeklytimetable.break'
               - elsif @break_format1[col2-1]==true && row2!=1
@@ -140,7 +151,18 @@
                       =t 'training.weeklytimetable.break'
                   - else
                     %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
-                      =t 'training.weeklytimetable.break' 
+                      //14Jan2018
+                      - if @weeklytimetable.timetable_friday.timetable_periods.where('non_class is not null').count > 0
+                        - non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(seq: col2).first.non_class
+                        //Fixed - 14Jan2017 "BK-LAT-URK-01-01", "BK-LAT-RAN-01-01" - start - 
+                        - if @weeklytimetable.timetable_friday.name.include?("BK-LAT-RAN-01-01")
+                          =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                        - else
+                          =TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                        //Fixed - 14Jan2017 "BK-LAT-URK-01-01", "BK-LAT-RAN-01-01" - end -
+                      - else
+                        = t 'training.weeklytimetable.break'
+                      //14Jan2018
                 - elsif @break_format2[col2-1]==false 
                   /Non-break columns
                   - if classes_tospan.include?(col2)
@@ -185,11 +207,23 @@
                   %td{:align =>"center", :rowspan=>"#{daycount2}", :style=>"border:1px solid black; text-align:center; padding:4px;vertical-align:middle;font-size:12px;" } 
                     /=t 'training.weeklytimetable.break'
                     //5)Amsas - to display non_class items accordingly
+                    /- if @weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
+                    /  - non_class_value=@weeklytimetable.timetable_monthurs.timetable_periods.where(seq: col2).first.non_class
+                    /  =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                    /- else
+                    /  = t 'training.weeklytimetable.break'
+                    //14Jan2018
                     - if @weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
-                      - non_class_value=@weeklytimetable.timetable_monthurs.timetable_periods.where(seq: col2).first.non_class
-                      =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                      - non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(seq: col2).first.non_class
+                      //Fixed - 14Jan2017 "BK-LAT-URK-01-01", "BK-LAT-RAN-01-01" - start - 
+                      - if @weeklytimetable.timetable_monthurs.name.include?("BK-LAT-RAN-01-01")
+                        =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                      - else
+                        =TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                      //Fixed - 14Jan2017 "BK-LAT-URK-01-01", "BK-LAT-RAN-01-01" - end -
                     - else
                       = t 'training.weeklytimetable.break'
+                    //14Jan2018
                 - elsif @break_format1[col2-1]==true && row2!=1
                   /do-not-remove : should not have any field or value
                 - elsif @break_format1[col2-1]==false
