@@ -43,7 +43,25 @@
           %td=h link_to weeklytimetable.try(:schedule_programme).try(:programme_list), training_weeklytimetable_path(weeklytimetable)     
           %td=h weeklytimetable.college.code=="amsas"? weeklytimetable.schedule_intake.siri_name : weeklytimetable.schedule_intake.group_with_intake_name
           - if current_user.college.code=='amsas'
-            %td=h weeklytimetable.timetable_monthurs.name.include?('BK-LAT') ? weeklytimetable.timetable_monthurs.name[0,16] : weeklytimetable.timetable_monthurs.name
+            - if current_user.college.name.include?('amsas')
+              %td=h weeklytimetable.timetable_monthurs.name.include?('BK-LAT') ? weeklytimetable.timetable_monthurs.name[0,16] : weeklytimetable.timetable_monthurs.name
+            - else
+              - if weeklytimetable.timetable_monthurs.name.include?("BK-LAT-URK-01-01")
+                %td
+                  =h weeklytimetable.timetable_monthurs.name.gsub("BK-LAT-URK-01-01", "")
+                  - if weeklytimetable.format1!=weeklytimetable.format2
+                    =" / "+weeklytimetable.timetable_friday.name.gsub("BK-LAT-URK-01-01", "")
+              - elsif weeklytimetable.timetable_monthurs.name.include?("BK-LAT-RAN-01-01")
+                %td
+                  =h weeklytimetable.timetable_monthurs.name.gsub("BK-LAT-RAN-01-01", "")
+                  - if weeklytimetable.format1!=weeklytimetable.format2
+                    =" / "+weeklytimetable.timetable_friday.name.gsub("BK-LAT-RAN-01-01", "")
+              - else
+                - if weeklytimetable.format1==weeklytimetable.format2
+                  %td=h weeklytimetable.timetable_monthurs.name
+                - else
+                  %td=h weeklytimetable.timetable_monthurs.name+" / "+weeklytimetable.timetable_friday.name
+
           %td=h weeklytimetable.college.code=='amsas' ? weeklytimetable.try(:startdate).try(:strftime, "%d-%m-%Y") : weeklytimetable.try(:startdate).try(:strftime, "%d %b %Y") 
           %td=h weeklytimetable.college.code=='amsas' ? weeklytimetable.try(:enddate).try(:strftime, "%d-%m-%Y") : weeklytimetable.try(:enddate).try(:strftime, "%d %b %Y") 
           - if current_user.college.code!='amsas'

@@ -26,10 +26,12 @@
                 - else
                   - lecturers=Staff.joins(:positions).where('positions.name=?','Pengajar').where(id: current_user.userable_id).order('name ASC')
               - else
+                - lecturer_ids=User.joins(:roles).where('roles.name=?','Lecturer').pluck(:userable_id)
+                /@lecturer_list=Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)', 'Jurulatih', lecturer_ids).order('rank_id ASC, staffs.name ASC')
                 - if @is_admin
-                  - lecturers=Staff.joins(:positions).where('positions.name=?','Jurulatih').order('rank_id ASC, name ASC').distinct
+                  - lecturers=Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)','Jurulatih', lecturer_ids).order('rank_id ASC, staffs.name ASC').distinct
                 - else
-                  - lecturers=Staff.joins(:positions).where('positions.name=?','Jurulatih').where(id: current_user.userable_id).order('rank_id ASC, name ASC')
+                  - lecturers=Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)','Jurulatih', lecturer_ids).where(id: current_user.userable_id).order('rank_id ASC, staffs.name ASC')
               = f.collection_select :lecturer, lecturers, :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_lecturer'), selected: selected_lecturer},{class: 'selectpicker mandatory', "data-width"=>'280px'} 
             
         .col-md-offset-2 

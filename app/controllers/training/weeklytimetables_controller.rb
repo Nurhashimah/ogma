@@ -208,7 +208,9 @@ class Training::WeeklytimetablesController < ApplicationController
       ##########amsas
       #full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where(course_type: ['Topic', 'Subtopic']).order('ancestry ASC, name ASC')
       #classes by subject NOT topic
-      full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where(course_type: 'Subject').order('ancestry ASC, name ASC')
+      #full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where(course_type: 'Subject').order('ancestry ASC, name ASC')
+      #REV 14Jan2018- to match lesson plan with schedule's topic
+      full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where(course_type: ['Topic', 'Subtopic']).order('ancestry ASC, name ASC')
     else
       full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).sort_by(&:combo_code)
     end
@@ -235,14 +237,16 @@ class Training::WeeklytimetablesController < ApplicationController
       @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where(id: @comms_topic).sort_by(&:combo_code)
     end
     ##########amsas
-    lecturer_ids=Staff.joins(:positions).where('positions.name=?', 'Jurulatih').pluck(:id) if current_user.college.code=="amsas"
+    lecturer_ids=User.joins(:roles).where('roles.name=?','Lecturer').pluck(:userable_id)
+#     lecturer_ids=Staff.joins(:positions).where('positions.name=?', 'Jurulatih').pluck(:id) if current_user.college.code=="amsas"
     if @is_admin
       lecturer_ids+=Staff.joins(:positions).where('unit IN(?)', common_subjects).pluck(:id)
       @semester_subject_topic_list = full_topics
     end
     ##########amsas
     if current_user.college.code=="amsas"
-      @lecturer_list=Staff.where('id IN(?)', lecturer_ids).order('rank_id ASC, name ASC')
+#       @lecturer_list=Staff.where('id IN(?)', lecturer_ids).order('rank_id ASC, name ASC')
+      @lecturer_list=Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)', 'Jurulatih', lecturer_ids).order('rank_id ASC, staffs.name ASC')
       @semester_subject_topic_list = full_topics
     else
       @lecturer_list=Staff.where('id IN(?)', lecturer_ids).order(name: :asc)
@@ -294,6 +298,7 @@ class Training::WeeklytimetablesController < ApplicationController
   # PUT /weeklytimetables/1
   # PUT /weeklytimetables/1.xml
   def update
+#     raise params.inspect
     @weeklytimetable = Weeklytimetable.find(params[:id])
     roles = current_user.roles.pluck(:authname)
     @is_admin =roles.include?("developer") || roles.include?("administration") || roles.include?("weeklytimetables_module_admin") || roles.include?("weeklytimetables_module_viewer") || roles.include?("weeklytimetables_module_user")
@@ -340,7 +345,7 @@ class Training::WeeklytimetablesController < ApplicationController
       ##########amsas
       #full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where(course_type: ['Topic', 'Subtopic']).order('ancestry ASC, name ASC')
       #classes by subject NOT topic
-      full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where(course_type: 'Subject').order('ancestry ASC, name ASC')
+      full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where(course_type: ['Topic', 'Subtopic']).order('ancestry ASC, name ASC')
     else
       full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).sort_by(&:combo_code)
     end

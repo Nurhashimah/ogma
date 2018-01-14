@@ -58,7 +58,7 @@
             = f.label :topic_code
           .col-md-3
             /= f.collection_select :topic_code, @semester_subject_topic_list.sort_by{|x|x.root_id}, :id, :semester_subject_topic,{:prompt =>t('select')},{ class: 'selectpicker mandatory', "data-width"=>'auto'}
-            = f.collection_select :topic_code, @semester_subject_topic_list.sort_by{|x|x.ancestry}, :id, :semester_subject_topic,{:prompt =>t('select')},{ class: 'selectpicker mandatory', "data-width"=>'auto'}   
+            = f.collection_select :topic_code, @semester_subject_topic_list.sort_by{|x|[x.ancestry, x.code]}, :id, :semester_subject_topic,{:prompt =>t('select')},{ class: 'selectpicker mandatory', "data-width"=>'auto'}   
       #topic_details_edit.tab-pane.active
         %br
         .col-md-offset-2   
@@ -90,7 +90,9 @@
               - if current_user.college.code=="kskbjb"
                 - lecturers=Staff.joins(:positions).where('positions.name=?','Pengajar').order('name ASC')
               - else
-                - lecturers=Staff.joins(:positions).where('positions.name=?', 'Jurulatih').order('rank_id ASC, name ASC')
+                - lecturer_ids=User.joins(:roles).where('roles.name=?','Lecturer').pluck(:userable_id)
+                - lecturers=Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)', 'Jurulatih', lecturer_ids).order('rank_id ASC, name ASC')
+                /- lecturers=Staff.joins(:positions).where('positions.name=?', 'Jurulatih').order('rank_id ASC, name ASC')
               = f.collection_select :prepared_by, lecturers, :id, :staff_with_rank, {:prompt =>t('helpers.prompt.select_lecturer')},{ class: 'selectpicker mandatory', "data-width"=>'280px'} 
 
       #training_notes_edit.tab-pane
