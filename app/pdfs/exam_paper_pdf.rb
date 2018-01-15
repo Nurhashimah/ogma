@@ -178,10 +178,18 @@ class Exam_paperPdf < Prawn::Document
   
   def cover_page_amsas
     text "SULIT", :align => :left, :size => 10
-    image "#{Rails.root}/app/assets/images/amsas.png",  :width =>80, :height =>80, :position => :center
+    if @college.name.include?("amsas")
+      image "#{Rails.root}/app/assets/images/amsas.png",  :width =>80, :height =>80, :position => :center
+    else
+      move_down 80
+    end
     move_down 10
     text "#{@college.name.upcase}", :align => :center, :style => :bold, :size => 11
-    text "PUSAT LATIHAN APMM", :align => :center, :style => :bold, :size => 11
+    if @college.name.include?("amsas")
+      text "PUSAT LATIHAN APMM", :align => :center, :style => :bold, :size => 11
+    else
+      text "PUSAT LATIHAN #{@college.name.upcase}", :align => :center, :style => :bold, :size => 11
+    end
     draw_text "PEPERIKSAAN", :at => [60, 620], :size => 11
     draw_text "KURSUS", :at => [60, 600], :size => 11
     draw_text "TARIKH", :at => [60, 580], :size => 11
