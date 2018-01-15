@@ -8,7 +8,10 @@ class BookingfacilityPdf < Prawn::Document
       move_down 10
     end
     bounding_box([10,770], :width => 400, :height => 100) do |y2|
-       image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
+       if college.code=="amsas" && college.name.include?("amsas") == false
+       else
+	image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
+       end
     end
     bounding_box([115,750], :width => 300, :height => 100) do |y2|
       text "#{college.name}", :align => :center, :size => 12,  :style => :bold
@@ -22,7 +25,9 @@ class BookingfacilityPdf < Prawn::Document
       end
     else
       bounding_box([430,770], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+	if college.code=="amsas" && college.name.include?("amsas") == true
+	  image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+	end
       end
     end
     move_down 5

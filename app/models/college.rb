@@ -81,6 +81,7 @@ class College < ActiveRecord::Base
   has_many :ranks
   has_many :titles
   has_many :maints
+  has_many :assets
   # staffs
   
   serialize :data, Hash

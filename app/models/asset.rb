@@ -18,6 +18,7 @@ class Asset < ActiveRecord::Base
   belongs_to :assignedto,   :class_name => 'Staff', :foreign_key => 'assignedto_id'
   
   belongs_to :category,     :class_name => 'Assetcategory', :foreign_key => 'category_id'
+  belongs_to :college
   has_many :asset_defects
   has_many :maints, :dependent => :destroy
   accepts_nested_attributes_for :maints, :allow_destroy => true , :reject_if => lambda { |a| a[:maintainer_id].blank? || a[:maintcost].blank? || a[:workorderno].blank?}

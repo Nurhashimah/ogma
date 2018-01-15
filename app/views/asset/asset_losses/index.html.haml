@@ -22,49 +22,49 @@
         %li=(t 'asset.loss.approval_register').html_safe
         %li=(t 'asset.loss.select_for_writeoff').html_safe
 
-  = form_tag edit_multiple_asset_losses_path, :method => :put, :id => "form1" do 
-    %table.table-striped.table-hover.ogma
-      %thead
-        %tr
-          %th{width: '5%'} &nbsp;
-          %th{width: '17%'}=t 'asset.loss.loss_type'
-          %th{width: '18%'}= sort_link(@search, :est_value, (t 'asset.loss.est_value'))
-          %th{width: '20%'}= sort_link(@search, :asset_name, (t 'asset.loss.asset_name'))
-          %th{width: '20%'}= sort_link(@search, :location_name, (t 'asset.loss.loss_location')) 
-          %th{width: '20%'}= sort_link(@search, :lost_at, (t 'asset.loss.loss_date_time'))
-      %tbody
-        = render "index_search"
-        - count=0
-        - @asset_losses.group_by{|x|x.document}.each do |approval_document, asset_losses|
+    = form_tag edit_multiple_asset_losses_path, :method => :put, :id => "form1" do 
+      %table.table-striped.table-hover.ogma
+        %thead
           %tr
-            %td.group{colspan: 6}
-              - unless approval_document.blank?
-                =approval_document.doc_details+" : "
-                =link_to (fa_icon "file-pdf-o")+" KEW-PA 31", kewpa31_asset_losses_path(format: "pdf", id: approval_document)
-              - else
-                =t('not_applicable')
-         
-          - for asset_loss in asset_losses
+            %th{width: '5%'} &nbsp;
+            %th{width: '17%'}=t 'asset.loss.loss_type'
+            %th{width: '18%'}= sort_link(@search, :est_value, (t 'asset.loss.est_value'))
+            %th{width: '20%'}= sort_link(@search, :asset_name, (t 'asset.loss.asset_name'))
+            %th{width: '20%'}= sort_link(@search, :location_name, (t 'asset.loss.loss_location')) 
+            %th{width: '20%'}= sort_link(@search, :lost_at, (t 'asset.loss.loss_date_time'))
+        %tbody
+          = render "index_search"
+          - count=0
+          - @asset_losses.group_by{|x|x.document}.each do |approval_document, asset_losses|
             %tr
-              %td{:style=>"text-align: center;"}= check_box_tag "asset_loss_ids[]", asset_loss.id, true, :id => "assetlossidss_#{count}"
-              %td= asset_loss.loss_type.capitalize
-              %td= ringgols(asset_loss.est_value)
-              %td= link_to asset_loss.asset.code_asset, asset_loss_path(asset_loss) 
-              %td= asset_loss.try(:location).try(:name)	  
-              %td= asset_loss.lost_at.strftime('%d %b %Y - %H:%M') unless asset_loss.lost_at.nil?
-            - count+=1
+              %td.group{colspan: 6}
+                - unless approval_document.blank?
+                  =approval_document.doc_details+" : "
+                  =link_to (fa_icon "file-pdf-o")+" KEW-PA 31", kewpa31_asset_losses_path(format: "pdf", id: approval_document)
+                - else
+                  =t('not_applicable')
+         
+            - for asset_loss in asset_losses
+              %tr
+                %td{:style=>"text-align: center;"}= check_box_tag "asset_loss_ids[]", asset_loss.id, true, :id => "assetlossidss_#{count}"
+                %td= asset_loss.loss_type.capitalize
+                %td= ringgols(asset_loss.est_value)
+                %td= link_to asset_loss.asset.code_asset, asset_loss_path(asset_loss) 
+                %td= asset_loss.try(:location).try(:name)	  
+                %td= asset_loss.lost_at.strftime('%d %b %Y - %H:%M') unless asset_loss.lost_at.nil?
+              - count+=1
         
-    .row
-      %br
-      %span{:style=>"position: absolute; left: 40px;"}
-        = check_box_tag :check_all
-        = t('actions.check_all')
-      %br
+      .row
+        %br
+        %span{:style=>"position: absolute; left: 40px;"}
+          = check_box_tag :check_all
+          = t('actions.check_all')
+        %br
         
-    .row 
-      %br
-      - if @asset_losses.count > 0
-        .col-md-3.col-md-offset-1= submit_tag (t 'asset.loss.writeoff_checked'), :name => :loss_submit_button, class: "btn btn-default"
+      .row 
+        %br
+        - if @asset_losses.count > 0
+          .col-md-3.col-md-offset-1= submit_tag (t 'asset.loss.writeoff_checked'), :name => :loss_submit_button, class: "btn btn-default"
 
 
 :javascript

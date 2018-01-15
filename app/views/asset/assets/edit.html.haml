@@ -24,7 +24,12 @@
           .col-sm-2.control-label
             = f.label t 'asset.assetcode', for: :assetcode
           .col-md-5
-            = f.text_field :assetcode, class: 'form-control mandatory'
+            - if @asset.college.code=="amsas" && @asset.college.name.include?("amsas") == false
+              - type=@asset.assettype==1 ? "H" : "I"
+              - asset_code=(@asset.college.name.split(" ").join("_").downcase+"/#{type}/18/"+@asset.cardno)
+              = f.text_field :assetcode, class: 'form-control mandatory', value: asset_code
+            - else
+              = f.text_field :assetcode, class: 'form-control mandatory'
         #status.tab-pane.fade.in.active
           - if @asset.assettype == 1
             .form-group

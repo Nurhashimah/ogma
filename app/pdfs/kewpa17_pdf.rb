@@ -20,7 +20,7 @@ class Kewpa17Pdf < Prawn::Document
       heading_table2
     end
     table2 if @disposals.count > 0 && @disposals.first!=@disposal_end #1
-    total_up
+    total_up if @disposals.count > 1
     total_table
     move_down 20
     signatory_table

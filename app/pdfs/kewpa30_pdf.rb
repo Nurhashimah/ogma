@@ -27,7 +27,7 @@ class Kewpa30Pdf < Prawn::Document
         move_down 20
         text "2.      Perihal Kehilangan", :align => :left, :size => 12
         move_down 10
-        text "(a)   Tarikh deketahui: #{@asset_loss.try(:lost_at).try(:strftime, "%d/%m/%y")}", :align => :left, :size => 12, :indent_paragraphs => 30
+        text "(a)   Tarikh diketahui: #{@asset_loss.try(:lost_at).try(:strftime, "%d/%m/%y")}", :align => :left, :size => 12, :indent_paragraphs => 30
         move_down 5
         text "(b)   Tarikh sebenar berlaku: #{@asset_loss.try(:lost_at).try(:strftime, "%d/%m/%y")}", :align => :left, :size => 12, :indent_paragraphs => 30
         move_down 5

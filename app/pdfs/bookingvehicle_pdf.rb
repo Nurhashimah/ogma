@@ -8,7 +8,10 @@ class BookingvehiclePdf < Prawn::Document
       move_down 10
     end
     bounding_box([10,770], :width => 400, :height => 100) do |y2|
-       image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
+      if college.code=="amsas" && college.name.include?("amsas") == false
+      else
+	image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
+      end
     end
     bounding_box([90,760], :width => 350, :height => 100) do |y2|
       if college.code=="kskbjb"
@@ -17,9 +20,12 @@ class BookingvehiclePdf < Prawn::Document
         move_down 1
         text "PINJAMAN / PENGGUNAAN KENDERAAN", :style => :bold, :align => :center
       else
-        text "PPL APMM", :style => :bold, :align => :center
-	move_down 10
-	text "#{I18n.t('instructor_appraisal.document_no').upcase}: BK-LAT-TBL-05-01", :style => :bold, :align => :center
+	if college.code=="amsas" && college.name.include?("amsas") == false
+	else
+          text "PPL APMM", :style => :bold, :align => :center
+	  move_down 10
+	  text "#{I18n.t('instructor_appraisal.document_no').upcase}: BK-LAT-TBL-05-01", :style => :bold, :align => :center
+	end
 	text "PINJAMAN / PENGGUNAAN KENDERAAN", :style => :bold, :align => :center
       end
     end
@@ -30,7 +36,10 @@ class BookingvehiclePdf < Prawn::Document
       end
     else
       bounding_box([430,770], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+	if college.code=="amsas" && college.name.include?("amsas") == false
+	else
+	  image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+	end
       end
     end
     table_main
@@ -39,7 +48,10 @@ class BookingvehiclePdf < Prawn::Document
     move_down 10
     table_approved_signatory
     move_down 3
-    table_ending
+    if college.code=="amsas" && college.name.include?("amsas") == false
+    else
+      table_ending
+    end
     page_count.times do |i|
       go_to_page(i+1)
       footer

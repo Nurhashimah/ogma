@@ -4,10 +4,16 @@ class Kewpa3Pdf < Prawn::Document
     @asset = asset
     @view = view
     @lead = lead
+    @college = college
 
     font "Times-Roman"
     text "KEW.PA-3", :align => :right, :size => 16, :style => :bold
-    text "(No. Siri Pendaftaran: #{@asset.assetcode} )", :align => :right, :size => 14
+    if college.code=="amsas" && college.name.include?("amsas") == false
+      @assetcode=(college.name.split(" ").join("_").downcase+'/I/18/'+@asset.cardno)
+      text "(No. Siri Pendaftaran: #{@assetcode} )", :align => :right, :size => 14
+    else
+      text "(No. Siri Pendaftaran: #{@asset.assetcode} )", :align => :right, :size => 14
+    end
     move_down 15
     text "DAFTAR INVENTORI", :align => :center, :size => 14, :style => :bold
     move_down 15
@@ -85,7 +91,11 @@ class Kewpa3Pdf < Prawn::Document
     @e=[]
     @asset.asset_placements.map do |asset_placement|
       @a << asset_placement.quantity
-      @b << asset_placement.try(:asset).try(:assetcode)
+      if @college.code=="amsas" && @college.name.include?("amsas") == false
+	@b << (@college.name.split(" ").join("_").downcase+'/I/18/'+asset_placement.try(:asset).try(:cardno))
+      else
+	@b << asset_placement.try(:asset).try(:assetcode)
+      end
       @c << asset_placement.try(:location).try(:name)
       @d << asset_placement.reg_on.try(:strftime, "%d/%m/%Y")
       a = "#{asset_placement.try(:staff).try(:name)}"
