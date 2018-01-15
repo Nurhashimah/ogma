@@ -31,7 +31,9 @@
     .col-sm-8
       = f.label (t 'activerecord.attributes.trainingnotes.staff_id')
       - if current_user.college.code=='amsas'
-        = f.collection_select :staff_id, Staff.joins(:positions).where('positions.name=?', 'Jurulatih').order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data_width" => "auto"}
+        - lecturer_ids=User.joins(:roles).where('roles.name=?','Lecturer').pluck(:userable_id)
+        /- lecturers=Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)','Jurulatih', lecturer_ids).order('rank_id ASC, staffs.name ASC').distinct
+        = f.collection_select :staff_id, Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)','Jurulatih', lecturer_ids).order(rank_id: :asc, name: :asc).distinct, :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data_width" => "auto"}
       - else
         = f.collection_select :staff_id, Staff.joins(:positions).where('positions.name=?', 'Pengajar').order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data_width" => "auto"}
 

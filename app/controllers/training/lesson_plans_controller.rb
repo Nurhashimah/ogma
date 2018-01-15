@@ -3,7 +3,7 @@ class Training::LessonPlansController < ApplicationController
    filter_access_to :show, :edit, :update, :destroy, :lesson_plan,:lesson_report, :lessonplan_reporting, :attribute_check => true 
    before_action :set_index_data, only: [:index, :lessonplan_listing]
    before_action :set_lesson_plan, only: [:show, :edit, :update, :destroy]
-   before_action :set_admin, only: [:index, :new, :edit,:update, :show,  :lessonplan_reporting, :index_report, :lessonplan_listing]
+   before_action :set_admin, only: [:index, :new, :edit, :create, :update, :show,  :lessonplan_reporting, :index_report, :lessonplan_listing]
 
   # GET /lesson_plans
   # GET /lesson_plans.xml

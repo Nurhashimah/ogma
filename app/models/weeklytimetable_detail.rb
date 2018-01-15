@@ -129,7 +129,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
    end
    
    def day_time_slot
-     if college.code=='amsas'
+     if college.code=='amsas' && college.name.include?("amsas")
        a="#{Programme.find(subject).subject_with_topic}"
      else
        a="#{Programme.find(topic).subject_with_topic}"

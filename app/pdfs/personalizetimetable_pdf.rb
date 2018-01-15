@@ -32,8 +32,8 @@ class PersonalizetimetablePdf < Prawn::Document
     @j = @detailing[0]
     @column_count_friday=@j.weeklytimetable.timetable_friday.timetable_periods.count
     @column_count_monthur=@j.weeklytimetable.timetable_monthurs.timetable_periods.count
-    @break_format1 = @j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).pluck(:is_break)
-    @break_format2 = @j.weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).pluck(:is_break)
+    @break_format1 = @j.weeklytimetable.timetable_monthurs.timetable_periods.order(seq: :asc).pluck(:is_break)
+    @break_format2 = @j.weeklytimetable.timetable_friday.timetable_periods.order(seq: :asc).pluck(:is_break)
     @daycount=4
     @weekdays_end = @j.weeklytimetable.startdate.to_date+4.days
     @daycount2 = (@j.weeklytimetable.enddate.to_date - @weekdays_end).to_i 
@@ -65,8 +65,10 @@ class PersonalizetimetablePdf < Prawn::Document
     
     text "TARIKH : #{@sdt} HINGGA : #{@edt}", :align =>:left, :size => 9
     move_down 5
-    table_schedule_sun_wed
-    table_schedule_thurs
+    #TEMPORARY disable - TODO - fix these parts : NOTE - cross templates (RAN, URK, Sunday start & others)
+    #table_schedule_sun_wed
+    #table_schedule_thurs
+    text "#{@column_count_friday} ~ #{@column_count_monthur}"
     
     if @daycount2 > 0
       start_new_page
@@ -116,7 +118,7 @@ class PersonalizetimetablePdf < Prawn::Document
     #[2]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
     if @college.code=='amsas' && @column_count_monthur > 8
        all_col = [55]
-       isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
+       isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
        1.upto(@column_count_monthur) do |col|
 	 if isbreak.include?(col)
 	   all_col << 55
@@ -146,13 +148,13 @@ class PersonalizetimetablePdf < Prawn::Document
     allrows_content=[]  
     @detailing.each_with_index do |j,index|
       if index==0
-        j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
+        j.weeklytimetable.timetable_monthurs.timetable_periods.order(seq: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
           for periods in row_things
             if periods.day_name == 1
 	      if @college.code=='amsas'
                 header_col << "#{periods.timing_24hrs}"
 	      else
-		header_col << "#{periods.sequence} <br> #{periods.timing}"
+		header_col << "#{periods.seq} <br> #{periods.timing}"
 	      end
             end
           end 
@@ -176,7 +178,7 @@ class PersonalizetimetablePdf < Prawn::Document
         if @break_format1[col-1]==true && row==1
 	  #1)Amsas - to display non_class items accordingly
           if @j.weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
-            non_class_value=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: col).first.non_class
+            non_class_value=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(seq: col).first.non_class
             rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
           else
             rehat=I18n.t('training.weeklytimetable.break')
@@ -202,7 +204,7 @@ class PersonalizetimetablePdf < Prawn::Document
     end
     
     college_code=@college.code
-    isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
+    isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
     
     data = [header_col]+allrows_content
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
@@ -269,7 +271,7 @@ class PersonalizetimetablePdf < Prawn::Document
     #[2]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
     if @college.code=='amsas' && @column_count_monthur > 8
        all_col = [55]
-       isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
+       isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
        1.upto(@column_count_monthur) do |col|
 	 if isbreak.include?(col)
 	   all_col << 55
@@ -298,7 +300,7 @@ class PersonalizetimetablePdf < Prawn::Document
     ##Header+Thursday Content row - start
     @detailing.each_with_index do |j,index|   
       if index==0
-        j.weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_friday, false) do |row_things|
+        j.weeklytimetable.timetable_friday.timetable_periods.order(seq: :asc).in_groups_of(@column_count_friday, false) do |row_things|
           colfriday=1
           for periods in row_things
             if periods.day_name == 2  
@@ -308,13 +310,13 @@ class PersonalizetimetablePdf < Prawn::Document
 		if @college.code=='amsas'
                   header_col << {content: "#{periods.timing_24hrs}", colspan: @span_count}
 		else
-		   header_col << {content: "#{periods.sequence} <br> #{periods.timing}", colspan: @span_count}
+		   header_col << {content: "#{periods.seq} <br> #{periods.timing}", colspan: @span_count}
 		end
               else
 		if @college.code=='amsas'
                   header_col << "#{periods.timing_24hrs}"
 		else
-		  header_col << "#{periods.sequence} <br> #{periods.timing}"
+		  header_col << "#{periods.seq} <br> #{periods.timing}"
 		end
               end
               colfriday+=1
@@ -341,7 +343,7 @@ class PersonalizetimetablePdf < Prawn::Document
           #allrows_content << "REHAT"
 	  #1)Amsas - to display non_class items accordingly
             if @j.weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
-              non_class_value=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: col2).first.non_class
+              non_class_value=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(seq: col2).first.non_class
               rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
             else
               rehat=I18n.t('training.weeklytimetable.break')
@@ -414,7 +416,7 @@ class PersonalizetimetablePdf < Prawn::Document
     #[2]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
     if @college.code=='amsas' && @column_count_monthur > 8
        all_col = [55]
-       isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
+       isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
        1.upto(@column_count_monthur) do |col|
 	 if isbreak.include?(col)
 	   all_col << 55
@@ -443,12 +445,12 @@ class PersonalizetimetablePdf < Prawn::Document
     if @daycount2 > 0
       @detailing.each_with_index do |j,index|
         if index==0 
-          j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
+          j.weeklytimetable.timetable_monthurs.timetable_periods.order(seq: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
             for periods in row_things
 	      if @college.code=='amsas'
                 header_col << "#{periods.timing_24hrs}"
 	      else
-		header_col << "#{periods.sequence} <br> #{periods.timing}"
+		header_col << "#{periods.seq} <br> #{periods.timing}"
 	      end
             end
           end
@@ -467,7 +469,7 @@ class PersonalizetimetablePdf < Prawn::Document
             #onerow_content << {content: "REHAT", rowspan: @daycount2}
 	    #1)Amsas - to display non_class items accordingly
             if @j.weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
-              non_class_value=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: col2).first.non_class
+              non_class_value=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(seq: col2).first.non_class
               rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
             else
               rehat=I18n.t('training.weeklytimetable.break')
@@ -504,7 +506,7 @@ class PersonalizetimetablePdf < Prawn::Document
     end  #(if daycount2 > 0)
     
     college_code=@college.code
-    isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
+    isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
     
     data = [header_col]+allrows_content
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do

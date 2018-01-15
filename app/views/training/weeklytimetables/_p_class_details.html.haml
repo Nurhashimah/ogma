@@ -1,4 +1,4 @@
-- if current_user.college.code=="amsas"
+- if current_user.college.code=="amsas" && current_user.college.name.include?("amsas")
   - if j.weeklytimetable_subject.ancestry_depth == 4 
     .text-left
       /= j.weeklytimetable_topic.parent.parent.code

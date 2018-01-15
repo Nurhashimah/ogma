@@ -4440,6 +4440,7 @@ en:
       add_details: Add Details
     trainingnote:
       title2: Training Notes
+      title3: Training Aids
       list: Training Notes List
       new: New Training Note
       edit: Edit Training Note
@@ -4468,6 +4469,7 @@ en:
       create_one: CREATE Topic Detail
       tomatch: to match
       topic: Topic
+      upload_via_lp: "(Uploaded via Lesson Plan)"
 
     lesson_plan:
       title: Lesson Plan & Report Listing

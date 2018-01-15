@@ -4358,6 +4358,7 @@ ms_MY:
       add_details: Tambah Butiran
     trainingnote:
       title2: Nota Latihan
+      title3: Alat Bantuan Mengajar
       list: Senarai Nota Latihan
       new: Nota Latihan Baru
       edit: Sunting Nota Latihan
@@ -4386,6 +4387,7 @@ ms_MY:
       create_one: CIPTA Butiran Topik
       tomatch: untuk padanan
       topic: Topik
+      upload_via_lp: "(Dimuatnaik melalui modul Pelan Pengajaran)"
 
     lesson_plan:
       title: Senarai Pelan & Laporan Pengajaran

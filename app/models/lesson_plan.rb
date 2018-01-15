@@ -33,11 +33,8 @@ class LessonPlan < ActiveRecord::Base
    has_attached_file :data,
                       :url => "/assets/lesson_plans/:id/:style/:basename.:extension",
                       :path => ":rails_root/public/assets/lesson_plans/:id/:style/:basename.:extension"
-   validates_attachment_content_type :data, 
-                          :content_type => ['application/pdf', 'application/msword','application/msexcel','image/png','image/jpg', 'image/jpeg','text/plain'],
-                          :storage => :file_system,
-                          :message => "Invalid File Format" 
-   validates_attachment_size :data, :less_than => 5.megabytes 
+   validates_attachment_content_type :data, :content_type => ['application/pdf', 'application/msword','application/msexcel','image/png','image/jpg', 'image/jpeg','text/plain', "application/mspowerpoint","application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.openxmlformats-officedocument.presentationml.presentation","application/vnd.oasis.opendocument.text","application/vnd.oasis.opendocument.presentation"], :storage => :file_system, :message => "Invalid File Format la" 
+   validates_attachment_size :data, :less_than => 25.megabytes 
   
   def set_plan_owner
     unless schedule.nil?

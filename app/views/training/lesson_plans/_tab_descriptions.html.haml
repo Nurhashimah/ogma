@@ -12,7 +12,7 @@
       %dd=h @lesson_plan.semester
             
     %dt=t 'training.lesson_plan.topic', :default => model_class.human_attribute_name(:topic)+":"
-    %dd
+    %dd{style: 'padding-left: 70px;'}
       /=h @lesson_plan.try(:schedule_item).try(:weeklytimetable_topic).try(:full_parent)
       =h @lesson_plan.college.code=='amsas' ? @lesson_plan.try(:schedule_item).try(:weeklytimetable_topic).try(:semester_subject_topic) :  @lesson_plan.try(:schedule_item).try(:weeklytimetable_topic).try(:subject_with_topic)
 

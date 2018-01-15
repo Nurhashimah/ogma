@@ -55,21 +55,31 @@
           .form-group
             .col-sm-2.control-label
               = f.label t('training.trainingnote.document'), for: :document
-            .col-md-3
+            .col-md-5
               - if @trainingnote.new_record? == false
+                /- if @trainingnote.document.exists?
+                /  = link_to image_tag('attach.png'), @trainingnote.document.url
+                /  = link_to @trainingnote.document_file_name, @trainingnote.document.url 
+                /- else
+                /  = link_to image_tag('attach.png'),  "http://#{request.host}:3000"+@trainingnote.document.url
+                /  = link_to @trainingnote.document_file_name, "http://#{request.host}:3000"+@trainingnote.document.url , :width => '57px'
+                //////
                 - if @trainingnote.document.exists?
-                  = link_to image_tag('attach.png'), @trainingnote.document.url
+                  = link_to image_tag('attach.png'), download_training_trainingnote_path(@trainingnote)
+                  ||
                   = link_to @trainingnote.document_file_name, @trainingnote.document.url 
                 - else
-                  = link_to image_tag('attach.png'),  "http://#{request.host}:3000"+@trainingnote.document.url
-                  = link_to @trainingnote.document_file_name, "http://#{request.host}:3000"+@trainingnote.document.url , :width => '57px'
+                  - upload_via_lp=LessonPlan.where(data_title: @trainingnote.title).where(data_file_name: @trainingnote.document_file_name)
+                  - if upload_via_lp.count > 0
+                    = link_to image_tag('attach.png')+" || "+(t 'download')+" : "+@trainingnote.document_file_name, upload_via_lp.last.data.url
+                //////
      
               - if f.object.document_file_name
                 %br
                 %b=t('training.trainingnote.or') unless @trainingnote.timetable_id?
               %br
               = f.file_field :document, class: 'form-control' unless @trainingnote.timetable_id?
-          
+              .small=t('training.trainingnote.upload_via_lp') if @trainingnote.timetable_id?
           .form-group
             .col-sm-2.control-label
               = f.label t('training.trainingnote.title'), for: :title

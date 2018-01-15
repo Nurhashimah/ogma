@@ -54,8 +54,8 @@
             - j = detailing[0]
             - @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count
             - @column_count_monthur=j.weeklytimetable.timetable_monthurs.timetable_periods.count
-            - break_format1 = j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).pluck(:is_break)
-            - @break_format2 = j.weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).pluck(:is_break)
+            - break_format1 = j.weeklytimetable.timetable_monthurs.timetable_periods.order(seq: :asc).pluck(:is_break)
+            - @break_format2 = j.weeklytimetable.timetable_friday.timetable_periods.order(seq: :asc).pluck(:is_break)
             /- @column_count=j.weeklytimetable.timetable_monthurs.timetable_periods.count	
             - daycount=4
             - weekdays_end = j.weeklytimetable.startdate.to_date+4.days
@@ -63,14 +63,14 @@
             /Header(row) : sequence & time period (Sunday - Wednesday)
             - detailing.each_with_index do |j,index|
               - if index==0
-                - j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
+                - j.weeklytimetable.timetable_monthurs.timetable_periods.order(seq: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
                   %tr
                     %th{:align => "center", :style=>"width:200px; border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"} 
                       &nbsp;
                     - for periods in row_things
                       - if periods.day_name == 1
                         %th{:align => "center", :style=>"width:200px; border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
-                          =periods.sequence
+                          =periods.seq
                           %BR= j.weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
 
             /Content - (Sunday - Wednesday)
@@ -91,7 +91,7 @@
                       /=t 'training.weeklytimetable.break'
                       //1)Amsas - to display non_class items accordingly
                       - if j.weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
-                        - non_class_value=j.weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: col).first.non_class
+                        - non_class_value=j.weeklytimetable.timetable_monthurs.timetable_periods.where(seq: col).first.non_class
                         =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
                       - else
                         = t 'training.weeklytimetable.break'
@@ -137,7 +137,7 @@
                         /=t 'training.weeklytimetable.break'
                         //3)Amsas - to display non_class items accordingly
                         - if j.weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
-                          - non_class_value=j.weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: col2).first.non_class
+                          - non_class_value=j.weeklytimetable.timetable_monthurs.timetable_periods.where(seq: col2).first.non_class
                           =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
                         - else
                           = t 'training.weeklytimetable.break'
@@ -194,7 +194,7 @@
               - span_count="2"
               - detailing.each_with_index do |j,index|
                 - if index==0
-                  - j.weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_friday, false) do |row_things|
+                  - j.weeklytimetable.timetable_friday.timetable_periods.order(seq: :asc).in_groups_of(@column_count_friday, false) do |row_things|
                     %tr
                       %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"} 
                         &nbsp;
@@ -205,11 +205,11 @@
                           /- if colfriday == 4 || colfriday == 5 || classes_tospan.include?(colfriday)
                           - if colfriday == break_tospan || classes_tospan.include?(colfriday)==true
                             %th{:align => "center", :colspan=>"2", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
-                              =periods.sequence
+                              =periods.seq
                               %BR= j.weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
                           - else
                             %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
-                              =periods.sequence
+                              =periods.seq
                               %BR= j.weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
                           - colfriday+=1
  
@@ -282,14 +282,14 @@
                   - if j.weeklytimetable.format1==j.weeklytimetable.format2
                   - else
                     //otherwise display weekends header as usual
-                    - j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
+                    - j.weeklytimetable.timetable_monthurs.timetable_periods.order(seq: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
                       %tr
                         %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"} 
                           &nbsp;
                         - for periods in row_things
                           - if periods.day_name == 1
                             %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
-                              =periods.sequence
+                              =periods.seq
                               %BR= j.weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
 
 
@@ -310,7 +310,7 @@
                         /=t 'training.weeklytimetable.break'
                         //4)Amsas - to display non_class items accordingly
                         - if j.weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
-                          - non_class_value=j.weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: col2).first.non_class
+                          - non_class_value=j.weeklytimetable.timetable_monthurs.timetable_periods.where(seq: col2).first.non_class
                           =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
                         - else
                           = t 'training.weeklytimetable.break'
