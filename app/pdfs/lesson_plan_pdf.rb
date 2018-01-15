@@ -18,7 +18,11 @@ class Lesson_planPdf< Prawn::Document
       move_down 5
     end
     move_down 20
-    image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.65
+    if (@college.code=="amsas" && @college.name.include?("amsas") == false)
+      move_down 20
+    else
+      image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.65
+    end
     move_down 10
     if college.code=="kskbjb"
       text "KEMENTERIAN KESIHATAN MALAYSIA", :style => :bold, :align => :center
@@ -70,7 +74,11 @@ class Lesson_planPdf< Prawn::Document
     if @lesson_plan.schedule_item.topic==0
       topic_line=""
     else
-      topic_line="#{@lesson_plan.schedule_item.weeklytimetable_topic.full_parent}<br>#{@lesson_plan.schedule_item.weeklytimetable_topic.name}"
+      if @college.code=="amsas" && @college.name.include?("amsas") == false
+        topic_line="#{@lesson_plan.schedule_item.weeklytimetable_topic.subject_list} / #{@lesson_plan.lecture_title}"
+      else
+        topic_line="#{@lesson_plan.schedule_item.weeklytimetable_topic.full_parent}<br>#{@lesson_plan.schedule_item.weeklytimetable_topic.name}"
+      end
     end
       
     data = [["", "Nama Pengajar","#{@lesson_plan.lessonplan_owner.rank_id? ? @lesson_plan.lessonplan_owner.staff_with_rank : @lesson_plan.lessonplan_owner.name }"],
@@ -117,7 +125,7 @@ class Lesson_planPdf< Prawn::Document
                     ["","Masa","Isi kandungan/Subtopik","Aktiviti Pengajar","Aktiviti Pelatih","Alat Bantuan Mengajar","Penilaian"]] 
     header +
     @lesson_plan.lessonplan_methodologies.map do |l|
-      ["","#{l.start_meth.try(:strftime, '%H:%M')+' - '+l.end_meth.try(:strftime,'%H:%M %p')}<br>(#{ (((l.end_meth - l.start_meth )/60 ) % 60).to_i} minit)",
+      ["","#{l.start_end_time}<br>#{l.start_end_time_in_minutes}",
        "#{l.content}",
        "#{l.lecturer_activity}",
        "#{l.student_activity}",

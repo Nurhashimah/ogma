@@ -8,14 +8,22 @@ class ResultsPdf < Prawn::Document
       student_intake=@examresult.intake.monthyear_intake.try(:strftime, '%b %Y')
       prog_id=Intake.find(@examresult.intake_id).programme_id
       bounding_box([30,530], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.80
+	if college.name.include?("amsas")
+          image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.80
+	end
       end
       bounding_box([680,530], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+	if college.name.include?("amsas")
+	  image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+	end
       end
       @subjects=Programme.find(prog_id).descendants.where(course_type: 'Subject').sort_by{|x|[x.parent_id, x.code]}
       bounding_box([140, 520], :width => 500, :height => 80) do |y2|
-        text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :align => :center, :size => 11, :style => :bold
+	if college.name.include?("amsas")
+	  text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :align => :center, :size => 11, :style => :bold
+	else
+	  move_down 11
+	end
 	text "LAPORAN PEMARKAHAN PEPERIKSAAN",  :align => :center, :size => 11, :style => :bold
 	text "#{@examresult.programmestudent.programme_list.upcase}", :align => :center, :size => 11, :style => :bold
 	text "SEHINGGA #{Date.today.strftime('%d-%m-%Y')}", :align => :center, :size => 11, :style => :bold

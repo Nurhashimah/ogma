@@ -68,13 +68,19 @@ class Examination_slipPdf < Prawn::Document
       super({top_margin: 20, left_margin:70, right_margin:80, page_size: 'A4', page_layout: :portrait })
       font "Helvetica"
       bounding_box([-30,760], :width => 100, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.80
+	if college.name.include?("amsas")
+	  image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.80
+	end
       end
       bounding_box([410,760], :width => 100, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+	if college.name.include?("amsas")
+	  image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+	end
       end
        bounding_box([-15, 740], :width => 500, :height => 70) do |y2|
-        text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :align => :center, :size => 11, :style => :bold
+	if college.name.include?("amsas")
+	  text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :align => :center, :size => 11, :style => :bold
+	end
 	text  "SLIP KEPUTUSAN PEPERIKSAAN",  :align => :center, :size => 11, :style => :bold
 	text "#{@resultline.examresult.programmestudent.programme_list.upcase}", :align => :center, :size => 11, :style => :bold
       end
@@ -84,7 +90,11 @@ class Examination_slipPdf < Prawn::Document
       #move_down 20
       text " #{I18n.t('exam.examresult.student')} : #{@resultline.student.student_with_rank}",  :align => :left, :size => 11, :style => :bold
       text " #{I18n.t('student.icno')} : #{@resultline.student.formatted_mykad}",  :align => :left, :size => 11, :style => :bold      
-      text " #{I18n.t('exam.examresult.intake')} : #{@view.l(@resultline.examresult.intake.monthyear_intake)}", :align => :left, :size => 11, :style => :bold
+      if college.name.include?("amsas")
+        text " #{I18n.t('exam.examresult.intake')} : #{@view.l(@resultline.examresult.intake.monthyear_intake)}", :align => :left, :size => 11, :style => :bold
+      else
+	text " #{I18n.t('exam.examresult.intake')} : #{@view.l(@resultline.examresult.intake.register_on)}", :align => :left, :size => 11, :style => :bold
+      end
       text " #{I18n.t('exam.examresult.exam_date')} : #{@view.l(@resultline.examresult.examdts)} - #{@view.l(@resultline.examresult.examdte)}",  :align => :left, :size => 11, :style => :bold
       move_down 20
       prog_id=Intake.find(@resultline.examresult.intake_id).programme_id

@@ -14,17 +14,19 @@
     %dd=h @lesson_plan.condition_isnotgood? ? simple_format(@lesson_plan.condition_desc) : "-"
     
     %dt=t 'training.lesson_plan.training_aids', :default => model_class.human_attribute_name(:training_aids)+":"
-    %dd=h @lesson_plan.training_aids
+    %dd{style: 'padding-left: 70px;'}=h @lesson_plan.training_aids
             
     %dt=t 'training.lesson_plan.lecturer_review', :default => model_class.human_attribute_name(:lecturer_review)+":"
-    %dd=h @lesson_plan.summary
+    %dd{style: 'padding-left: 70px;'}=h @lesson_plan.summary
 
-    %dt=t 'training.lesson_plan.report_summary', :default => model_class.human_attribute_name(:report_summary)+":"
-    %dd
-      - if @lesson_plan.college.code=='kskbjb'
-        =h @lesson_plan.report_summary? ? @lesson_plan.report_summary : (t 'training.lesson_plan.awaiting_review')
-      - else
-        =h @lesson_plan.report_summary? ? @lesson_plan.report_summary : (t 'training.lesson_plan.awaiting_review_general')
+    - if @lesson_plan.college.code=="amsas" && @lesson_plan.college.name.include?("amsas") == false
+    - else
+      %dt=t 'training.lesson_plan.report_summary', :default => model_class.human_attribute_name(:report_summary)+":"
+      %dd{style: 'padding-left: 70px;'}
+        - if @lesson_plan.college.code=='kskbjb'
+          =h @lesson_plan.report_summary? ? @lesson_plan.report_summary : (t 'training.lesson_plan.awaiting_review')
+        - else
+          =h @lesson_plan.report_summary? ? @lesson_plan.report_summary : (t 'training.lesson_plan.awaiting_review_general')
          
     %dt=t 'training.lesson_plan.report_submit', :default=> model_class.human_attribute_name(:report_submit)+":"
     %dd=h @lesson_plan.report_submit? ? fa_icon('check') : fa_icon('times')

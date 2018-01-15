@@ -16,21 +16,31 @@ class Questionanalysis_listPdf < Prawn::Document
   
   def logo_header
     bounding_box([30,520], :width => 400, :height => 70) do |y2|
-      image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.70
+      if @college.name.include?("amsas")
+	image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.70
+      end
     end
     bounding_box([700,520], :width => 400, :height => 70) do |y2|
-      image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.85
+      if @college.name.include?("amsas")
+	image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.85
+      end
     end
     bounding_box([140, 510], :width => 500, :height => 60) do |y2|
-      text "PPL APMM", :align => :center, :size => 10, :style => :bold
-      text "NO. DOKUMEN: BK-KKM-06-01",  :align => :center, :size => 10, :style => :bold
+      if @college.name.include?("amsas")
+	text "PPL APMM", :align => :center, :size => 10, :style => :bold
+	text "NO. DOKUMEN: BK-KKM-06-01",  :align => :center, :size => 10, :style => :bold
+      end
       move_down 5
       text "BORANG ANALISA KEPUTUSAN PEPERIKSAAN", :align => :center, :size => 10, :style => :bold
     end
     bounding_box([20, 450], :width => 500, :height => 30) do |y2|
       text "KURSUS : #{@examanalysis.exampaper.subject.root.programme_list.upcase} ", :size => 9
       move_down 3
-      text "KELAS : #{@examanalysis.exampaper.subject.subject_list.upcase} (#{(I18n.t 'training.programme.module').upcase} : #{@examanalysis.exampaper.subject.parent.name})", :size => 9
+      if @college.name.include?("amsas")
+	text "KELAS : #{@examanalysis.exampaper.subject.subject_list.upcase} (#{(I18n.t 'training.programme.module').upcase} : #{@examanalysis.exampaper.subject.parent.name})", :size => 9
+      else
+	text "KELAS : #{@examanalysis.exampaper.subject.subject_list.upcase}", :size => 9
+      end
     end  
     bounding_box([345, 450], :width => 500, :height => 30) do |y2|
       text "PEPERIKSAAN : #{@examanalysis.exampaper.render_full_name.upcase} ",  :size => 9
