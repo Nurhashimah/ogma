@@ -3,6 +3,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @student = student
     @view = view
+    @college=college
     
     if college.code=="kskbjb"
       font "Times-Roman"
@@ -39,7 +40,10 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
       move_down 5
       table_personal_details_pg1
       move_down 10
-      table_ending
+      if @college.code=="amsas" && @college.name.include?("amsas") == false
+      else
+	table_ending
+      end
       start_new_page #pg 2
       header
       move_down 20
@@ -47,15 +51,20 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
       move_down 20
       table_personal_details_pg2_cont
       move_down 80
-      table_ending
+      if @college.code=="amsas" && @college.name.include?("amsas") == false
+      else
+	table_ending
+      end
       start_new_page #pg 3
       header
       table_attachments_verifications
       move_down 10
       table_notes
       move_down 30
-      table_ending
-      
+      if @college.code=="amsas" && @college.name.include?("amsas") == false
+      else
+	table_ending
+      end
       page_count.times do |i|
         go_to_page(i+1)
         footer
@@ -65,26 +74,39 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
   end
   
   def header
-      text "PPL APMM", :align => :center, :size => 14, :style => :bold
-      move_down 10
-      text "#{I18n.t('instructor_appraisal.document_no').upcase} : BK-LAT-KS-02-03", :align => :center, :size => 14, :style => :bold
+      if @college.code=="amsas" && @college.name.include?("amsas") == false
+	text "#{@college.name}", :align => :center, :size => 14, :style => :bold
+      else
+	text "PPL APMM", :align => :center, :size => 14, :style => :bold
+	move_down 10
+	text "#{I18n.t('instructor_appraisal.document_no').upcase} : BK-LAT-KS-02-03", :align => :center, :size => 14, :style => :bold
+      end
       text "BORANG MAKLUMAT PERIBADI", :align => :center, :style => :bold, :size => 14
       move_down 15
       bounding_box([10,770], :width => 400, :height => 100) do |y2|
-        image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
+	if @college.code=="amsas" && @college.name.include?("amsas") == false
+	else
+	  image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
+	end
       end
       bounding_box([430,770], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+	if @college.code=="amsas" && @college.name.include?("amsas") == false
+	else
+	  image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+	end
       end
   end
   
   def header_pg1
-      text "PUSAT PENDIDIKAN DAN LATIHAN APMM",  :align => :center, :style => :bold, :size => 10
-      text "AGENSI PENGUATKUASAAN MARITIM MALAYSIA",  :align => :center, :style => :bold, :size => 10
-      text "JABATAN PERDANA MENTERI",  :align => :center, :style => :bold, :size => 10
-      move_down 10
-      text "BORANG MAKLUMAT PERIBADI", :align => :center, :style => :bold, :size => 14, :align => :center, :style => :bold, :size => 14
-      text "(Diisi dalam 2 salinan)", :align => :center, :size => 9
+      if @college.name.include?("amsas") == false
+      else
+	text "PUSAT PENDIDIKAN DAN LATIHAN APMM",  :align => :center, :style => :bold, :size => 10
+	text "AGENSI PENGUATKUASAAN MARITIM MALAYSIA",  :align => :center, :style => :bold, :size => 10
+	text "JABATAN PERDANA MENTERI",  :align => :center, :style => :bold, :size => 10
+	move_down 10
+	text "BORANG MAKLUMAT PERIBADI", :align => :center, :style => :bold, :size => 14, :align => :center, :style => :bold, :size => 14
+	text "(Diisi dalam 2 salinan)", :align => :center, :size => 9
+      end
       
        bounding_box([410, 680], :width =>90, :height => 100) do |y|
 	 stroke_bounds
@@ -152,6 +174,11 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
   end 
   
   def table_personal_details_pg2_cont
+    if @college.code=="amsas" && @college.name.include?("amsas") == false
+      aa="Maklumat lanjut Rujuk Borang Kediaman Asrama"
+    else
+      aa="Maklumat lanjut Rujuk BK-LAT-KS-02-02 (Borang Kediaman Asrama)"
+    end
     data=[["A.", {content: "MAKLUMAT PERIBADI PELATIH (sambungan....)", colspan: 5}],
          [{content: "Pengalaman kerja (sekiranya ada, selain dari APMM)", colspan:6}],
          ["", "Nama Organisasi", "", "Jawatan", "", "Tempat"],
@@ -165,7 +192,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
           [{content: "Tarikh Tamat : #{@student.end_training.try(:strftime, '%d-%m-%Y')}", colspan: 6}],
           [{content: "Keperluan Penginapan :", colspan: 6}],
           [{content: "Keperluan Sajian :", colspan: 6}],
-          [{content: "Maklumat lanjut Rujuk BK-LAT-KS-02-02 (Borang Kediaman Asrama)", colspan: 6}]
+          [{content: "#{aa}", colspan: 6}]
          ]
     table(data, :column_widths => [50, 200, 30, 100, 30, 100], :cell_style => {:size => 11, :borders => []}) do
       row(0).column(0).borders =[:top, :bottom, :left]
@@ -248,13 +275,18 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
   end
   
   def table_attachments_verifications
+    if @college.code=="amsas" && @college.name.include?("amsas") == false
+      cc="Maklumat lanjut Rujuk Borang Simpanan Barangan Peribadi Pelatih"
+    else
+      cc="Maklumat lanjut Rujuk BK-LAT-KS-02-01 (Borang Simpanan Barangan Peribadi Pelatih)"
+    end
     data1=[["C.",{content: "SALINAN REKOD / DOKUMEN / BARANGAN YANG DISERAHKAN (mana-mana yang perlu)", colspan: 8}], [{content: "Senarai Rekod / Dokumen Yang Diserahkan :", colspan: 9}], [{content: "1. Salinan Kad Pengenalan", colspan: 2}, "Ya", "", "Tidak", "", "", "", ""], ["", "", "", "", "", "", "", "", ""], 
    [{content: "2. Salinan Surat Beranak", colspan: 2}, "Ya", "", "Tidak", "", "", "", ""], ["", "", "", "", "", "", "", "", ""], 
    [{content: "3. Salinan Sijil Kelulusan Akademik", colspan: 2}, "Ya", "", "Tidak", "", "", "", ""], ["", "", "", "", "", "", "", "", ""],
    [{content: "4. ____________________________", colspan: 2}, "Ya", "", "Tidak", "", "", "",""], ["", "", "", "", "", "", "", "",""],
    [{content: "5. ____________________________", colspan: 2}, "Ya", "", "Tidak", "", "", "", ""], ["", "", "", "", "", "", "", "",""],
    [{content: "6.____________________________ ", colspan: 2}, "Ya", "", "Tidak", "", "", "", ""], ["", "", "", "", "", "", "", "",""],
-   [{content: "Mempunyai Barangan Yang Diserahkan Untuk Simpanan", colspan: 4}, "Ya", "", "Tidak", "", ""], [{content: "", colspan: 9}], [{content: "Maklumat lanjut Rujuk BK-LAT-KS-02-01 (Borang Simpanan Barangan Peribadi Pelatih)", colspan: 9}]
+   [{content: "Mempunyai Barangan Yang Diserahkan Untuk Simpanan", colspan: 4}, "Ya", "", "Tidak", "", ""], [{content: "", colspan: 9}], [{content: "#{cc}", colspan: 9}]
           ]
     data2=[["D.", {content: "PENGESAHAN DAN TANDATANGAN", colspan: 8} ], 
    [{content: "Saya mengesahkan bahawa maklumat yang dinyatakan di atas adalah benar.", colspan: 9}], [{content: "Oleh : Pelatih", colspan: 3},  {content: "Diterima / Disahkan Oleh : KULA/BLA/JL", colspan: 6}], 
@@ -385,7 +417,10 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
   end
   
   def footer
-    draw_text "BK-LAT-KS-02-03", :size => 8, :at => [0, -5]
+    if @college.code=="amsas" && @college.name.include?("amsas") == false
+    else
+      draw_text "BK-LAT-KS-02-03", :size => 8, :at => [0, -5]
+    end
     draw_text "#{page_number} #{I18n.t('instructor_appraisal.from')} 3",  :size => 10, :at => [450,-5]
   end
   

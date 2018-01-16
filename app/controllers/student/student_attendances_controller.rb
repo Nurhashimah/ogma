@@ -159,7 +159,7 @@ class Student::StudentAttendancesController < ApplicationController
       @student_attendances = Array.new(5) { StudentAttendance.new }
       #view data accordingly - new_multiple.html.haml 
       @selected_class = WeeklytimetableDetail.find(@classid)
-      if current_user.college.code=='amsas'
+      if current_user.college.code=='amsas' && current_user.college.name.include?("amsas")
         @subject_name = @selected_class.weeklytimetable_subject.name 
         @programmeid = @selected_class.weeklytimetable_subject.root.id 
       else

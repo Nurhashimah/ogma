@@ -22,7 +22,10 @@
 %br
 %h4=t('library.book.excel_conditions')
 - if is_developer?
-  =image_tag("sample_excel_view_admin.png")
+  - if current_user.college.name.include?("amsas") == true
+    =image_tag("sample_excel_view_admin.png")
+  - else
+    =image_tag("sample_excel_view_second.png")
 - else
   - if current_user.college.name.include?("amsas") == true
     =image_tag("sample_excel_view.png")

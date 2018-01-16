@@ -12,8 +12,10 @@ class Averageinstructor_evaluationPdf < Prawn::Document
          move_down 5
          image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
       else
-        move_down 5
-        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.65
+	if college.name.include?("amsas")
+	  move_down 5
+	  image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.65
+	end
       end
     end
     bounding_box([150,750], :width => 350, :height => 100) do |y2|
@@ -23,8 +25,10 @@ class Averageinstructor_evaluationPdf < Prawn::Document
         move_down 1
         text "#{I18n.t('exam.evaluate_course.title')}"
       else
-        draw_text "PPL APMM", :at => [70, 105], :style => :bold
-        draw_text "#{I18n.t('instructor_appraisal.document_no').upcase}: BK-KKM-04-02", :at => [15, 90], :style => :bold
+	if college.name.include?("amsas")
+	  draw_text "PPL APMM", :at => [70, 105], :style => :bold
+	  draw_text "#{I18n.t('instructor_appraisal.document_no').upcase}: BK-KKM-04-02", :at => [15, 90], :style => :bold
+	end
         draw_text "#{I18n.t('average_instructor.form_title1').upcase}", :at => [0, 65], :style => :bold
 	draw_text "#{I18n.t('average_instructor.form_title2').upcase}", :at => [25, 50], :style => :bold
       end
@@ -36,7 +40,9 @@ class Averageinstructor_evaluationPdf < Prawn::Document
       end
     else
       bounding_box([430,770], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
+	if college.name.include?("amsas")
+	  image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
+	end
       end
     end
     
@@ -72,7 +78,9 @@ class Averageinstructor_evaluationPdf < Prawn::Document
     table_review
     table_signatory
     move_down 30
-    table_ending
+    if college.name.include?("amsas")
+      table_ending
+    end
     page_count.times do |i|
       go_to_page(i+1)
       footer

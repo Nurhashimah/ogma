@@ -13,13 +13,19 @@ class Student_attendan_formPdf < Prawn::Document
       text "BORANG KEHADIRAN PELATIH", :align => :center, :size => 12, :style => :bold
     elsif college.code=="amsas"
       bounding_box([10,780], :width => 400, :height => 60) do |y2|
-        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.65#  :width =>97.2, :height =>77.76
+	if college.name.include?("amsas")
+	  image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.65#  :width =>97.2, :height =>77.76
+	end
       end
       bounding_box([440,780], :width => 400, :height => 60) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
+	if college.name.include?("amsas")
+	  image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
+	end
       end
       bounding_box([90,770], :width => 350, :height => 60) do |y2|
-        text "PPL APMM", :style => :bold, :align => :center
+	if college.name.include?("amsas")
+	  text "PPL APMM", :style => :bold, :align => :center
+	end
         text "BORANG KEHADIRAN PELATIH", :align => :center, :size => 12, :style => :bold
       end
     else

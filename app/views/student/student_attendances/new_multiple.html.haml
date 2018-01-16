@@ -21,7 +21,7 @@
               .col-md-8.col-md-offset-1
                 %dl.dl-horizontal
                   %dt= t 'student.attendance.programme'
-                  %dd{style: 'padding-left: 70px;'}=current_user.college.code=='amsas' ? @selected_class.weeklytimetable_subject.programme_coursetype_name : @selected_class.weeklytimetable_topic.programme_coursetype_name
+                  %dd{style: 'padding-left: 70px;'}=(current_user.college.code=='amsas' && current_user.college.name.include?("amsas") == true)? @selected_class.weeklytimetable_subject.programme_coursetype_name : @selected_class.weeklytimetable_topic.programme_coursetype_name
                   
                   %dt= t 'student.attendance.class_schedule'
                   %dd{style: 'padding-left: 70px;'}=@selected_class.day_time_slot

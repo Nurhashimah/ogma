@@ -151,7 +151,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
    end
    
    def subject_day_time
-     if college.code=='amsas'
+     if college.code=='amsas' && college.name.include?("amsas")
        "#{Programme.find(subject).parent.code}"+" | "+"#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
      else
        "#{Programme.find(topic).parent.code}"+" | "+"#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
@@ -160,7 +160,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
    
    def subject_topic
      #{}"#{Programme.find(topic).subject_with_topic}"
-     if college.code=='amsas'
+     if college.code=='amsas' && college.name.include?("amsas")
        "#{Programme.find(subject).parent.code}"+" : "+"#{Programme.find(subject).subject_list}"
      else
        "#{Programme.find(topic).parent.code}"+" : "+"#{Programme.find(topic).subject_list}"
