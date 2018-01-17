@@ -96,8 +96,9 @@ class Kewpa7Pdf < Prawn::Document
     counter = counter || 0
     a=[]
     @asset_placements.each do |asset_placement|
-      a << ["#{counter += 1}", "#{asset_placement.asset.assetcode}", "#{asset_placement.asset.typename} #{asset_placement.asset.name} #{asset_placement.asset.modelname}","#{asset_placement.asset.assettype==1 ? 1 : asset_placement.quantity}"] if counter < @asset_placements.count-1
+      a << ["#{counter += 1}", "#{asset_placement.asset.assetcode}", "#{asset_placement.asset.typename} #{asset_placement.asset.name} #{asset_placement.asset.modelname}","#{asset_placement.asset.assettype==1 ? 1 : asset_placement.quantity}"] #if counter < @asset_placements.count-1
     end  
+    a
   end
   
   def hm_last

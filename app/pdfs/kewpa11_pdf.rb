@@ -65,12 +65,12 @@ class Kewpa11Pdf < Prawn::Document
     counter = counter || 0
     boddy=[]
     p_inv_count=@location.asset_placements.p_inventory.count
-    if [3, 4].include?(asset_placement.location.root.lclass) #3-Staff Residence, 4-Student Residence
-      location_details= asset_placement.try(:location).try(:combo_code)
-    else
-      location_details= asset_placement.try(:location).try(:name)
-    end
     @location.asset_placements.p_inventory.each do |asset_placement|
+      if [3, 4].include?(asset_placement.location.root.lclass) #3-Staff Residence, 4-Student Residence
+	location_details= asset_placement.try(:location).try(:combo_code)
+      else
+	location_details= asset_placement.try(:location).try(:name)
+      end
       boddy << ["#{counter += 1}", "#{asset_placement.asset.name}","", "","","","#{location_details}","", "#{asset_placement.quantity}","","",""] if counter < p_inv_count-1
     end
     boddy
