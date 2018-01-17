@@ -12,26 +12,26 @@ class Kewpa7Pdf < Prawn::Document
     text "SENARAI ASET ALIH KERAJAAN", :align => :center, :size => 14, :style => :bold
     description
     heading
-    ###
+    ##############REV-17Jan2018
+
     @hm=Asset.where(location_id: @location.id)
-    hm_list if @hm.count > 1
-    ###
-    asset_list if @asset_placements.count > 1
+    if @asset_placements.count==1
+      asset_last
+    elsif @asset_placements.count > 1
+      asset_list
+    end
+    if @hm.count==1
+      hm_last
+    elsif @hm.count > 1
+      hm_list
+    end
     #move_down 500
     if y < 360
       start_new_page
       heading
     end
-    #either one exist
-    if (@asset_placements.count+@hm.count) < 2 
-      asset_last if @asset_placements.count > 0
-      hm_last if @hm.count > 0
-    end
-    #both exist - but just one for each type 
-    if (@asset_placements.count==1 && @hm.count==1)
-      hm_list
-      asset_last
-    end
+    
+    ##############
     blank_rows if (@asset_placements.count+@hm.count) < 14 #4
     signature_block
     row_only_block

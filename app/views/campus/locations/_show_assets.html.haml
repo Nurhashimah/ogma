@@ -14,3 +14,8 @@
           %td= asset.assetcode
           %td= asset.name
           %td= asset.modelname
+      - for hm in Asset.where(location_id: @location.id)
+        %tr
+          %td= hm.assetcode
+          %td= hm.name
+          %td= hm.modelname

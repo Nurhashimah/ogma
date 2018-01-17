@@ -78,16 +78,17 @@ class Campus::LocationsController < ApplicationController
   
   def kewpa7
     @location = Location.find(params[:id])
-    placements = AssetPlacement.where(location_id:params[:id]).order(:asset_id, reg_on: :asc).group_by(&:asset_id)
-    pp=[]
-    placements.each do |asset, details|
-      count=0
-      details.each do |d|
-        pp << d.id if count==0  #pp - capture asset_placement ids
-        count+=1
-      end
-    end
-    @asset_placements = AssetPlacement.where('id IN(?)', pp)
+#     placements = AssetPlacement.where(location_id:params[:id]).order(:asset_id, reg_on: :asc).group_by(&:asset_id)
+#     pp=[]
+#     placements.each do |asset, details|
+#       count=0
+#       details.each do |d|
+#         pp << d.id if count==0  #pp - capture asset_placement ids
+#         count+=1
+#       end
+#     end
+#     @asset_placements = AssetPlacement.where('id IN(?)', pp)
+    @asset_placements=AssetPlacement.where(location_id: params[:id]).order(:asset_id, reg_on: :asc)
     #@asset_admin = Role.where(id:11).first.users.where('login=?',"norasikin").first 		#temp
     @asset_admin = Role.where(name: "Asset Administrator").first.users.first
     respond_to do |format|

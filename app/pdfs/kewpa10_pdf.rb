@@ -23,7 +23,7 @@ class Kewpa10Pdf < Prawn::Document
       make_heading1
       make_heading2
     end
-    make_data2 if @assets_located_at.hm.count > 0
+    make_data2 if @assets_located_at.hm.count ==1 #> 0
     make_empty_rows
     signatory
     #text "#{y}"
@@ -67,7 +67,7 @@ class Kewpa10Pdf < Prawn::Document
     counter = counter || 0
     boddy =[]
     @assets_located_at.hm.each do |asset_placement|
-      boddy << ["#{counter += 1}", "#{asset_placement.assetcode}","#{asset_placement.name}", "#{asset_placement.try(:location).try(:name)}","","","","", "","",""] 
+      boddy << ["#{counter += 1}", "#{asset_placement.assetcode}","#{asset_placement.name}", "#{asset_placement.try(:hmlocation).try(:name)}","","","","", "","",""] 
     end
     boddy
   end
@@ -87,7 +87,7 @@ class Kewpa10Pdf < Prawn::Document
   def data2
     ccount=@assets_located_at.hm.count
     asset_placement=@assets_located_at.hm[ccount-1]
-    boddy =[["#{ccount}", "#{asset_placement.assetcode}","#{asset_placement.name}", "#{asset_placement.try(:location).try(:name)}","","","","", "","",""]]
+    boddy =[["#{ccount}", "#{asset_placement.assetcode}","#{asset_placement.name}", "#{asset_placement.try(:hmlocation).try(:name)}","","","","", "","",""]]
   end
 
   def make_data2
