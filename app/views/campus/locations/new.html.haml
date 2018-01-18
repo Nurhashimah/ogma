@@ -8,6 +8,7 @@
     = render 'shared/error_messages', object: f.object
     .col-md-offset-1
       = f.hidden_field :parent_id
+      = f.hidden_field :college_id, value: current_user.college_id
       = render :partial => 'form', :locals => {:f => f}
       .form-group
         .col-sm-offset-2.col-sm-2

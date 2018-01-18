@@ -12,23 +12,27 @@
     .staff_house_damage.legend_object
     .legend_title=(t 'student.tenant.damaged').downcase
   
-  
-  
+
+
 .row
-  - @residentials.each do |building|
-    .tenancy_building{style: "width:#{@div_width}%;"}
-      %h5= building.name
-      - building.children.order(combo_code: :desc).each do |floor|
-        - if floor.descendants.pluck(:typename).uniq.include?(1)
-          .row.tenancy_floor
-            - @houses = floor.descendants.where(typename: 1).order(combo_code: :asc)
-            - @house_nos = @houses.group_by{|x|x.ancestry}.count.to_s
-            .floor_name= floor.name+" ("+@houses.count.to_s+" "+" unit)"
+  - if @places.count ==0
+    %br
+    %p.text-red{style: 'padding-left: 50px;'}=t('location.no_staff_residency')
+  - else
+    - @residentials.each do |building|
+      .tenancy_building{style: "width:#{@div_width}%;"}
+        %h5= building.name
+        - building.children.order(combo_code: :desc).each do |floor|
+          - if floor.descendants.pluck(:typename).uniq.include?(1)
+            .row.tenancy_floor
+              - @houses = floor.descendants.where(typename: 1).order(combo_code: :asc)
+              - @house_nos = @houses.group_by{|x|x.ancestry}.count.to_s
+              .floor_name= floor.name+" ("+@houses.count.to_s+" "+" unit)"
           
-            - @houses.each do |house|
-              = link_to (get_status_link(house)) do
-                .tenant{class: "#{house.status}", title: "#{render 'tooltip', bed: house}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
-                  /for test
-                  /- bedc=house.combo_code
-                  /%font{size: "-2px; color: black;"}=bedc[-2,2]
+              - @houses.each do |house|
+                = link_to (get_status_link(house)) do
+                  .tenant{class: "#{house.status}", title: "#{render 'tooltip', bed: house}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
+                    /for test
+                    /- bedc=house.combo_code
+                    /%font{size: "-2px; color: black;"}=bedc[-2,2]
                 

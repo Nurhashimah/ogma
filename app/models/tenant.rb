@@ -40,13 +40,13 @@ class Tenant < ActiveRecord::Base
     self.student = Student.find_or_create_by(icno: icno2) if icno2.present?
   end
   
-  #student autocomplete for return key
+  #student autocomplete for return key --> multiple location may exist for a student
   def student_icno_location
-    if Tenant.where(student_id: student.id).count > 1
+#     if Tenant.where(student_id: student.id).count > 1
       studentsearch = student.try(:student_list)+" "+location.combo_code
-    else
-      studentsearch = student.try(:student_list)
-    end
+#     else
+#       studentsearch = student.try(:student_list)
+#     end
     studentsearch
   end
 

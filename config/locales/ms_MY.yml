@@ -2699,7 +2699,8 @@ ms_MY:
     select_admin: "Pilih Pentadbir"
     has_assets: "Lokasi ini punyai asset, klik di sini untuk lihat/sorok"
     administered: " merujuk kepada lokasi yang ditadbir"
-    
+    no_student_residency: "Tiada sata lokasi bagi kediaman pelajar. Sila tambah dalam submodul lokasi."
+    no_staff_residency: "Tiada data lokasi bagi kediaman staf. Sila tambah dalam submodul lokasi."
     
     location_categories:
       building: Bangunan

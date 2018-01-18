@@ -29,7 +29,7 @@
         %th{width: '9%'}= t 'location.code'
         %th{width: '10%'}= t 'student.students.icno'
         %th{width: '18%'}= t 'student.name'
-        %th{width: '12%'}= current_user.college.code=='amsas' ? (t 'student.students.apmmno') : (t 'student.students.matrixno')
+        %th{width: '12%'}= (current_user.college.code=='amsas' && current_user.college.name=='amsas') ? (t 'student.students.apmmno') : (t 'student.students.matrixno')
         %th{width: '7%'}= t 'student.tenant.key.provided'
         %th{width: '7%'}= t 'student.tenant.key.expected'
         %th{width: '7%'}= t 'student.tenant.key.returned'

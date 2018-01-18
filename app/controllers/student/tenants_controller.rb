@@ -90,11 +90,13 @@ class Student::TenantsController < ApplicationController
 
   def room_map
     @residentials = Location.where(lclass: 4).order(combo_code: :asc)
-    #sets div size to fit no of buildings
-    @div_width = 90/@residentials.count
-    student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
-    @occupied_locations = @current_tenants.pluck(:location_id)
+    if @residentials.count > 0
+      #sets div size to fit no of buildings
+      @div_width = 90/@residentials.count
+      student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
+      @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
+      @occupied_locations = @current_tenants.pluck(:location_id)
+    end
   end
   
   #For Staff Quarters - start
@@ -104,12 +106,14 @@ class Student::TenantsController < ApplicationController
     @places.each do |place|
      roots << place.root
     end
-    @residentials = roots.uniq  #Location.where('lclass=? AND id IN (?)',1,quarters).order(combo_code: :asc)
-    #sets div size to fit no of buildings
-    @div_width = 90/@residentials.count
-    staff_house_ids = Location.where(typename: 1).pluck(:id)
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, staff_house_ids)
-    @occupied_locations = @current_tenants.pluck(:location_id)
+    if @places.count > 0
+      @residentials = roots.uniq  #Location.where('lclass=? AND id IN (?)',1,quarters).order(combo_code: :asc)
+      #sets div size to fit no of buildings
+      @div_width = 90/@residentials.count
+      staff_house_ids = Location.where(typename: 1).pluck(:id)
+      @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, staff_house_ids)
+      @occupied_locations = @current_tenants.pluck(:location_id)
+    end
   end
   #For Staff Quarters - end
 

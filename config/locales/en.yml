@@ -2809,7 +2809,9 @@ en:
     select_admin: "Select Administrator"
     has_assets: "This location contains assets, click here to show/hide"
     administered: " refers to administered locations"
-    
+    no_student_residency: "No location of student residency exist yet. Create one at Location submodule."
+    no_staff_residency: "No location of staff residency exist yet. Create one at Location submodule."
+   
     location_categories:
       building: Building
       floor: Floor
