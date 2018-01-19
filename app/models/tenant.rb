@@ -69,11 +69,11 @@ class Tenant < ActiveRecord::Base
   
   #staff autocomplete for return key2
   def staff_icno_location
-    if Tenant.where(staff_id: staff.id).count > 1
+#     if Tenant.where(staff_id: staff.id).count > 1
       staffsearch = staff.try(:staff_list)+" "+location.combo_code
-    else
-      staffsearch = staff.try(:staff_list)
-    end
+#     else
+#       staffsearch = staff.try(:staff_list)
+#     end
     staffsearch
   end
 

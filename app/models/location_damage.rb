@@ -1,4 +1,5 @@
 class LocationDamage < ActiveRecord::Base
+  before_save :set_room_damage_when_return_key_bed
   belongs_to :location, :foreign_key => 'location_id'
   belongs_to :tenant, :foreign_key => 'user_id'
   belongs_to :asset, :foreign_key => 'asset_id'
@@ -7,7 +8,19 @@ class LocationDamage < ActiveRecord::Base
   validates_presence_of :reported_on, :description, :document_id
   
   attr_accessor :location_combocode, :damagetype, :dmgbytenant, :update_type
-  
+    
+  #Return key (bed) with damaged room (tandas rosak etc) - start - 20Jan2018, rule: set room as damage & all beds will be applied as damaged too
+  def set_room_damage_when_return_key_bed
+    current_location=Location.find(location_id)
+    room=Location.find(current_location.parent_id)
+    if document_id==1 && current_location.lclass==3 && [2,8].include?(current_location.typename)
+      self.location_id=current_location.parent_id
+      room.occupied=true
+      room.save
+    end 
+  end
+  #Return key (bed) with damaged room (tandas rosak etc) - end - 20Jan2018
+   
   def damage_type
     if document_id==1
       if location.typename==1

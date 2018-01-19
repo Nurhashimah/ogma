@@ -53,7 +53,7 @@ class Location < ActiveRecord::Base
       self.combo_code = parent.combo_code + "-" + code
     end
   end
-  
+
   def set_status
     if typename == 2
       bed_type = "student_bed_female"
@@ -76,8 +76,17 @@ class Location < ActiveRecord::Base
         c.save!
       end
     #required when damaged room is repaired
-    elsif (occupied == false && status=="_damage") 
-      status_type = "empty"
+    elsif (occupied == false && status.include?("_damage"))    #'occupied' in location --> room is damanged (occupied false --> damage is repaired)
+      
+      #19Jan2018 - start - temp - when damangedroom (declared as rosak while tenant still exist) is REPAIRED (once repaired, must set as occupied) - will ensure location & tenant record are matching
+      #status_type = "empty"
+      if @occupied_location_ids.include? id
+        status_type = "occupied"
+      else
+        status_type = "empty"
+      end
+      #19Jan2018 - end temp
+      
       if typename == 2
         bed_type = "student_bed_female"
       elsif typename == 8
@@ -86,8 +95,15 @@ class Location < ActiveRecord::Base
         bed_type = "staff_house"
       end
       self.children.each do |c|
-        c.occupied = 0
+        #19Jan2018 - start - temp -as above
+        c.occupied = 0               #dah dibaiki
+#         if @occupied_location_ids.include? id
+#           c.occupied = 1
+#         else
+#           c.occupied = 0
+#         end
         c.save!
+        #19Jan2018 - end temp - as above
       end
       damages.each do |d|
         if d.repaired_on.nil?

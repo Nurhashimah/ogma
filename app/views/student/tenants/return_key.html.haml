@@ -80,6 +80,7 @@
                   %dt=t 'student.tenant.return_key'
                   = render 'shared/flashes'
                   =# f.hidden_field :student_id, value: ''
+                  = f.hidden_field :college_id, value: current_user.college_id
                   .form-group
                     %label.col-sm-3.control-label{:for => "keyreturned"}= t 'student.tenant.key.returned'
                     .col-md-4

@@ -1,10 +1,32 @@
 %fieldset
   .form-inline{role: "form"}
     = f.text_field :description, :class => 'text_field input-small', :placeholder => 'Description'
-    = f.hidden_field :document_id, :value => 2
+    /= f.hidden_field :document_id, :value => 2
+    .form-group
+      /= @tenant.location.typename==1 ? (t 'location.damage.unit_damage') : (t 'location.damage.room_damage')
+      = @my_room.location.typename==1 ? (t 'location.damage.unit_damage') : (t 'location.damage.room_damage')
+      = f.radio_button :document_id, 1
+    .form-group
+      =t('student.tenant.asset_other_damage')
+      = f.radio_button :document_id, 2
     = f.hidden_field :location_id, :value => @my_room.location.id
     = f.hidden_field :reported_on, :value => Date.today, :placeholder => 'Date Reported'
+    %hr
 /= link_to_remove_fields (fa_icon "trash-o"), f
 /- f.collection_select :unit_type_id, UnitType.all, :id, :description, :include_blank => (t 'helpers.prompt.select_unit_type'), :html_options => {:class => 'selectpicker'}
 /- f.hidden_field :_destroy
 /- link_to_remove_fields (fa_icon "trash-o"), f     
+
+/   .form-group
+/     .col-sm-2.control-label
+/       =f.label t 'student.students.gender', for: :gender
+/       -#.col-md-1
+/       /= f.select :gender, Student::GENDER, :prompt => "Select", class: 'form-control mandatory'
+/     .col-md-7
+/       .form-inline
+/         .form-group
+/           = t('student.students.male')
+/           = f.radio_button :gender,'1'
+/         .form-group
+/           = t('student.students.female')
+/           = f.radio_button :gender,'2'

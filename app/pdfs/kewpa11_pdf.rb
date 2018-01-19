@@ -66,7 +66,7 @@ class Kewpa11Pdf < Prawn::Document
     boddy=[]
     p_inv_count=@location.asset_placements.p_inventory.count
     @location.asset_placements.p_inventory.each do |asset_placement|
-      if [3, 4].include?(asset_placement.location.root.lclass) #3-Staff Residence, 4-Student Residence
+      if [3, 4].include?(asset_placement.location.root.lclass) || (asset_placement.location.lclass==3 && asset_placement.location.typename==1) #3-Staff Residence, 4-Student Residence
 	location_details= asset_placement.try(:location).try(:combo_code)
       else
 	location_details= asset_placement.try(:location).try(:name)
@@ -92,7 +92,7 @@ class Kewpa11Pdf < Prawn::Document
   def data2b
     p_inv_count=@location.asset_placements.p_inventory.count
     p_inv=@location.asset_placements.p_inventory[p_inv_count-1]
-    if [3, 4].include?(p_inv.location.root.lclass) #3-Staff Residence, 4-Student Residence
+    if [3, 4].include?(p_inv.location.root.lclass) || (p_inv.location.lclass==3 && p_inv.location.typename==1)#3-Staff Residence, 4-Student Residence
       location_details= p_inv.try(:location).try(:combo_code)
     else
       location_details= p_inv.try(:location).try(:name)

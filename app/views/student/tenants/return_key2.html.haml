@@ -55,9 +55,9 @@
                   %dd= @my_room.keyreturned.try(:strftime, "%d %b %Y")
                 
                 %dt= t 'location.damage.title'
-                %dd
+                %dd{style: 'padding-left: 70px'}
                   - for damage in @my_room.location.damages.order(reported_on: :desc)
-                    = damage.reported_on
+                    = damage.reported_on.try(:strftime, "%d %b %Y")
                     &nbsp; : &nbsp;
                     = damage.description
                     %br
@@ -83,9 +83,10 @@
                     %label.col-sm-3.control-label{:for => "damage"}= t 'student.tenant.damage2'
                     .col-md-6
                       = f.fields_for :damages do |builder|
-                        - if (builder.object.id!=nil && builder.object.document_id==2) || builder.object.id==nil
-                          = render 'damage_fields', f: builder
-                      /= link_to_add_fields ("Add Details"), f, :damages
+                        /- if (builder.object.id!=nil && builder.object.document_id==2) || builder.object.id==nil
+                        /  = render 'damage_fields', f: builder
+                        /NOTE 18Jan2018 - to limit damages display to asset/others damages, use above otherwise use below :
+                        =render 'damage_fields', f: builder
                       .returned= link_to_add_fields t('add_details'), f, :damages, "",  ""
                        
                   .form-group.returned

@@ -59,7 +59,7 @@
               = link_to damage.asset.assetcode, asset_asset_path(damage.asset) rescue nil
           %td= l(damage.reported_on) unless damage.reported_on.nil?
           %td= l(damage.repaired_on) unless damage.repaired_on.nil?
-          %td= damage.tenant.try(:student).try(:name) unless damage.user_id.nil?
+          %td= damage.tenant.try(:staff).try(:name) unless damage.user_id.nil?
         - cnt+=1
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @damages, :theme => 'twitter-bootstrap-3'

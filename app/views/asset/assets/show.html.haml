@@ -48,24 +48,24 @@
         %dt= t 'asset.serial_no'
         %dd= @asset.serialno
         %dt= t 'asset.located_at'
-        %dd
-          .col-md-8
-            - if @asset.assettype==1
-              /=@asset.try(:asset_placements).last.try(:location).try(:name)
-              =@asset.hmlocation.try(:location_list)
-            - elsif @asset.assettype==2
-              - for asset_placement in @asset.asset_placements
-                - if [3, 4].include?(asset_placement.location.root.lclass)
-                  = asset_placement.location.combo_code
-                - else
-                  = asset_placement.location.name+" "
+        %dd{style: 'padding-left: 70px;'}
+          - if @asset.assettype==1
+            /=@asset.try(:asset_placements).last.try(:location).try(:name)
+            =@asset.hmlocation.try(:location_list)
+          - elsif @asset.assettype==2
+            - cnt=0
+            - for asset_placement in @asset.asset_placements
+              - if [3, 4].include?(asset_placement.location.root.lclass) || (asset_placement.location.lclass==3 && asset_placement.location.typename==1)
+                = asset_placement.location.combo_code
+              - else
+                = asset_placement.location.name
+              - cnt+=1
+              =", " if cnt < @asset.asset_placements.count
         / NOTE - 3-Staff Residence, 4-Student Residence
         %dt= t 'asset.assigned_to'
         %dd
-          - if current_user.college.code=="kskbjb"
-            = @asset.assignedto.try(:name)
-          - else
-            = @asset.assignedto.try(:staff_with_rank)
+          = current_user.college.code=="kskbjb" ? @asset.assignedto.try(:name) : @asset.assignedto.try(:staff_with_rank)
+          = @asset.assettype==2 ? @asset.asset_placements.map{|x|x.staff.staff_with_rank}.uniq.join(", ") : ""
         %dt= t 'asset.status'
         %dd= @asset.status
         %dt= t 'asset.other_information'
