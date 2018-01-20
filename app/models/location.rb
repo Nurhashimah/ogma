@@ -68,6 +68,8 @@ class Location < ActiveRecord::Base
       status_type = "damage"
       if typename == 2|| typename == 8
         bed_type = "bed"
+      elsif typename == 1
+        bed_type = "staff_house"
       end
       
       self.children.each do |c|
@@ -95,15 +97,8 @@ class Location < ActiveRecord::Base
         bed_type = "staff_house"
       end
       self.children.each do |c|
-        #19Jan2018 - start - temp -as above
         c.occupied = 0               #dah dibaiki
-#         if @occupied_location_ids.include? id
-#           c.occupied = 1
-#         else
-#           c.occupied = 0
-#         end
         c.save!
-        #19Jan2018 - end temp - as above
       end
       damages.each do |d|
         if d.repaired_on.nil?

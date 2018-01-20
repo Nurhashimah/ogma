@@ -17,6 +17,9 @@ class LocationDamage < ActiveRecord::Base
       self.location_id=current_location.parent_id
       room.occupied=true
       room.save
+    elsif document_id==1 && current_location.lclass==3 && current_location.typename==1  #Staff Unit (House)
+      current_location.occupied=true
+      current_location.save
     end 
   end
   #Return key (bed) with damaged room (tandas rosak etc) - end - 20Jan2018

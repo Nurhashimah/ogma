@@ -11,4 +11,8 @@ module MailboxHelper
 #     Mailboxer::Receipt.where(receiver_id: current_user.id).inbox(:unread => true).count(:id, :distinct => true)
     Mailboxer::Receipt.where(receiver_id: current_user.id, mailbox_type: "inbox", is_read: false).count(:id, :distinct => true)
   end
+  
+  def mailbox
+    Mailboxer::Receipt.where(receiver_id: current_user.id, mailbox_type: "inbox")
+  end
 end
