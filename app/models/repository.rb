@@ -37,6 +37,10 @@ class Repository < ActiveRecord::Base
     (Repository::CATEGORY.find_all{|disp, value| value == category }).map {|disp, value| disp}[0]
   end
   
+  def render_category_others
+    (Repository::CATEGORY_OTHERS.find_all{|disp, value| value == category }).map {|disp, value| disp}[0]
+  end
+  
   CATEGORY=[
                 # Displayed               #Stored in db
             ['KKM', 1],
@@ -45,6 +49,11 @@ class Repository < ActiveRecord::Base
             ['TBL', 4],
             ['RAN', 5],
             ['Others', 6]
+            ]
+  
+  CATEGORY_OTHERS=[
+                # Displayed               #Stored in db
+            ['Other category', 7]
             ]
   
   def data_not_present?

@@ -10,7 +10,8 @@
       .col-sm-2.control-label
         = f.label t 'repositories.category', for: :category
       .col-md-2
-        = f.select :category, Repository::CATEGORY,{ include_blank: (t 'select')}, {class: 'selectpicker form-control mandatory'}
+        - repo_cat=current_user.college.name.include?("amsas") ? Repository::CATEGORY  : Repository::CATEGORY_OTHERS
+        = f.select :category, repo_cat,{ include_blank: (t 'select')}, {class: 'selectpicker form-control mandatory'}
         
     .form-group
       .col-sm-2.control-label
