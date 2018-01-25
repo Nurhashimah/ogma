@@ -36,4 +36,5 @@
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("equery.repository.main_page2")), index2_repositories_path, :class => 'btn btn-default'
 
         %span{style: 'padding-left: 20px;'}
-          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("equery.repository.search_form")), new_equery_report_repositorysearch_path(searchrepotype: '2'),  :class => 'btn btn-default'
+          /= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("equery.repository.search_form")), new_equery_report_repositorysearch_path(searchrepotype: '2'),  :class => 'btn btn-default'
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("equery.repository.search_form")), new_digital_library_equery_report_repositorysearches_path,  :class => 'btn btn-default'

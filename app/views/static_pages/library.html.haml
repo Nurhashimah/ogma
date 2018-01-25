@@ -16,7 +16,11 @@
  
  .row
   .col-md-12.centre
-   =link_to (t "library.transaction.rules_regulations"), flexipage_campus_page_path(74) ,:class => "btn btn-primary"
+   - rules_page=Page.where(navlabel: "Library Rules")
+   - help_page=Page.where(navlabel: "Library Help")
+   - if rules_page.count > 0
+    =link_to (t "library.transaction.rules_regulations"), flexipage_campus_page_path(rules_page.first.id) ,:class => "btn btn-primary"
+   /=link_to (t "library.transaction.rules_regulations"), flexipage_campus_page_path(74) ,:class => "btn btn-primary"
    =link_to (t "library.transaction.manager"), manager_library_librarytransactions_path, :class => "btn btn-primary"
    /= link_to (fa_icon "book", text: (t "library.book.list")), library_books_path, :class => "btn btn-primary"
    /=link_to (fa_icon "list", text: (t "repositories.list2")), index2_repositories_path, :class => "btn btn-primary"
@@ -44,7 +48,9 @@
      /%li=link_to (t 'campus.address.title'), campus_address_books_path
      %li=link_to content_tag(:i, "", :class => "fa fa-user fa-pull-left") + " " + t('.back', :default =>(t "library.borrower_list")), campus_visitors_path
      %li=link_to content_tag(:i, "", :class => "fa fa-envelope fa-pull-left") + " " + t('.back', :default =>(t 'campus.address.title')), campus_address_books_path
-   =link_to (t 'library.help'), flexipage_campus_page_path(80), :class => "btn btn-primary"
+   - if help_page.count > 0
+    =link_to (t 'library.help'), flexipage_campus_page_path(help_page.first.id), :class => "btn btn-primary"
+   /=link_to (t 'library.help'), flexipage_campus_page_path(80), :class => "btn btn-primary"
 
 =fa_icon('address')
 /= link_to content_tag(:i, "", :class => "fa fa-book fa-pull-left fa-border") + " " + t('.back', :default => (t "library.book.list")), "#", class: "btn btn-default"

@@ -372,7 +372,10 @@
           %a.mp-back{:href => "#"}=t('back')
           %ul
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.rules_regulations"), rules_regulations_path
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.rules_regulations"), flexipage_campus_page_path(74)
+            - rules_page=Page.where(navlabel: "Library Rules")
+            - if rules_page.count > 0
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.rules_regulations"), flexipage_campus_page_path(rules_page.first.id)
+            /%li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.rules_regulations"), flexipage_campus_page_path(74)
             - permitted_to? :read, :library_books do  
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.list"), library_books_path
             /temporary for Digital Library
@@ -394,7 +397,10 @@
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.manager"), manager_library_librarytransactions_path
             - permitted_to? :analysis_statistic, :library_librarytransactions do 
               %li= link_to content_tag(:i, "", :class => "icon_numb") + (t "library.transaction.analysis_statistic"), analysis_statistic_library_librarytransactions_path
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.help"), flexipage_campus_page_path(80)
+            - help_page=Page.where(navlabel: "Library Help")
+            - if help_page.count > 0
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.help"), flexipage_campus_page_path(help_page.first.id)
+            /%li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.help"), flexipage_campus_page_path(80)
             /temporary for Digital Library
             - permitted_to? :index2, :repositories do
               - if is_staff? && current_user.userable.coemail.include?("teknikpadu.com")
