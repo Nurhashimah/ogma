@@ -12,7 +12,8 @@
     .col-sm-2.control-label
       = f.label t 'student.students.rank_id', for: :rank_id
     .col-md-2
-      = f.collection_select :rank_id, Rank.order(id: :asc), :id, :short_full_name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"280px"}
+      - rank_list=current_user.college.name.include?("amsas") ? Rank.where('name ILIKE(?)', "%Maritim%").order(id: :asc) : Rank.where.not('name ILIKE(?)', "%Maritim%").order(id: :asc)
+      = f.collection_select :rank_id, rank_list, :id, :short_full_name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"280px"}
 
   /required for AMSAS /:position, :department, :vehicle_no, :vehicle_type
   - if current_user.college.code=="amsas"

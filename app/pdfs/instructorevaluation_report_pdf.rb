@@ -11,12 +11,14 @@ class Instructorevaluation_reportPdf < Prawn::Document
       if college.code=="kskbjb"
         image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
       else
-        move_down 5
-        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.7
+        if college.code=="amsas" && college.name.include?("amsas")
+          move_down 5
+          image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.7
+        end
       end
     end
     bounding_box([140,750], :width => 350, :height => 100) do |y2|
-      if college.code=="kskbjb"
+      if college.code=="kskbjb" || (college.code=="amsas" && college.name.include?("amsas") == false)
         move_down 30
         text "#{college.name}"
         move_down 1
@@ -34,7 +36,9 @@ class Instructorevaluation_reportPdf < Prawn::Document
       end
     else
       bounding_box([420,770], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.8
+	if college.code=="amsas" && college.name.include?("amsas")
+	  image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.8
+	end
       end
     end
     move_down 30

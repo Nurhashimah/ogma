@@ -126,7 +126,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
               [{content: "Tarikh Lahir : #{@student.try(:sbirthdt).try(:strftime, '%d-%m-%Y')}", colspan: 2},{content: "Tempat Lahir : #{@student.render_birthplace}" , colspan: 2}], 
               [{content: "Jantina : #{@student.gender==1? '<b>LELAKI</b> / PEREMPUAN' : 'Lelaki / <b>PEREMPUAN</b>'}", colspan: 2},
                {content: "Status Perkahwinan : #{@student.render_marital}", colspan: 2}],
-              [{content: "No. APMM : ", colspan: 2},{content: "No. Kad Kuasa :", colspan: 2}],
+              [{content: "#{@college.code=="amsas" && @college.name.include?("amsas") == false ? 'No. Matrik' : 'No. APMM'} : ", colspan: 2},{content: "No. Kad Kuasa :", colspan: 2}],
 	      [{content: "No. Insuran :", colspan: 2},{content: "Jenis Insuran : ", colspan: 2}],
               [{content: "Jenis Darah : #{@student.render_bloodtype}", colspan: 4}],
 	      [{content: "Bangsa / Keturunan : #{@student.race2? ? @student.render_race : @student.try(:race2)}", colspan: 2},{content: "Agama : #{@student.render_religion}", colspan: 2}],
@@ -176,11 +176,13 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
   def table_personal_details_pg2_cont
     if @college.code=="amsas" && @college.name.include?("amsas") == false
       aa="Maklumat lanjut Rujuk Borang Kediaman Asrama"
+      organisation=@college.name
     else
       aa="Maklumat lanjut Rujuk BK-LAT-KS-02-02 (Borang Kediaman Asrama)"
+      organisation="APMM"
     end
     data=[["A.", {content: "MAKLUMAT PERIBADI PELATIH (sambungan....)", colspan: 5}],
-         [{content: "Pengalaman kerja (sekiranya ada, selain dari APMM)", colspan:6}],
+         [{content: "Pengalaman kerja (sekiranya ada, selain dari #{organisation})", colspan:6}],
          ["", "Nama Organisasi", "", "Jawatan", "", "Tempat"],
          ["1.", "", "", "", "", ""],
          ["2.", "", "", "", "", ""],
