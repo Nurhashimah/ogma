@@ -433,4 +433,16 @@ module ApplicationHelper
     str[/[a-zA-Z]+/] == str
   end
   
+  #usage - staffs/_form, students/_tab_details_edit, visitors/_form
+  def rank_list
+    if current_user.college.name.include?("AMSAS")
+      rank_list=Rank.where('name ILIKE(?)', "%Maritim%").order(id: :asc)
+    elsif current_user.college.name.include?("RMN")
+      rank_list=Rank.where('data!=?', "").order(id: :asc)
+    else
+       rank_list=Rank.where.not('name ILIKE(?)', "%Maritim%").where('data=?', "").order(id: :asc)
+    end
+    rank_list
+  end
+  
 end

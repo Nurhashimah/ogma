@@ -24,7 +24,8 @@
         %tr
           %td=h rank.try(:shortname)
           %td=h link_to rank.name, staff_rank_path(rank)
-          %td=h (Rank::RANK_CATEGORY.find_all{|disp, value| value == rank.category}).map {|disp, value| disp}[0]     
+          - rank_category=current_user.college.name.include?("AMSAS") ? (Rank::RANK_CATEGORY) : (Rank::RANK_CATEGORY2)
+          %td=h (rank_category.find_all{|disp, value| value == rank.category}).map {|disp, value| disp}[0]     
           %td.centre=h rank.try(:staffgrade).try(:name)
         
   .right{style:"padding:0 30px; margin:0;"}= paginate @ranks, :theme => 'twitter-bootstrap-3'            

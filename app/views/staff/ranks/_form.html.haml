@@ -19,15 +19,27 @@
               = f.label t('rank.shortname')
             .col-md-6
               = f.text_field :shortname, class: 'form-control'
+           
+          - if current_user.college.name.include?("AMSAS") || current_user.college.name.include?("RMN")
+            .form-group
+              .col-sm-2.control-label
+                = f.label t('rank.category')
+              .col-md-5
+                - rank_category=current_user.college.name.include?("AMSAS") ? (Rank::RANK_CATEGORY) : (Rank::RANK_CATEGORY2)
+                = f.select :category, rank_category, {:include_blank => t('select')}, {class: 'selectpicker', "data-width" => "310px"}
 
-          .form-group
-            .col-sm-2.control-label
-              = f.label t('rank.category')
-            .col-md-5
-              = f.select :category, Rank::RANK_CATEGORY, {:include_blank => t('helpers.select')}, {class: 'selectpicker', "data-width" => "310px"}
-
+          - if current_user.college.name.include?("RMN") && (@rank.new_record? || !@rank.new_record? && @rank.data!='')
+            .form-group
+              .col-sm-2.control-label
+                = f.label t('rank.rate')
+              .col-md-2
+                = f.select :rate, Rank::RANK_RATE, {:include_blank => t('select')}, {class: 'selectpicker', "data-width" => "310px"}
+            
           .form-group
             .col-sm-2.control-label
               = f.label t('rank.employgrade_id')
             .col-md-2
-              = f.collection_select :employgrade_id, Employgrade.where('name ILIKE(?) or name ILIKE(?)', "xa%", "XA%"), :id, :name,{ :include_blank => t('helpers.select'), :selected => @rank.try(:employgrade_id)}, {class: 'selectpicker'}
+              - employgrade_list=current_user.college.name.include?("AMSAS") ? Employgrade.where('name ILIKE(?) or name ILIKE(?)', "xa%", "XA%") : Employgrade.sorted_grades(Employgrade.all) 
+        
+              = f.collection_select :employgrade_id, employgrade_list, :id, :name,{ :include_blank => t('select'), :selected => @rank.try(:employgrade_id)}, {class: 'selectpicker'}
+              

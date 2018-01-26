@@ -20,8 +20,14 @@
             %dt= t 'rank.shortname'
             %dd=h @rank.try(:shortname)
 
-            %dt= t 'rank.category'
-            %dd=h (Rank::RANK_CATEGORY.find_all{|disp, value| value == @rank.category}).map{|disp, value| disp}[0]    
+            - if current_user.college.name.include?("AMSAS") || current_user.college.name.include?("RMN")
+              - rank_category=current_user.college.name.include?("AMSAS") ? (Rank::RANK_CATEGORY) : (Rank::RANK_CATEGORY2)
+              %dt= t 'rank.category'
+              %dd=h (rank_category.find_all{|disp, value| value == @rank.category}).map{|disp, value| disp}[0]    
+              
+            - if current_user.college.name.include?("RMN") && @rank.data!=''
+              %dt=t 'rank.rate'
+              %dd=h (Rank::RANK_RATE.find_all{|disp, value| value == @rank.rate}).map{|disp, value| disp}[0]
             
             %dt=t 'rank.employgrade_id'
             %dd=h @rank.try(:staffgrade).try(:name)

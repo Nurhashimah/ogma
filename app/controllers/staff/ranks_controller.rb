@@ -3,7 +3,13 @@ class Staff::RanksController < ApplicationController
    filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   
   def index
-    @search=Rank.search(params[:q])
+    if current_user.college.name.include?("AMSAS")
+      @search=Rank.where('name ilike(?)', "%Maritim%").search(params[:q])
+    elsif current_user.college.name.include?("RMN")
+      @search=Rank.where('data!=?',"").search(params[:q])
+    else
+      @search=Rank.where.not('name ILIKE(?)', "%Maritim%").where(data: "").search(params[:q])
+    end
     @ranks=@search.result.order(id: :asc).page(params[:page]||1)
   end
   
@@ -55,7 +61,7 @@ class Staff::RanksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def rank_params
-      params.require(:rank).permit(:name, :category, :employgrade_id, :shortname, :college_id, {:data=> []})
+      params.require(:rank).permit(:name, :category, :employgrade_id, :shortname, :college_id,{:data=> []}, :rate)
     end
   
 end

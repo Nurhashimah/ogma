@@ -8,14 +8,14 @@ class RepositoriesController < ApplicationController
   # GET /repositories
   # GET /repositories.xml
   def index
-    if current_user.college.name.include?("amsas")
+    if current_user.college.name.include?("AMSAS")
       @search=Repository.where(data: nil).where(category: [1,2,3,4,5,6]).search(params[:q])
     else
       @search=Repository.where(data: nil).where(category: 7).search(params[:q])
     end
     @repositories=@search.result.order(category: :asc)
     @repositories=@repositories.page(params[:page]||1)
-    if current_user.college.name.include?("amsas")
+    if current_user.college.name.include?("AMSAS")
       @exist_in_syst=Repository.where('title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) ', '%penilaian diri untuk jurulatih%', '%PENILAIAN ANALISA SKOR PURATA JURULATIH%', '%PENILAIAN PENSYARAH%', '%DATA ANALISA SKOR PURATA PENILAIAN PENSYARAH%', '%KEDIAMAN ASRAMA%', '%MAKLUMAT PERIBADI%')
       @exist_in_syst+=Repository.where('title ILIKE (?) OR title ILIKE(?)', '%PENGGUNAAN PINJAMAN LATIHAN%', '%RANCANGAN LATIHAN MINGGUAN%')
       @access=[staff_instructor_appraisals_path, staff_average_instructors_path, exam_evaluate_courses_path, exam_evaluate_courses_path, student_tenants_path, students_path, asset_loans_path, training_weeklytimetables_path]

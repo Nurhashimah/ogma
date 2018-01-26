@@ -20,10 +20,7 @@
         .form-group
           %label.col-sm-2.control-label= f.label t 'campus.visitors.rank_id', for: :rank_id
           .col-md-3
-            - rank_list=current_user.college.name.include?("amsas") ? Rank.where('name ILIKE(?)', "%Maritim%").order(id: :asc) : Rank.where.not('name ILIKE(?)', "%Maritim%").order(id: :asc)
             = f.collection_select :rank_id, rank_list, :id, :short_full_name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
-            /= f.collection_select :rank_id, Rank.where('name ILIKE(?)', "%Maritim%").order(id: :asc), :id, :short_full_name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
-            /= f.collection_select :rank_id, Rank.where.not('name ILIKE(?)', "%Maritim%").order(id: :asc), :id, :short_full_name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
       .form-group
         %label.col-sm-2.control-label= f.label t 'campus.visitors.position', for: :position

@@ -2323,7 +2323,7 @@ en:
     shortname: Short Name
     category: Rank Category
     employgrade_id: Grade
-    
+    rate: Rate
     
   instructor_appraisal:
     title: Instructor Appraisal

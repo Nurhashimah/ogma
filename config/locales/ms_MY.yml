@@ -2215,6 +2215,7 @@ ms_MY:
     shortname: Nama Ringkas
     category: Kategori Pangkat
     employgrade_id: Gred
+    rate: Tahap
     
   instructor_appraisal:
     title: Penilaian Diri Jurulatih

@@ -1,7 +1,7 @@
 .col-md-offset-2  
   .form-group
     .col-sm-2.control-label
-      - if current_user.college.name.include?("amsas") == true
+      - if current_user.college.name.include?("AMSAS") == true
         = f.label t 'student.students.apmmno', for: :apmmno
       - else
         = f.label t 'student.students.matrixno', for: :matrixno
@@ -12,7 +12,6 @@
     .col-sm-2.control-label
       = f.label t 'student.students.rank_id', for: :rank_id
     .col-md-2
-      - rank_list=current_user.college.name.include?("amsas") ? Rank.where('name ILIKE(?)', "%Maritim%").order(id: :asc) : Rank.where.not('name ILIKE(?)', "%Maritim%").order(id: :asc)
       = f.collection_select :rank_id, rank_list, :id, :short_full_name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"280px"}
 
   /required for AMSAS /:position, :department, :vehicle_no, :vehicle_type

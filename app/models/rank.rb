@@ -1,4 +1,5 @@
 class Rank < ActiveRecord::Base 
+  serialize :data, Hash
   
   before_save :set_shortname
   
@@ -8,6 +9,14 @@ class Rank < ActiveRecord::Base
   has_many :students
   has_many :visitors
   
+  def rate=(value)
+    data[:rate]=value
+  end
+  def rate
+    data[:rate]
+  end
+  
+  
   validates :employgrade_id, uniqueness: true, allow_nil: true
   
   RANK_CATEGORY= [
@@ -15,6 +24,20 @@ class Rank < ActiveRecord::Base
     ["Pegawai Penguat Kuasa Maritim", 1],
     ["Pegawai Lain - Lain Pangkat Penguat Kuasa Maritim", 2]
     ]
+  
+  RANK_CATEGORY2= [
+    #display         #stored in DB
+    ["Lain-Lain Pangkat", 1],
+    ["Pegawai", 2]
+    ]
+  
+  RANK_RATE = [
+             #  Displayed       stored in db
+             ["Junior Rate", '1'],
+             ["Senior Rate", '2'],
+             ["Kadet Kanan & Ke Bawah", '3'],
+             ["Leftenan Muda & Ke Atas", '4']
+           ]
   
   def set_shortname
     self.shortname=shortname.upcase

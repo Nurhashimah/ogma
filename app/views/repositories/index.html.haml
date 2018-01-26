@@ -18,20 +18,20 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        - if current_user.college.name.include?("amsas")
+        - if current_user.college.name.include?("AMSAS")
           %th{width: '2%'}
         %th{width: '43%'}= sort_link(@search, :title, (t 'repositories.document_title'))
         %th{width: '45%'}= sort_link(@search, :title, (t 'repositories.uploaded'))
         %th{width: '10%'}= (t 'download')
     %tbody
       = render "repositories/iso/index_search"
-      - repos=current_user.college.name.include?("amsas") ? @repositories.group_by{|x|x.render_category} : @repositories.group_by{|x|x.render_category_others}
+      - repos=current_user.college.name.include?("AMSAS") ? @repositories.group_by{|x|x.render_category} : @repositories.group_by{|x|x.render_category_others}
       - repos.each do |cat, repositories|
         %tr
           %td.group{colspan: 4}=cat
         - for repository in repositories
           %tr
-            - if current_user.college.name.include?("amsas")
+            - if current_user.college.name.include?("AMSAS")
               %td
                 - if @exist_in_syst.include?(repository) 
                   - ind=@exist_in_syst.index{|x|x==repository}
