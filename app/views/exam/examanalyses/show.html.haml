@@ -24,7 +24,7 @@
           - intake=Exammark.set_intake_group(paper.exam_on.year, paper.exam_on.month, paper.subject.parent.code,@current_user).to_date
           %dt=t 'exam.exammark.intake'
           %dd
-            - if @examanalysis.college.code=="amsas" && @examanalysis.college.name.include?("amsas") == false
+            - if @examanalysis.college.code=="amsas" && @examanalysis.college.name.include?("AMSAS") == false
               - exammarks=paper.exammarks
               - students=Student.where(id: exammarks.pluck(:student_id))
               = student_intake=l(students[0].intakestudent.register_on)

@@ -3,7 +3,7 @@
   %dd= repository.title
     
   %dt= t 'repositories.category'
-  %dd= current_user.college.name.include?("amsas") ? repository.render_category : repository.render_category_others
+  %dd= current_user.college.name.include?("AMSAS") ? repository.render_category : repository.render_category_others
     
   %dt= t 'repositories.uploaded'
   %dd= repository.uploaded_file_name

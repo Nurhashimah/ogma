@@ -14,7 +14,7 @@
         = submit_tag "Import", :class => 'btn btn-primary'
     .form-group
       .col-md-4.col-md-offset-2
-        - if current_user.college.name.include?("amsas") == true
+        - if current_user.college.name.include?("AMSAS") == true
           = link_to (t 'excel_format'), '/public/excel_format/student_import_amsas.xls', :action => 'download_excel_format_amsas'
         - else
           = link_to (t 'excel_format'), '/public/excel_format/student_import_second.xls', :action => 'download_excel_format_second'
@@ -22,12 +22,12 @@
 %br
 %h4=t('library.book.excel_conditions')
 - if is_developer?
-  - if current_user.college.name.include?("amsas") == true
+  - if current_user.college.name.include?("AMSAS") == true
     =image_tag("sample_excel_view_admin.png")
   - else
     =image_tag("sample_excel_view_second.png")
 - else
-  - if current_user.college.name.include?("amsas") == true
+  - if current_user.college.name.include?("AMSAS") == true
     =image_tag("sample_excel_view.png")
   - else
     =image_tag("sample_excel_view_second.png")

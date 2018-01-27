@@ -62,7 +62,7 @@
             %td
               =librarytransaction.loaner.blank? ? "" : Visitor.find(librarytransaction.loaner).visitor_with_title
               /NOTE - below hold first 21Jan2018
-              /- if current_user.college.name.include?("amsas")
+              /- if current_user.college.name.include?("AMSAS")
               /  =librarytransaction.loaner.blank? ? "" : Visitor.find(librarytransaction.loaner).visitor_with_title
               /- else
               /  =librarytransaction.loaner.blank? ? "" : Staff.find(librarytransaction.loaner).staff_with_rank_position_unit

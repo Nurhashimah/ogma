@@ -17,7 +17,7 @@
     %dl.dl-horizontal
       %dt= t 'asset.assetcode'
       %dd
-        - if @asset.college.code=="amsas" && @asset.college.name.include?("amsas") == false
+        - if @asset.college.code=="amsas" && @asset.college.name.include?("AMSAS") == false
           - type=@asset.assettype==1 ? "H" : "I"
           =(@asset.college.name.split(" ").join("_").downcase+"/#{type}/18/"+@asset.cardno)
         - else

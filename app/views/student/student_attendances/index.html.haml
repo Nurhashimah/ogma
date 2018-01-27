@@ -97,7 +97,7 @@
               - if classes_schedule[0] != nil 
                 %tr
                   %td.group{:colspan => "6"} 
-                    - if current_user.college.code=='amsas' && current_user.college.name.include?("amsas") == true
+                    - if current_user.college.code=='amsas' && current_user.college.name.include?("AMSAS") == true
                       =t('student.attendance.subject')+WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_subject.full_parent+" | "+t('student.attendance.subject')+ WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_subject.subject_list
                     - else
                       =t('student.attendance.subject')+WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.full_parent+" | "+t('student.attendance.topic')+ WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.subject_list

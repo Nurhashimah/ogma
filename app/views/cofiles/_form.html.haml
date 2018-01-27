@@ -7,7 +7,10 @@
       = f.text_field :cofileno, class: 'form-control mandatory'
       .help-block.small 
         - if ['amsas, kskbjb'].include?(current_user.college.code)
-          = current_user.college.code=='amsas' ? 'Sample: APMM.AMSAS.100-1/8/1' : 'Sample: Format: ()KSKBJB/'      
+          - if current_user.college.code=='amsas' && current_user.college.name.include?("AMSAS")
+            Sample: APMM.AMSAS.100-1/8/1
+          - elsif current_user.college.code=='kskbjb'
+            Sample: Format: ()KSKBJB/   
 
   .form-group
     .col-sm-2.control-label

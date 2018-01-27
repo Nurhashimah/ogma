@@ -19,7 +19,7 @@
     %dt=t 'training.lesson_plan.lecturer_review', :default => model_class.human_attribute_name(:lecturer_review)+":"
     %dd{style: 'padding-left: 70px;'}=h @lesson_plan.summary
 
-    - if @lesson_plan.college.code=="amsas" && @lesson_plan.college.name.include?("amsas") == false
+    - if @lesson_plan.college.code=="amsas" && @lesson_plan.college.name.include?("AMSAS") == false
     - else
       %dt=t 'training.lesson_plan.report_summary', :default => model_class.human_attribute_name(:report_summary)+":"
       %dd{style: 'padding-left: 70px;'}

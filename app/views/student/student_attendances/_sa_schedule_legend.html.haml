@@ -16,8 +16,8 @@
     %td
       =ind+=1
       /=sa.weeklytimetable_details_id
-    %td=(current_user.college.code=='amsas' && current_user.college.name.include?("amsas")) ? sa.weeklytimetable_detail.weeklytimetable_subject.full_parent : sa.weeklytimetable_detail.weeklytimetable_topic.full_parent
-    %td=(current_user.college.code=='amsas' && current_user.college.name.include?("amsas")) ? sa.weeklytimetable_detail.weeklytimetable_subject.subject_list : sa.weeklytimetable_detail.weeklytimetable_topic.subject_list
+    %td=(current_user.college.code=='amsas' && current_user.college.name.include?("AMSAS")) ? sa.weeklytimetable_detail.weeklytimetable_subject.full_parent : sa.weeklytimetable_detail.weeklytimetable_topic.full_parent
+    %td=(current_user.college.code=='amsas' && current_user.college.name.include?("AMSAS")) ? sa.weeklytimetable_detail.weeklytimetable_subject.subject_list : sa.weeklytimetable_detail.weeklytimetable_topic.subject_list
     %td=sa.weeklytimetable_detail.get_date_day_of_schedule+" "
     %td=sa.weeklytimetable_detail.get_time_slot
     - if lecturer_count > 1

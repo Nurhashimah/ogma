@@ -1,12 +1,13 @@
 .col-md-offset-1
-  .form-group
-    .col-sm-2.control-label
-      = f.label (t 'college.code')
-    .col-md-4
-      - if @college.new_record? 
-        =f.text_field :code, class: 'form-control'
-      - else
-        %b{style: 'color: blue;'}=@college.code if ['kskbjb', 'amsas'].include?(@college.code) == false 
+  - if @college.code=="kskbjb" || @college.name.include?("AMSAS")
+    .form-group
+      .col-sm-2.control-label
+        = f.label (t 'college.code')
+      .col-md-4
+        - if @college.new_record? 
+          =f.text_field :code, class: 'form-control'
+        - else
+          %b{style: 'color: blue;'}=@college.code
     
   .form-group
     .col-sm-2.control-label

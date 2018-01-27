@@ -19,7 +19,7 @@
               - if current_user.college.code=="kskbjb"
                 KKM/BPL/010619/
               - elsif current_user.college.code=="amsas"
-                - if current_user.college.name.include?("amsas")
+                - if current_user.college.name.include?("AMSAS")
                   JPM/APMM/PL/
                 - else
                   =current_user.college.name.split(" ").join("_").downcase+"/"
