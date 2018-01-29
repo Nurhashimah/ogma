@@ -7,9 +7,19 @@ class Attendance_listPdf < Prawn::Document
     @college=college
     @search2=search
     
-    @thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)
-    @unit_names = StaffAttendance.get_thumb_ids_unit_names(2)
-    @all_thumb_ids = StaffAttendance.thumb_ids_all 
+    if @college.code=="kskbjb"
+      @unit_names = StaffAttendance.get_thumb_ids_unit_names(2)
+      @thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)
+      @all_thumb_ids = StaffAttendance.thumb_ids_all
+    else
+      @unit_names = StaffAttendance.get_thumb_ids_unit_names(2)-["", "Pengkhususan", "Pentadbiran Am"]
+      @thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)-[Staff.invalid_staffs.pluck(:thumb_id), []]
+      @all_thumb_ids = StaffAttendance.thumb_ids_all - Staff.invalid_staffs.map(&:thumb_id)
+    end
+      
+    #@thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)
+    #@unit_names = StaffAttendance.get_thumb_ids_unit_names(2)
+    #@all_thumb_ids = StaffAttendance.thumb_ids_all 
     
     font "Helvetica"
     #record
@@ -172,7 +182,7 @@ class Attendance_listPdf < Prawn::Document
   end
   
   def line_item_rows2
-    header=[[{content: "#{I18n.t('staff_attendance.list').upcase}<br> #{@college.name.upcase}", colspan: 10}],
+    header=[[{content: "#{@college.name.upcase}<br>#{I18n.t('staff_attendance.list').upcase}", colspan: 10}],
             ["No", I18n.t('staff_attendance.flag'), I18n.t('staff_attendance.thumb_id'), I18n.t('staff_attendance.logged_in'), I18n.t('staff_attendance.logged_out'), I18n.t('staff_attendance.shift'), I18n.t('staff_attendance.late'), I18n.t('staff_attendance.early'), I18n.t('staff_attendance.action'), I18n.t('staff_attendance.ignore')]]
     header+@body
   end

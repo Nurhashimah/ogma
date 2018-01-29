@@ -494,12 +494,14 @@ class Staff::StaffAttendancesController < ApplicationController
       if current_user.college.code=="kskbjb"
         @unit_names = StaffAttendance.get_thumb_ids_unit_names(2)
         @thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)
+        @all_thumb_ids = StaffAttendance.thumb_ids_all
       else
         @unit_names = StaffAttendance.get_thumb_ids_unit_names(2)-["", "Pengkhususan", "Pentadbiran Am"]
         @thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)-[Staff.invalid_staffs.pluck(:thumb_id), []]
         #@thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)-[[9112, 9111], []]
+        @all_thumb_ids = StaffAttendance.thumb_ids_all - Staff.invalid_staffs.map(&:thumb_id)
       end
-      @all_thumb_ids = StaffAttendance.thumb_ids_all
+      
       #////////////////
     
       #Part 1 - Ransack Search

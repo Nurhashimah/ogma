@@ -2,8 +2,16 @@
   %tr.search_row{style: "display:none;"}
     %td &nbsp;
     %td
-      %br= select_tag('q[keyword_search]',options_for_select(StaffAttendance.get_thumb_ids_unit_names(3).sort, @search.keyword_search),:prompt=>t("helpers.prompt.all_unit"), class: 'form-control selectpicker')
+      - if current_user.college.code=="kskbjb"
+        - b=StaffAttendance.get_thumb_ids_unit_names(3).sort
+      - else
+        - b=[]
+        - StaffAttendance.get_thumb_ids_unit_names(3).sort.each do |a|
+          - b << a if ((["Pengkhususan", "Pentadbiran Am"].include?(a.first) == false) && !(a.first.strip=="--" && a.first.strip.size==2) )
+          /=(a.first.strip=="--" && a.first.strip.size==2)
+      %br= select_tag('q[keyword_search]',options_for_select(b, @search.keyword_search),:prompt=>t("helpers.prompt.all_unit"), class: 'form-control selectpicker')
       /= select_tag('q[thumb_id_in][]',options_for_select([ [@unit_names[2],y[2]],[@unit_names[3], '756,757'] ] ) )   
+
     %td
       = t('staff_attendance.from')
       = f.text_field :logged_at_gt, :size => 2, :class => 'form-control datetime_picker4_reverse', value: @search.logged_at_gt.try(:strftime, '%d-%m-%Y %H:%M:%S')
