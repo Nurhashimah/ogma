@@ -124,7 +124,7 @@ class Fingerprint_listPdf < Prawn::Document
   
   def line_item_rows
     body=@body
-    header=[[{content: "#{I18n.t('fingerprint.title3').upcase}<br> #{@college.name.upcase}", colspan: 8}],
+    header=[[{content: "#{@college.name.upcase}<br>#{I18n.t('fingerprint.title3').upcase}", colspan: 8}],
             ["No", I18n.t('attendance.attdate'), I18n.t('attendance.time_in'), I18n.t('attendance.time_out'), I18n.t('attendance.staff_id'), I18n.t('attendance.reason'), I18n.t('attendance.approve_id'), I18n.t('attendance.approvestatus')]]
     header+body
   end

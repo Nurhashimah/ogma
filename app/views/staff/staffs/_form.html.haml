@@ -617,7 +617,18 @@
           suggested_year=y*1+2000
         }
         dob=new Date(suggested_year, m*1-1,d*1);
-        suggested_dob=dob.getDate()+"-"+(dob.getMonth()+1)+"-"+dob.getFullYear();
+        
+        birthmm=(dob.getMonth()+1)
+        birthdd=dob.getDate()
+        if (birthdd > 9)
+        { birthdd_rev=birthdd}
+        else
+        { birthdd_rev="0"+birthdd}
+        if (birthmm > 9)
+        { birthmm_rev=birthmm}
+        else
+        { birthmm_rev="0"+birthmm}
+        suggested_dob=birthdd_rev+"-"+birthmm_rev+"-"+dob.getFullYear();
 
         dob_field.value=suggested_dob;
       }
