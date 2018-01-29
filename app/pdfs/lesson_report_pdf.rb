@@ -11,7 +11,7 @@ class Lesson_reportPdf< Prawn::Document
       move_down 5
     end
     move_down 40
-    if (@college.code=="amsas" && @college.name.include?("amsas") == false)
+    if (@college.code=="amsas" && @college.name.include?("AMSAS")== false)
       move_down 20
     else
       image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.55

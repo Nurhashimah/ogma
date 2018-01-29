@@ -63,12 +63,15 @@
     .col-md-2
       /= f.collection_select :staff_id, Staff.joins(:positions).where('positions.id IN(?)', [2, 55]).order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'320px'}
       
-      /NOTE-rev 5th October 2017
-      - commandants=Position.where('name ILIKE(?)', "%komandan%").pluck(:id)
-      - subpos=Position.where('name ILIKE(?)', "%komandan%").map(&:descendants).flatten.map(&:id)
-      - non_maritim_post_ids=Employgrade.joins(:staffgrades).where.not('employgrades.name ILIKE(?)',"x%").map(&:staffgrades).flatten.map(&:id)
-      - academy_school=commandants+subpos
-      = f.collection_select :staff_id, Staff.joins(:positions).where('positions.id IN(?) and positions.id NOT IN(?)', academy_school, non_maritim_post_ids).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position_unit, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'400px'}
+      - if current_user.college.name.include?("AMSAS")
+        /NOTE-rev 5th October 2017
+        - commandants=Position.where('name ILIKE(?)', "%komandan%").pluck(:id)
+        - subpos=Position.where('name ILIKE(?)', "%komandan%").map(&:descendants).flatten.map(&:id)
+        - non_maritim_post_ids=Employgrade.joins(:staffgrades).where.not('employgrades.name ILIKE(?)',"x%").map(&:staffgrades).flatten.map(&:id)
+        - academy_school=commandants+subpos
+        = f.collection_select :staff_id, Staff.joins(:positions).where('positions.id IN(?) and positions.id NOT IN(?)', academy_school, non_maritim_post_ids).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position_unit, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'400px'}
+      - else
+        = f.collection_select :staff_id, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position_unit, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'400px'}
       
   /TODO - upon acceptance of customisation
   /to include 'staf_id2' field in this form - for approval level (kelulusan) - as below

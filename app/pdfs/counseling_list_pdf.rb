@@ -18,7 +18,7 @@ class Counseling_listPdf < Prawn::Document
   
   def record
     if @college.code=='amsas'
-      columns_arr=[30, 120, 90, 90, 45, 55, 90]
+      columns_arr=[30, 120, 90, 90, 50, 55, 85]
     else
       columns_arr=[30, 50, 50, 50, 50, 50, 45, 55, 50]
     end
@@ -31,6 +31,7 @@ class Counseling_listPdf < Prawn::Document
       row(0).align = :center
       row(0..1).font_style = :bold
       row(1).background_color = 'FFE34D'
+      column(4).align = :center
       for title_row in title_rows
         row(title_row).align=:center
 	row(title_row).background_color='FDF8A1'
@@ -41,7 +42,7 @@ class Counseling_listPdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('student.counseling.title').upcase}<br> #{@college.name.upcase}", colspan: 7}]]
+    header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('student.counseling.title').upcase}", colspan: 7}]]
     name_programme=["No", I18n.t('student.counseling.student_id'), I18n.t('student.counseling.programme')]
     details=[I18n.t('student.counseling.appointment_for'), I18n.t('student.counseling.duration'), I18n.t('student.counseling.is_confirmed'), I18n.t('student.counseling.feedback_referrer')]
     if @college.code=='amsas'

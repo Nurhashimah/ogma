@@ -8,7 +8,7 @@ class Kewpa3Pdf < Prawn::Document
 
     font "Times-Roman"
     text "KEW.PA-3", :align => :right, :size => 16, :style => :bold
-    if college.code=="amsas" && college.name.include?("amsas") == false
+    if college.code=="amsas" && college.name.include?("AMSAS")== false
       @assetcode=(college.name.split(" ").join("_").downcase+'/I/18/'+@asset.cardno)
       text "(No. Siri Pendaftaran: #{@assetcode} )", :align => :right, :size => 14
     else
@@ -91,7 +91,7 @@ class Kewpa3Pdf < Prawn::Document
     @e=[]
     @asset.asset_placements.map do |asset_placement|
       @a << asset_placement.quantity
-      if @college.code=="amsas" && @college.name.include?("amsas") == false
+      if @college.code=="amsas" && @college.name.include?("AMSAS")== false
 	@b << (@college.name.split(" ").join("_").downcase+'/I/18/'+asset_placement.try(:asset).try(:cardno))
       else
 	@b << asset_placement.try(:asset).try(:assetcode)

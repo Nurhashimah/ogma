@@ -18,7 +18,7 @@ class Lesson_planPdf< Prawn::Document
       move_down 5
     end
     move_down 20
-    if (@college.code=="amsas" && @college.name.include?("amsas") == false)
+    if (@college.code=="amsas" && @college.name.include?("AMSAS")== false)
       move_down 20
     else
       image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.65
@@ -74,7 +74,7 @@ class Lesson_planPdf< Prawn::Document
     if @lesson_plan.schedule_item.topic==0
       topic_line=""
     else
-      if @college.code=="amsas" && @college.name.include?("amsas") == false
+      if @college.code=="amsas" && @college.name.include?("AMSAS")== false
         topic_line="#{@lesson_plan.schedule_item.weeklytimetable_topic.subject_list} / #{@lesson_plan.lecture_title}"
       else
         topic_line="#{@lesson_plan.schedule_item.weeklytimetable_topic.full_parent}<br>#{@lesson_plan.schedule_item.weeklytimetable_topic.name}"

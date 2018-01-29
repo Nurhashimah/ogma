@@ -40,7 +40,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
       move_down 5
       table_personal_details_pg1
       move_down 10
-      if @college.code=="amsas" && @college.name.include?("amsas") == false
+      if @college.code=="amsas" && @college.name.include?("AMSAS")== false
       else
 	table_ending
       end
@@ -51,7 +51,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
       move_down 20
       table_personal_details_pg2_cont
       move_down 80
-      if @college.code=="amsas" && @college.name.include?("amsas") == false
+      if @college.code=="amsas" && @college.name.include?("AMSAS")== false
       else
 	table_ending
       end
@@ -61,7 +61,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
       move_down 10
       table_notes
       move_down 30
-      if @college.code=="amsas" && @college.name.include?("amsas") == false
+      if @college.code=="amsas" && @college.name.include?("AMSAS")== false
       else
 	table_ending
       end
@@ -74,7 +74,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
   end
   
   def header
-      if @college.code=="amsas" && @college.name.include?("amsas") == false
+      if @college.code=="amsas" && @college.name.include?("AMSAS")== false
 	text "#{@college.name}", :align => :center, :size => 14, :style => :bold
       else
 	text "PPL APMM", :align => :center, :size => 14, :style => :bold
@@ -84,13 +84,13 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
       text "BORANG MAKLUMAT PERIBADI", :align => :center, :style => :bold, :size => 14
       move_down 15
       bounding_box([10,770], :width => 400, :height => 100) do |y2|
-	if @college.code=="amsas" && @college.name.include?("amsas") == false
+	if @college.code=="amsas" && @college.name.include?("AMSAS")== false
 	else
 	  image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
 	end
       end
       bounding_box([430,770], :width => 400, :height => 90) do |y2|
-	if @college.code=="amsas" && @college.name.include?("amsas") == false
+	if @college.code=="amsas" && @college.name.include?("AMSAS")== false
 	else
 	  image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
 	end
@@ -98,7 +98,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
   end
   
   def header_pg1
-      if @college.name.include?("amsas") == false
+      if @college.name.include?("AMSAS")== false
       else
 	text "PUSAT PENDIDIKAN DAN LATIHAN APMM",  :align => :center, :style => :bold, :size => 10
 	text "AGENSI PENGUATKUASAAN MARITIM MALAYSIA",  :align => :center, :style => :bold, :size => 10
@@ -126,7 +126,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
               [{content: "Tarikh Lahir : #{@student.try(:sbirthdt).try(:strftime, '%d-%m-%Y')}", colspan: 2},{content: "Tempat Lahir : #{@student.render_birthplace}" , colspan: 2}], 
               [{content: "Jantina : #{@student.gender==1? '<b>LELAKI</b> / PEREMPUAN' : 'Lelaki / <b>PEREMPUAN</b>'}", colspan: 2},
                {content: "Status Perkahwinan : #{@student.render_marital}", colspan: 2}],
-              [{content: "#{@college.code=="amsas" && @college.name.include?("amsas") == false ? 'No. Matrik' : 'No. APMM'} : ", colspan: 2},{content: "No. Kad Kuasa :", colspan: 2}],
+              [{content: "#{@college.code=="amsas" && @college.name.include?("AMSAS")== false ? 'No. Matrik' : 'No. APMM'} : ", colspan: 2},{content: "No. Kad Kuasa :", colspan: 2}],
 	      [{content: "No. Insuran :", colspan: 2},{content: "Jenis Insuran : ", colspan: 2}],
               [{content: "Jenis Darah : #{@student.render_bloodtype}", colspan: 4}],
 	      [{content: "Bangsa / Keturunan : #{@student.race2? ? @student.render_race : @student.try(:race2)}", colspan: 2},{content: "Agama : #{@student.render_religion}", colspan: 2}],
@@ -174,7 +174,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
   end 
   
   def table_personal_details_pg2_cont
-    if @college.code=="amsas" && @college.name.include?("amsas") == false
+    if @college.code=="amsas" && @college.name.include?("AMSAS")== false
       aa="Maklumat lanjut Rujuk Borang Kediaman Asrama"
       organisation=@college.name
     else
@@ -277,10 +277,12 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
   end
   
   def table_attachments_verifications
-    if @college.code=="amsas" && @college.name.include?("amsas") == false
+    if @college.code=="amsas" && @college.name.include?("AMSAS")== false
       cc="Maklumat lanjut Rujuk Borang Simpanan Barangan Peribadi Pelatih"
+      approver_dept=""
     else
       cc="Maklumat lanjut Rujuk BK-LAT-KS-02-01 (Borang Simpanan Barangan Peribadi Pelatih)"
+      approver_dept="KULA/BLA/JL"
     end
     data1=[["C.",{content: "SALINAN REKOD / DOKUMEN / BARANGAN YANG DISERAHKAN (mana-mana yang perlu)", colspan: 8}], [{content: "Senarai Rekod / Dokumen Yang Diserahkan :", colspan: 9}], [{content: "1. Salinan Kad Pengenalan", colspan: 2}, "Ya", "", "Tidak", "", "", "", ""], ["", "", "", "", "", "", "", "", ""], 
    [{content: "2. Salinan Surat Beranak", colspan: 2}, "Ya", "", "Tidak", "", "", "", ""], ["", "", "", "", "", "", "", "", ""], 
@@ -291,7 +293,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
    [{content: "Mempunyai Barangan Yang Diserahkan Untuk Simpanan", colspan: 4}, "Ya", "", "Tidak", "", ""], [{content: "", colspan: 9}], [{content: "#{cc}", colspan: 9}]
           ]
     data2=[["D.", {content: "PENGESAHAN DAN TANDATANGAN", colspan: 8} ], 
-   [{content: "Saya mengesahkan bahawa maklumat yang dinyatakan di atas adalah benar.", colspan: 9}], [{content: "Oleh : Pelatih", colspan: 3},  {content: "Diterima / Disahkan Oleh : KULA/BLA/JL", colspan: 6}], 
+   [{content: "Saya mengesahkan bahawa maklumat yang dinyatakan di atas adalah benar.", colspan: 9}], [{content: "Oleh : Pelatih", colspan: 3},  {content: "Diterima / Disahkan Oleh : #{approver_dept}", colspan: 6}], 
    [{content: "Nama Pelatih : <u>#{@student.student_with_rank}</u>", colspan: 3}, {content: "Nama : _______________________________", colspan: 6}],      
    [{content: "Tandatangan : ______________________", colspan: 3}, {content: "Tandatangan : _________________________", colspan: 6}],      
    [{content: "Tarikh : <u>#{Date.today.strftime('%d-%m-%Y')}</u>", colspan: 3},{content: "Tarikh : <u>#{Date.today.strftime('%d-%m-%Y')}</u>", colspan: 6}]
@@ -419,7 +421,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
   end
   
   def footer
-    if @college.code=="amsas" && @college.name.include?("amsas") == false
+    if @college.code=="amsas" && @college.name.include?("AMSAS")== false
     else
       draw_text "BK-LAT-KS-02-03", :size => 8, :at => [0, -5]
     end

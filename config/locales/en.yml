@@ -3123,10 +3123,10 @@ en:
       approver_result: Approver Result
       programme: Programme
       group: Group
-      intake: Ambilan
+      intake: Intake
       coordinator_not_available: "Group Coordinator NOT available, please select other Programme lecturer."
       application_due: "Leave application has expired and could not be processed."
-      hostel_block: Hostel Blok
+      hostel_block: Hostel Block
       expired: Expired
       valid: Valid
 

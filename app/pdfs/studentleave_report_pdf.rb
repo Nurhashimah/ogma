@@ -7,7 +7,7 @@ class Studentleave_reportPdf < Prawn::Document
     @college=college
     programmes=Programme.roots.where(college_id: college.id)
     @pnames=programmes.pluck(:name)
-    font "Times-Roman"
+    font "Helvetica"
     text "#{college.name}", :align => :center, :size => 12, :style => :bold
     text I18n.t('student.leaveforstudent.list'), :align => :center, :size => 12, :style => :bold
     move_down 20
@@ -33,7 +33,7 @@ class Studentleave_reportPdf < Prawn::Document
         header = true
       end
     else 
-      table(line_item_rows, :column_widths => [30,200, 120, 45, 40, 60, 45, 45, 50, 70, 60], :cell_style => { :size => 9,  :inline_format => :true}) do
+      table(line_item_rows, :column_widths => [30,180, 120, 45, 40, 60, 50, 50, 60, 70, 60], :cell_style => { :size => 9,  :inline_format => :true}) do
         row(0).font_style = :bold
         #row(1).text_color = 'FA1111'
         expiredwc.each do |exp|

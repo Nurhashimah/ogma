@@ -18,7 +18,7 @@ class Instructorevaluation_reportPdf < Prawn::Document
       end
     end
     bounding_box([140,750], :width => 350, :height => 100) do |y2|
-      if college.code=="kskbjb" || (college.code=="amsas" && college.name.include?("amsas") == false)
+      if college.code=="kskbjb" || (college.code=="amsas" && college.name.include?("AMSAS")== false)
         move_down 30
         text "#{college.name}"
         move_down 1

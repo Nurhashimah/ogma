@@ -26,7 +26,7 @@ class Mentormentee_listPdf < Prawn::Document
 
   def line_item_rows
     counter = counter||0
-    header=[[{content: "#{I18n.t('staff.mentors.title').upcase}<br> #{@college.name.upcase}", colspan: 5}],
+    header=[[{content: "#{@college.name.upcase}<br>#{I18n.t('staff.mentors.title').upcase}", colspan: 5}],
             ["No", I18n.t('staff.mentors.staff_id'), I18n.t('staff.mentors.mentor_date'), I18n.t('staff.mentors.mentee'), I18n.t('staff.mentors.remark')]]
     body=[]
     @mentors.uniq.each do |mentor|
