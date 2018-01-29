@@ -109,7 +109,7 @@ end
  def staff_list
     respond_to do |format|
       format.pdf do
-        pdf = Staff_listPdf.new(@infos, view_context, current_user.college)
+        pdf = Staff_listPdf.new(Staff.where(id: @infos.map(&:id)).valid_staffs, view_context, current_user.college)
         send_data pdf.render, filename: "staff_list-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"

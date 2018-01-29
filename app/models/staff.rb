@@ -3,7 +3,7 @@ class Staff < ActiveRecord::Base
   paginates_per 13
   
   #validates :icno, presence: true, numericality: true, length: { is: 12 }, uniqueness: true
-  validates :icno, presence: true, uniqueness: true
+  validates :icno, :thumb_id, presence: true, uniqueness: true
   validates :icno, numericality: true, length: { is: 12 }, :if => :mykad_holder
   validates_presence_of     :name, :coemail, :code, :appointdt, :current_salary, :country_cd #appointment date must exist be4 can apply leave, salary - for transport class
 

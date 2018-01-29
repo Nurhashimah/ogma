@@ -26,7 +26,7 @@ class Position_listPdf < Prawn::Document
   
   def line_item_rows
     counter = counter||0
-    header=[[{content: "#{I18n.t('position.list').upcase}<br> #{@college.name.upcase}", colspan: 6}], ["No", "#{I18n.t('position.combo_code')}", "#{I18n.t('position.name')}", "#{I18n.t('position.min_grade')}", "Unit", "#{I18n.t('position.staff_id')}"]]
+    header=[[{content: "#{@college.name.upcase}<br>#{I18n.t('position.list').upcase}", colspan: 6}], ["No", "#{I18n.t('position.combo_code')}", "#{I18n.t('position.name')}", "#{I18n.t('position.min_grade')}", "Unit", "#{I18n.t('position.staff_id')}"]]
    body=[]
    @positions.group_by(&:root).sort.each do |root_post, positions| 
      body << ["#{counter+=1}", "#{root_post.combo_code}", "#{root_post.name}",  "#{root_post.try(:staffgrade).try(:name)}", "#{root_post.unit}", "#{root_post.staff.blank? ? '-' : root_post.staff.staff_with_rank}" ]

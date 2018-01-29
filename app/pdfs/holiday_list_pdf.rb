@@ -26,7 +26,7 @@ class Holiday_listPdf < Prawn::Document
   
   def line_item_rows
     counter = counter||0
-    header=[[{content: "#{I18n.t('holiday.title').upcase}<br> #{@college.name.upcase}", colspan: 3}],
+    header=[[{content: "#{@college.name.upcase}<br>#{I18n.t('holiday.title').upcase}", colspan: 3}],
             ["No", I18n.t('holiday.hname'), I18n.t('holiday.hdate')]]
     header +
     @holidays.map do |holiday|

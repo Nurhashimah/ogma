@@ -4,6 +4,8 @@ class StaffShift < ActiveRecord::Base
   has_many :shift_histories
   belongs_to :college
   
+  validates_presence_of :name, :start_at, :end_at
+  
   # define scope
   def self.start_at_search(query)
     where(start_at: ((query+":00").to_time.utc)+8.hours)

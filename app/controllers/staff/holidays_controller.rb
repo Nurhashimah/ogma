@@ -90,7 +90,7 @@ end
     
     def set_holidays
       @search = Holiday.search(params[:q])
-      @holidays = @search.result.order(hdate: :desc)
+      @holidays = @search.result.order(hdate: :asc)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

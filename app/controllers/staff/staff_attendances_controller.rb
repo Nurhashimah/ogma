@@ -490,8 +490,15 @@ class Staff::StaffAttendancesController < ApplicationController
       #@mylate_attendances = StaffAttendance.find_mylate(@current_user)
       #@approvelate_attendances = StaffAttendance.find_approvelate(@current_user)
 
-      @thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)
-      @unit_names = StaffAttendance.get_thumb_ids_unit_names(2)
+      
+      if current_user.college.code=="kskbjb"
+        @unit_names = StaffAttendance.get_thumb_ids_unit_names(2)
+        @thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)
+      else
+        @unit_names = StaffAttendance.get_thumb_ids_unit_names(2)-["", "Pengkhususan", "Pentadbiran Am"]
+        @thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)-[Staff.invalid_staffs.pluck(:thumb_id), []]
+        #@thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)-[[9112, 9111], []]
+      end
       @all_thumb_ids = StaffAttendance.thumb_ids_all
       #////////////////
     

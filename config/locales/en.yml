@@ -74,6 +74,7 @@ en:
       trainingnote: Training Note
       visitor: Visitor
       position: Position
+      staff_shift: Staff Shift
     attributes:
       asset:
         assignedto_id: Assigned to
@@ -193,6 +194,7 @@ en:
         current_salary: Current Salary
         coemail: Email
         country_cd: Nationality
+        thumb_id: Thumb id
       mycpd:
         cpd_year: Year
         cpd_value: CPD value
@@ -472,6 +474,10 @@ en:
         yearstat: Year
       position:
         staffgrade_id: Minimum grade requirement
+      staff_shift:
+        name: Shift name
+        start_at: Start at
+        end_at: End at
 
     errors:
         template:

@@ -55,6 +55,7 @@ ms_MY:
       trainingnote: Nota Latihan
       visitor: Pelawat
       position: Jawatan
+      staff_shift: Waktu Anjal
     attributes:
       asset:
         assignedto_id: Pegawai Bertanggungjawab
@@ -176,6 +177,7 @@ ms_MY:
         current_salary: Gaji Semasa
         coemail: Emel
         country_cd: Kewarganegaraan
+        thumb_id: Thumb id
       mycpds:
         cpd_year: Tahun
         cpd_value: Jumlah Mata Kumulatif
@@ -456,7 +458,10 @@ ms_MY:
         yearstat: Tahun
       position:
         staffgrade_id: Gred minima diperlukan
-        
+      staff_shift:
+        name: Nama waktu anjal
+        start_at: Masa masuk
+        end_at: Masa keluar
         
     errors:
         template:

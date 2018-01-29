@@ -185,7 +185,7 @@
               - if g_sa2.count == 0              
                 %tr
                   %td.green_text{colspan: 9}
-                    = t 'staff_attendance.unit'
+                    = (t 'staff_attendance.unit')+"ssss#{@thumb_ids} #{@unit_names}"
                     = @unit_names[ind2]
 
         %tr
