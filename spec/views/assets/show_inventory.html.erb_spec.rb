@@ -6,7 +6,7 @@ RSpec.describe "asset/assets/show", :type => :view do
     sign_in(@admin_user)
     @staff1=FactoryGirl.create(:basic_staff)
     @staff2=FactoryGirl.create(:basic_staff)
-    @asset=FactoryGirl.create(:inventory, typename: "My Type B", name: "My Name B", modelname: "My Model B", assignedto: @staff1, quantity: 3)
+    @asset=FactoryGirl.create(:inventory, typename: "My Type B", name: "My Name B", modelname: "My Model B", assignedto: @staff1, quantity: 3, college_id: @staff1.college_id, cardno: "1")
     @room1=FactoryGirl.create(:admin_room)
     @room2=FactoryGirl.create(:admin_room)
     @asset_placement1=FactoryGirl.create(:inventory_placement, asset: @asset, staff: @staff1, quantity: 2, location: @room1)

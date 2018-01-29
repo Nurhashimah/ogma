@@ -5,7 +5,7 @@ RSpec.describe "asset/assets/show", :type => :view do
     @admin_user=FactoryGirl.create(:admin_user)
     sign_in(@admin_user)
     @staff=FactoryGirl.create(:basic_staff)
-    @asset=FactoryGirl.create(:fixed_asset, typename: "My Type A", name: "My Name A", modelname: "My Model A", bookable: true, is_maintainable: true, assignedto: @staff)
+    @asset=FactoryGirl.create(:fixed_asset, typename: "My Type A", name: "My Name A", modelname: "My Model A", bookable: true, is_maintainable: true, assignedto: @staff, college_id: @staff.college_id, cardno: "1")
     @asset_placement=FactoryGirl.create(:fixed_asset_placement, asset: @asset)
     @maint=FactoryGirl.create(:maint, asset: @asset)
   end
