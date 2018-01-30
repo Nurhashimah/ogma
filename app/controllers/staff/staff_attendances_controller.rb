@@ -433,7 +433,9 @@ class Staff::StaffAttendancesController < ApplicationController
   end
   
   def attendance_status_list
-    thumb_ids_in_staff = Staff.where('thumb_id IS NOT NULL').pluck(:thumb_id).uniq.sort
+    #ori - before 30Jan2018
+    #thumb_ids_in_staff = Staff.where('thumb_id IS NOT NULL').pluck(:thumb_id).uniq.sort
+    thumb_ids_in_staff = Staff.joins(:positions).where('thumb_id IS NOT NULL').order('positions.combo_code').pluck(:thumb_id).uniq
     all_dates_staffs = StaffAttendance.where('logged_at>=? and logged_at<? and thumb_id IN(?)',Date.today-2.years, Date.today+1.day, thumb_ids_in_staff).order('logged_at ASC').limit(15000)
     @all_dates = all_dates_staffs.group_by{|x|x.thumb_id}
     @title_for_month=all_dates_staffs.map{|x|x.logged_at.in_time_zone('UTC').to_date.beginning_of_month.to_s}.uniq
@@ -441,7 +443,7 @@ class Staff::StaffAttendancesController < ApplicationController
 
     respond_to do |format|
       format.pdf do
-        pdf = Attendance_status_listPdf.new(@all_dates, @title_for_month, @year_group, view_context, current_user.college)
+        pdf = Attendance_status_listPdf.new(@all_dates, @title_for_month, @year_group, thumb_ids_in_staff, view_context, current_user.college)
         send_data pdf.render, filename: "attendance_status_list-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"

@@ -48,7 +48,7 @@
             %td
               /- if attendance.reason? && (attendance.is_approved == nil || attendance.is_approved == false)
               - if attendance.reason? && (attendance.is_approved == nil)
-                = link_to (fa_icon("thumbs-o-up", text: (t 'approve'))), "approval?id=#{attendance.id}"
+                = link_to (fa_icon("thumbs-o-up", text: (t 'approve'))), "/attendance/approval?id=#{attendance.id}"
               - elsif attendance.is_approved == true  
                 = fa_icon("check")
               - elsif attendance.is_approved == false  
@@ -67,7 +67,7 @@
             %td=h attendance.approved_by.blank? ? "" : attendance.try(:approver).try(:staff_with_rank_position_unit) 
             %td
               - if attendance.reason? && attendance.is_approved == nil
-                = link_to (fa_icon("thumbs-o-up", text: (t 'approve'))), "approval?id=#{attendance.id}"
+                = link_to (fa_icon("thumbs-o-up", text: (t 'approve'))), "/attendance/approval?id=#{attendance.id}"
               - elsif attendance.is_approved == true
                 = fa_icon("check")
               - elsif attendance.is_approved == false

@@ -304,7 +304,7 @@ class Staff < ActiveRecord::Base
     end
 
     def staff_thumb
-      "#{staff_with_rank}  (thumb id : #{thumb_id})"
+      "#{staff_with_rank_position}  (thumb id : #{thumb_id})"
     end
 
   def render_unit

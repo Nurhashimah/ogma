@@ -1,9 +1,10 @@
 class Attendance_status_listPdf < Prawn::Document
-  def initialize(all_dates, title_for_month, year_group, view, college)
+  def initialize(all_dates, title_for_month, year_group, thumb_ids_in_staff, view, college)
     super({top_margin: 40, left_margin: 40, page_size: 'A4', page_layout: :portrait })
     @all_dates = all_dates
     @title_for_month = title_for_month
     @year_group = year_group
+    @thumb_ids_in_staff = thumb_ids_in_staff
     @view = view
     @college=college
     
@@ -71,7 +72,9 @@ class Attendance_status_listPdf < Prawn::Document
   def retrieve_data
     abody=[]
     ahash=Hash.new
-    @all_dates.keys.sort.each_with_index do |thumbid, index|
+    #ori-before 30Jan2018
+    #@all_dates.keys.sort.each_with_index do |thumbid, index|
+    @all_dates.keys.sort_by{|ele| @thumb_ids_in_staff.index(ele)}.each_with_index do |thumbid, index|
         thumb_owners=Staff.where(thumb_id: thumbid)
         ######### - per thumd_id liner (start)
         staff_col=""
@@ -147,7 +150,7 @@ class Attendance_status_listPdf < Prawn::Document
       end
     end
     
-    header=[[{content: "#{I18n.t('staff_attendance.status_punchcard').upcase}<br> #{@college.name.upcase}", colspan: total_cols}], dummy,
+    header=[[{content: "#{@college.name.upcase}<br>#{I18n.t('staff_attendance.status_punchcard').upcase}", colspan: total_cols}], dummy,
             [{content: "No", rowspan: 2},{content:  "#{I18n.t('staff_attendance.thumb_id')}", rowspan: 2}, {content: "#{I18n.t('staff_attendance.unit_department')}", rowspan: 2} ]+a, b]
   
     header+@body

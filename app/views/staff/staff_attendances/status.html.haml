@@ -31,7 +31,9 @@
       
       /NOTE - sort by ancestry in positions - 6thSept2017
       /https://stackoverflow.com/questions/17997725/ruby-sorting-an-array-with-another-array?noredirect=1&lq=1
-      - thumb_ids_in_staff = Staff.joins(:positions).where('thumb_id IS NOT NULL').order('positions.ancestry').pluck(:thumb_id).uniq
+      /ori - before 30Jan2018
+      /- thumb_ids_in_staff = Staff.joins(:positions).where('thumb_id IS NOT NULL').order('positions.ancestry').pluck(:thumb_id).uniq
+      - thumb_ids_in_staff = Staff.joins(:positions).where('thumb_id IS NOT NULL').order('positions.combo_code').pluck(:thumb_id).uniq
       /- b.sort_by{|e| a.index(e)}
       - @all_dates.keys.sort_by{|ele| thumb_ids_in_staff.index(ele)}.each_with_index do |thumbid, index|
         - thumb_owners=Staff.where(thumb_id: thumbid)
