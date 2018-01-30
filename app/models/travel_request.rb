@@ -91,7 +91,11 @@ class TravelRequest < ActiveRecord::Base
 #     approver
     
     if curr_user.college.code=='amsas'
-      approver = Position.where('ancestry_depth<?',2).where('name ILIKE(?) OR name ILIKE(?) OR name ILIKE(?)', "Ketua Penolong Pengarah%", "Pengarah%", "Komandan%").where.not(staff_id: nil).pluck(:id)
+      if curr_user.college.name.include?("AMSAS")
+        approver = Position.where('ancestry_depth<?',2).where('name ILIKE(?) OR name ILIKE(?) OR name ILIKE(?)', "Ketua Penolong Pengarah%", "Pengarah%", "Komandan%").where.not(staff_id: nil).pluck(:id)
+      else
+        approver=Position.where(staff_id: curr_user.userable_id).first.ancestors.where.not(staff_id: nil).pluck(:id)
+      end
     else
       approver = Position.where('ancestry_depth<?',2).where('name ILIKE(?) OR name ILIKE(?)', "Pengarah%", "Timbalan Pengarah%").where.not(staff_id: nil).pluck(:id)
     end

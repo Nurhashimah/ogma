@@ -27,7 +27,7 @@ class Travelclaim_listPdf < Prawn::Document
 
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('staff.travel_claim.title').upcase}<br> #{@college.name.upcase}", colspan: 5}],
+    header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('staff.travel_claim.title').upcase}", colspan: 5}],
               [ 'No',  I18n.t('staff.travel_claim.month_year'), I18n.t('staff.travel_claim.name'), I18n.t('staff.travel_claim.total'), 'Status']]
     body=[]
     @travel_claims.each do |travel_claim|

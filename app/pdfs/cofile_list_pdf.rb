@@ -26,7 +26,7 @@ class Cofile_listPdf < Prawn::Document
 
   def line_item_rows
     counter = counter||0
-    header=[[{content: "#{I18n.t('cofile.index').upcase}<br> #{@college.name.upcase}", colspan: 7}],
+    header=[[{content: "#{@college.name.upcase}<br>#{I18n.t('cofile.index').upcase}", colspan: 7}],
             ["No", I18n.t('cofile.cofileno'), I18n.t('cofile.name'), I18n.t('cofile.location'), I18n.t('cofile.owner'), I18n.t('cofile.onloan_to'), I18n.t('cofile.onloandt') ]]
     header +
     @cofiles.map do |cofile|

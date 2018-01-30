@@ -3,6 +3,7 @@ class InstructorevaluationPdf < Prawn::Document
     super({top_margin: 40, left_margin: 60, page_size: 'A4', page_layout: :portrait })
     @appraisal  = instructor_appraisal
     @view = view
+    @college = college
     font "Helvetica"
     if college.code=="kskbjb"
       move_down 10
@@ -255,7 +256,10 @@ class InstructorevaluationPdf < Prawn::Document
   end
   
   def table_signatory
-    data=[["#{I18n.t('instructor_appraisal.date2').upcase}: <u>#{@appraisal.appraisal_date.try(:strftime, '%d-%m-%Y')}</u>", "#{I18n.t('instructor_appraisal.signatory').upcase}: ..............................................."], ["", "#{I18n.t('instructor_appraisal.name')}: <u>#{@appraisal.instructor.name}</u>"], ["", "#{I18n.t('instructor_appraisal.rank').upcase}: <u>#{@appraisal.instructor.rank.try(:name)}</u>"]]
+    data=[["#{I18n.t('instructor_appraisal.date2').upcase}: <u>#{@appraisal.appraisal_date.try(:strftime, '%d-%m-%Y')}</u>", "#{I18n.t('instructor_appraisal.signatory').upcase}: ..............................................."], ["", "#{I18n.t('instructor_appraisal.name')}: <u>#{@appraisal.instructor.name}</u>"]]
+    if (@college.code=="amsas" && @college.name.include?("AMSAS")) || @appraisal.instructor.rank_id!=nil
+       data << ["", "#{I18n.t('instructor_appraisal.rank').upcase}: <u>#{@appraisal.instructor.rank.try(:name)}</u>"]
+    end
     table(data, :column_widths => [255, 240],  :cell_style => {:size=>11, :borders => [], :inline_format => :true})
   end
   

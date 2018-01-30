@@ -234,7 +234,7 @@ class TravelClaim < ActiveRecord::Base
     abc = TravelClaimsTransportGroup.abcrate
     de = TravelClaimsTransportGroup.derate
     mid = 1820.75
-    if travel_requests.pluck(:own_car).count(:true) > 0  && staff.vehicles && staff.vehicles.count>0
+    if travel_requests.pluck(:own_car).count(true) > 0  && staff.vehicles && staff.vehicles.count>0
       TravelClaimsTransportGroup.transport_class(staff.vehicles.first.id, staff.current_salary, abc, de, mid)
     else
        'Z'

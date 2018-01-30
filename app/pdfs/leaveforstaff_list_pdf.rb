@@ -100,7 +100,7 @@ class Leaveforstaff_listPdf < Prawn::Document
   end
   
   def line_item_rows
-    header = [[{content: "#{I18n.t('staff_leave.list').upcase}<br> #{@college.name.upcase}", colspan: 7}]]
+    header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('staff_leave.list').upcase}", colspan: 7}]]
     header_title=["No", I18n.t('staff_leave.leavetype'), "#{I18n.t('staff_leave.from')} / #{I18n.t('staff_leave.to')}", I18n.t('staff_leave.duration'), "#{I18n.t('staff_leave.supported')} ?", "#{I18n.t('staff_leave.approved')} ?", I18n.t('staff_leave.replacement')]
     a=[]
     

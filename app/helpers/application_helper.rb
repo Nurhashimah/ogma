@@ -445,4 +445,8 @@ module ApplicationHelper
     rank_list
   end
   
+  def filing_staffs
+    User.joins(:roles).where('roles.authname IN(?)', ["e_filing", "files_module_admin", "documents_module_admin"]).pluck(:userable_id)
+  end
+  
 end

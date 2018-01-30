@@ -1639,6 +1639,7 @@ ms_MY:
       is_submitted: "Dihantar?"
       is_approved: "Diluluskan?"
       to_be_approved_by: Kelulusan Oleh
+      approved_by: Kelulusan Oleh
       check_status: Status Semakan
       note_by_finance: Nota dari Staf Kewangan
       submit_notify: Penghantaran Tuntutan Perjalanan akan dimaklumkan kepada Staf Kewangan dan tiada suntingan boleh dibuat ke atas rekod ini lagi

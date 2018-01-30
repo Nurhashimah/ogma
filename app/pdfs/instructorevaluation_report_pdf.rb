@@ -20,9 +20,9 @@ class Instructorevaluation_reportPdf < Prawn::Document
     bounding_box([140,750], :width => 350, :height => 100) do |y2|
       if college.code=="kskbjb" || (college.code=="amsas" && college.name.include?("AMSAS")== false)
         move_down 30
-        text "#{college.name}"
+        text "#{college.name}", :style => :bold, :size => 11
         move_down 1
-        text "#{I18n.t('instructor_appraisal.report').upcase}"
+        text "#{I18n.t('instructor_appraisal.report').upcase}", :style => :bold, :size => 11
       else
         draw_text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA", :at => [-30, 85], :style => :bold, :size => 11
         draw_text "(PLAMM)", :at => [85, 70], :style => :bold, :size => 11

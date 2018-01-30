@@ -38,7 +38,7 @@ class Averageinstructor_listPdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('average_instructor.list').upcase}<br> #{@college.name.upcase}", colspan: 7}],
+    header = [[{content: " #{@college.name.upcase}<br>#{I18n.t('average_instructor.list').upcase}", colspan: 7}],
               [ 'No', I18n.t('average_instructor.instructor_id'), I18n.t('average_instructor.evaluate_date'), I18n.t('average_instructor.title2'), I18n.t('average_instructor.objective'), I18n.t('average_instructor.delivery_type'), I18n.t('average_instructor.evaluator_id')]]
     body=[]
     @average_instructors.group_by(&:programme).each do |programme, average_instructors|

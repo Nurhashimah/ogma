@@ -26,7 +26,7 @@ class Travellog_listPdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('staff.travel_request.my_travel_logs').upcase}<br> #{@college.name.upcase}", colspan: 8}],
+    header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('staff.travel_request.my_travel_logs').upcase}", colspan: 8}],
               [ 'No',  I18n.t('staff.travel_request.document_id'),  I18n.t('staff.travel_request.staff_id'),  I18n.t('staff.travel_request.destination'),  I18n.t('staff.travel_request.depart_at'),  I18n.t('staff.travel_request.return_at'),  I18n.t('staff.travel_request.purpose'), I18n.t('staff.travel_request.hod_accept')]]
     body=[]
     @my_approved_requests.each do |request|

@@ -26,7 +26,7 @@ class Instructorevaluation_listPdf < Prawn::Document
 
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('instructor_appraisal.list').upcase}<br> #{@college.name.upcase}", colspan: 7}],
+    header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('instructor_appraisal.list').upcase}", colspan: 7}],
               [ 'No', I18n.t('instructor_appraisal.staff_id'), I18n.t('instructor_appraisal.appraisal_date'), I18n.t('instructor_appraisal.qc_sent'), I18n.t('instructor_appraisal.checked'), I18n.t('instructor_appraisal.check_qc'), I18n.t('instructor_appraisal.check_date')]]
     header +
     @instructor_appraisals.map do |instructor_appraisal|

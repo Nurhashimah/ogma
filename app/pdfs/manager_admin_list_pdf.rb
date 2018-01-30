@@ -29,7 +29,7 @@ class Manager_admin_listPdf < Prawn::Document
   
   def line_item_rows
     counter = counter||0
-    header=[[{content: "#{I18n.t('attendance.title2').upcase}<br> #{@college.name.upcase}", colspan: 9}],
+    header=[[{content: "#{@college.name.upcase}<br>#{I18n.t('attendance.title2').upcase}", colspan: 9}],
             ["No", I18n.t('attendance.attdate'), I18n.t('attendance.time_in'), I18n.t('attendance.time_out'), I18n.t('attendance.staff_id'), I18n.t('staff_attendance.unit_department'), I18n.t('attendance.reason'), I18n.t('attendance.approve_id'), I18n.t('attendance.approvestatus')]]
     body=[]
     if @late_early_recs.size > 0
