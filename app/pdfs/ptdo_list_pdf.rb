@@ -26,7 +26,7 @@ class Ptdo_listPdf < Prawn::Document
 
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('staff.training.application_status.training_request').upcase}<br> #{@college.name.upcase}", colspan: 5}],
+    header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('staff.training.application_status.training_request').upcase}", colspan: 5}],
               [ 'No', I18n.t('staff.training.application_status.schedule'),  I18n.t('staff.training.application_status.course_name'), I18n.t('staff.training.application_status.staff_name'), I18n.t('staff.training.application_status.status')]]
     body =[]
     @ptdos.each do |ptdo|

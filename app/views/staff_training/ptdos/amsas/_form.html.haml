@@ -8,7 +8,7 @@
         .col-md-1
           = f.check_box :final_approve, class: 'form-control'
         .col-md-5
-          .small=t 'staff.training.application_status.director_app'
+          .small=@ptdo.college.name.include?("AMSAS") ? (t 'staff.training.application_status.director_app') : (t 'staff.training.application_status.root_app')
               
   - if (@ptdo.dept_approve? && @ptdo.final_approve?) && (@ptdo.staff_id == current_user.userable_id  || is_developer? || is_admin?)
     .form-group

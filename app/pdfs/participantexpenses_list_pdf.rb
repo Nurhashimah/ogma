@@ -29,7 +29,7 @@ class Participantexpenses_listPdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('staff.training.schedule.participants_expenses').upcase}<br> #{@college.name.upcase}", colspan: 11}],
+    header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('staff.training.schedule.participants_expenses').upcase}", colspan: 11}],
               [ 'No', I18n.t('staff.training.application_status.staff_name'),"#{I18n.t('staff.position')}",  I18n.t('staff.training.application_status.course_name'), "#{I18n.t('staff.training.schedule.start')}-#{I18n.t('staff.training.schedule.end')}", I18n.t('staff.training.schedule.duration'), I18n.t('staff.training.schedule.price'), I18n.t('staff.training.schedule.budget_ok'), I18n.t('staff.training.schedule.min_participants'), "#{I18n.t('staff.training.schedule.local_order')} / #{I18n.t('staff.training.schedule.cash')}", I18n.t('staff.training.schedule.remark')]]
     body =[]
     @ptschedules.each do |ptschedule| 

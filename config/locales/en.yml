@@ -1524,7 +1524,9 @@ en:
         app_by_unit_head: "Approved by Unit head, awaiting Dept approval"
         app_by_dept_head: "Approved by Dept head, awaiting Pengarah approval"
         auto_app_require_director_app: "Awaiting Director / Comandant / Chief Asst Director approval"
+        auto_app_require_root_app: "Awaiting Director's approval"
         director_app: "Approval by Director / Comandant / Chief Asst Director"
+        root_app: "Approval by Director"
         all_app_comp: All approvals complete
         approval_completed: Application Approved
         report_submit: Report Submitted

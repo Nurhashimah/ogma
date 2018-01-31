@@ -54,7 +54,7 @@ class Ptbudget_listPdf < Prawn::Document
 
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('staff.training.budget.title').upcase}<br> #{@college.name.upcase}", colspan: 6}],
+    header = [[{content: " #{@college.name.upcase}<br>#{I18n.t('staff.training.budget.title').upcase}", colspan: 6}],
               [ 'No', I18n.t('staff.training.budget.start'), I18n.t('staff.training.budget.budget'), I18n.t('staff.training.budget.used'), I18n.t('staff.training.budget.balance'), "#{I18n.t('staff.training.budget.balance')} (%)" ]]
     body=[]
     @ptbudgets.group_by{|x|x.fiscal_end}.sort.reverse.each do |fiscal_ending, budgets|

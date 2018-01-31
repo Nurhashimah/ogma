@@ -114,7 +114,11 @@ class Ptdo < ActiveRecord::Base
       end  
     elsif dept_approve == true && dept_approve == true && final_approve.nil? == true
       if college.code=='amsas'
-        I18n.t("staff.training.application_status.auto_app_require_director_app") #Amsas only - auto Unit & Dept Approval, just require Director/Komandan/Chief Asst Director
+        if college.name.include?("AMSAS")
+          I18n.t("staff.training.application_status.auto_app_require_director_app") #Amsas only - auto Unit & Dept Approval, just require Director/Komandan/Chief Asst Director
+        else
+          I18n.t("staff.training.application_status.auto_app_require_root_app") #General college - auto Unit & Dept approval
+        end
       else
         I18n.t("staff.training.application_status.app_by_dept_head") #"Approved by Dept head, awaiting Pengarah approval"
       end

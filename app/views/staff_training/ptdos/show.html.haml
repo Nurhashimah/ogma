@@ -50,7 +50,10 @@
             %dt= @ptdo.college.code=='amsas' ? (t 'staff.training.application_status.single_approve') : (t 'staff.training.application_status.final_approve')
             %dd
               - if @ptdo.college.code=='amsas'
-                = h @ptdo.final_approve? ? t('staff.training.application_status.approved') : t('staff.training.application_status.auto_app_require_director_app')
+                - if @ptdo.college.name.include?("AMSAS")
+                  = h @ptdo.final_approve? ? t('staff.training.application_status.approved') : t('staff.training.application_status.auto_app_require_director_app')
+                - else
+                  = h @ptdo.final_approve? ? t('staff.training.application_status.approved') : t('staff.training.application_status.auto_app_require_root_app')
               - else
                 = h @ptdo.final_approve? ? t('staff.training.application_status.approved') :  t('staff.training.application_status.rejected')
             

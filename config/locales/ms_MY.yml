@@ -1492,7 +1492,9 @@ ms_MY:
         app_by_unit_head: "Diluluskan oleh Ketua Unit, menunggu kelulusan Ketua Jabatan"
         app_by_dept_head: "Diluluskan oleh Ketua Jabatan, menunggu kelulusan Pengarah"
         auto_app_require_director_app: "Menunggu kelulusan Pengarah / Komandan / Ketua Penolong Pengarah"
+        auto_app_require_root_app: "Menunggu kelulusan Pengarah"
         director_app: "Kelulusan oleh Pengarah / Komandan / Ketua Penolong Pengarah"
+        root_app: "Kelulusan oleh Pengarah"
         all_app_comp: Semua kelulusan lengkap
         approval_completed: Permohonan Diluluskan
         report_submit: Laporan telah dihantar
