@@ -5,7 +5,7 @@
       %dd=h !@asset_loan.loan_officer.blank? ? "#{t('asset.loan.release_on')} #{l(@asset_loan.approved_date) unless @asset_loan.approved_date.nil?} #{t('by2')} #{@asset_loan.try(:loanofficer).try(:staff_with_rank)}" : "" 
   
       %dt=t 'asset.loan.notify_hod'
-      %dd=@asset_loan.hod.nil? ? "" : @asset_loan.try(:hod).try(:staff_with_rank)
+      %dd=@asset_loan.hodept.nil? ? "" : @asset_loan.try(:hodept).try(:staff_with_rank_position_unit)
     
     - else
  

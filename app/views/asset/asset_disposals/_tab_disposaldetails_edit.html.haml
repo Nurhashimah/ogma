@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       = f.label :document_id
     .col-md-6
-      = f.collection_select :document_id, Document.all.order(refno: :asc), :id, :refno, {:include_blank =>t('helpers.prompt.select_document'), :selected=>@disposal.document_id},{class: 'selectpicker', "data-width"=>'450px'} 
+      = f.collection_select :document_id, Document.all.order(refno: :asc), :id, :doc_details, {:include_blank =>t('helpers.prompt.select_document'), :selected=>@disposal.document_id},{class: 'selectpicker', "data-width"=>'450px'} 
   .form-group
     .col-sm-2.control-label
       = f.label :disposal_type

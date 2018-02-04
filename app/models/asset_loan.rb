@@ -15,7 +15,7 @@ class AssetLoan < ActiveRecord::Base
   validates_presence_of :reasons, :if => :must_assign_if_external?   
   validates_presence_of :reasons, :driver_id, :if => :must_assign_if_vehicle?
   validates_presence_of :endorsed_date,  :loan_officer, :if => :is_endorsed?
-  validates_presence_of :approved_date, :hod, :if => :is_approved?
+  validates_presence_of :approved_date, :hod, :hod_date, :if => :is_approved?
   validates_presence_of :returned_on, :received_officer, :if => :is_returned?
   
   #scope :myloan, -> { where(staff_id: Login.current_login.staff_id)}

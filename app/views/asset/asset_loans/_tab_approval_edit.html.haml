@@ -30,6 +30,7 @@
         - hod_ids=@asset_loan.asset.assignedto.valid_positions.first.ancestors.pluck(:staff_id).compact
         =f.collection_select :hod, Staff.where(id: hod_ids), :id, :staff_with_rank_position_unit, {:include_blank=> t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
         
+        
       - elsif current_user.college.code=="kskbjb"
         - @unit_members = @asset_loan.unit_members 
         - if @asset_loan.loantype == 1
@@ -44,6 +45,13 @@
         - elsif @asset_loan.loantype == 2
           /for external - fixed must inform Pengarah
           = f.collection_select :hod, Staff.where(id: 58), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>58},{class: 'selectpicker', "data-width"=>'350px'}    
+
+  .form-group
+    .col-sm-2.control-labl.notify_hod
+      = f.label t 'asset.loan.hod_date', for: :hod_date
+    .col-md-4.notify_hod
+      =f.text_field :hod_date, class: 'form-control date_picker_reverse mandatory'
+      
 
 :javascript
 

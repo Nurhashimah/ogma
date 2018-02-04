@@ -2651,6 +2651,7 @@ en:
       kewpa17_available: "KEW-PA 17 (Laporan Lembaga Pemeriksa...) only available for not yet disposed assets (awaiting disposal approval)."
       awaiting_disposal_approval: "Awaiting Disposal Approval"
       approved_disposal: "Disposed Assets"
+      kewpa17_not_available: "KEW-PA 17 is not available for selected disposal record(s)."
       
     loss:
       title: "Loss & Write Offs"
@@ -2736,6 +2737,7 @@ en:
       is_returned: Returned
       is_approved: "Approved?"
       notify_hod: Notify HOD
+      hod_date: Notification Date
       approve_hod: HOD Approval
       hod: Head of Department
       due_date: Due date
@@ -2785,7 +2787,7 @@ en:
       workorderno: "Work Order No"
       maintcost: Maintainance Cost
       details: Details
-      value_added: "Addition/Replacement/Upgrade"
+      maint_type: Maintenance Type
     
   stationery:
     title: List Office Supplies

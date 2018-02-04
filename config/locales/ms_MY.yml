@@ -2541,6 +2541,7 @@ ms_MY:
       kewpa17_available: "Cetakan KEW-PA 17 (Laporan Lembaga Pemeriksa...) hanya tersedia untuk aset belum dilupus (menunggu kelulusan pelupusan)."
       awaiting_disposal_approval: "Menunggu Kelulusan Pelupusan"
       approved_disposal: "Aset Telah Dilupuskan"
+      kewpa17_not_available: "KEW-PA 17 tidak tersedia untuk rekod pelupusan yang dipilih)."
  
     loss:
       title: "Kehilangan & Hapus Kira"
@@ -2626,6 +2627,7 @@ ms_MY:
       is_returned: Telah dipulangkan
       is_approved: "Diluluskan?"
       notify_hod: Makluman Ketua Jabatan
+      hod_date: Tarikh Notifikasi
       approve_hod: Kelulusan Ketua Jabatan
       hod: Ketua Jabatan
       due_date: Tarikh akhir
@@ -2675,7 +2677,7 @@ ms_MY:
       workorderno: "No. Perintah Kerja"
       maintcost: Kos Senggaraan
       details: Butiran
-      value_added: "Penambahan/Penggantian/Naik Taraf"
+      maint_type: Jenis Penyelenggaraan
 
   stationery:
     title: Senarai Keperluan Pejabat

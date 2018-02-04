@@ -26,7 +26,7 @@ class Loan_listPdf < Prawn::Document
   
   def line_item_rows
     counter = counter||0
-    header=[[{content: "#{I18n.t('asset.loan.asset_on_loan').upcase}<br> #{@college.name.upcase}", colspan: 7}],
+    header=[[{content: "#{@college.name.upcase}<br>#{I18n.t('asset.loan.asset_on_loan').upcase}", colspan: 7}],
             ["No", "#{I18n.t('asset.loan.other_asset')}", "#{I18n.t('asset.loan.staff_id')}<br> / #{I18n.t('asset.loan.reasons')}", "#{I18n.t('asset.loan.loaned_by')} / #{I18n.t('asset.loan.responsible_unit')}", "#{I18n.t('asset.loan.requested_for')} / #{ I18n.t('asset.loan.returned_date')}", "#{I18n.t('asset.loan.approved_date')}", "Status"]]
     body=[]
     @loans.each do |loan|

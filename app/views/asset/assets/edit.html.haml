@@ -198,7 +198,7 @@
               .col-sm-2=f.label t 'asset.maint.workorderno' , for: :workorderno
               .col-sm-2=f.label t 'asset.maint.maintcost' , for: :maintcost
               .col-sm-1=f.label t 'asset.maint.details' , for: :details
-              .col-sm-3=f.label t 'asset.maint.value_added', for: :value_added
+              .col-sm-3=f.label t 'asset.maint.maint_type', for: :maint_type
 
             = f.fields_for :maints do |builder|
               = render 'maint_fields', :f => builder
