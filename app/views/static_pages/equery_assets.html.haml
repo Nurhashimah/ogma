@@ -38,7 +38,11 @@
                 KEW.PA-4 (Senarai Daftar Harta Modal)
                 %br
                 - yeartab=[]
-                - for x in Asset.hm.map{|d| d.assetcode.split("/")[4]}
+                - if current_user.college.code=="amsas" && current_user.college.name.include?("AMSAS") == false
+                  - asset_codes=Asset.hm.map{|d| d.assetcode.split("/")[2]}
+                - else
+                  - asset_codes=Asset.hm.map{|d| d.assetcode.split("/")[4]}
+                - for x in asset_codes
                   - if x.size==2
                     - yeartab << "20"+x
                   - else
@@ -56,7 +60,11 @@
                 KEW.PA-5 (Senarai Daftar Inventori)
                 %br
                 - yeartab=[]
-                - for x in Asset.inv.map{|d| d.assetcode.split("/")[4]}
+                - if current_user.college.code=="amsas" && current_user.college.name.include?("AMSAS") == false
+                  - asset_codes2=Asset.inv.map{|d| d.assetcode.split("/")[2]}
+                - else
+                  - asset_codes2=Asset.inv.map{|d| d.assetcode.split("/")[4]}
+                - for x in asset_codes2
                   - if x.size==2
                     - yeartab << "20"+x
                   - else

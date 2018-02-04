@@ -15,7 +15,14 @@
               =f.label  (t 'asset.assetcode')
             .col-md-5
               =f.text_field :assetcode, class: 'form-control', data: {autocomplete_source: Asset.where(id: AssetDefect.pluck(:asset_id)).pluck(:assetcode).sort}
-              .small.text-blue=current_user.college.code=='kskbjb' ? "(Format : KKM/BPL/010619/H/10/395)" : "(Format: JPM/APMM/PL/H/2004/01-05)"
+              .small.text-blue
+                - if current_user.college.code=='kskbjb'  
+                  (Format : KKM/BPL/010619/H/10/395)
+                - else
+                  - if current_user.college.name.include?("AMSAS")
+                    (Format: JPM/APMM/PL/H/2004/01-05)
+                  - else
+                    (Format: kolej_abc/H/18/1)
             
           .row
             .text-red{style: 'padding-left: 320px;'}=(t 'or').upcase

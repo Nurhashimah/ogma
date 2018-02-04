@@ -26,7 +26,7 @@ class Event_listPdf < Prawn::Document
 
   def line_item_rows
     counter = counter||0
-    header=[[{content: "#{I18n.t('events.list').upcase}<br> #{@college.name.upcase}", colspan: 7}],
+    header=[[{content: "#{@college.name.upcase}<br>#{I18n.t('events.list').upcase}", colspan: 7}],
             ["No", I18n.t('events.en'), I18n.t('events.sd'), I18n.t('events.ed'), I18n.t('events.loca'), I18n.t('events.ob'), I18n.t('events.cb')]]
     header +
     @events.map do |event|

@@ -88,7 +88,7 @@
             .col-sm-2.control-label
               = f.label t 'asset.manufacturer', for: :manufacturer_id
             .col-md-5
-              = f.text_field :manufacturer_id, class: 'form-control' 	   
+              = f.collection_select :manufacturer_id, AddressBook.all, :id, :name, {:include_blank => (t 'select')}, {class: 'selectpicker'}   
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.country_id', for: :country_id
@@ -163,7 +163,7 @@
               .col-sm-2.control-label
                 = f.label t 'asset.receivedby', for: :receiver_id
               .col-md-5
-                = f.collection_select :receiver_id, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id,  :staff_with_rank_unit, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
+                = f.collection_select :receiver_id, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id,  :staff_with_rank_position_unit, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
   
             .form-group
               .col-sm-2.control-label
@@ -198,6 +198,7 @@
               .col-sm-2=f.label t 'asset.maint.workorderno' , for: :workorderno
               .col-sm-2=f.label t 'asset.maint.maintcost' , for: :maintcost
               .col-sm-1=f.label t 'asset.maint.details' , for: :details
+              .col-sm-3=f.label t 'asset.maint.value_added', for: :value_added
 
             = f.fields_for :maints do |builder|
               = render 'maint_fields', :f => builder

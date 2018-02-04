@@ -31,13 +31,13 @@
       - asset_processor=current_user.userable_id
     - else
       - asset_processor = @defective.processed_by
-    = f.collection_select :processed_by, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>asset_processor},{class: 'selectpicker', "data-width"=>'230px'} 
+    = f.collection_select :processed_by, Staff.valid_staffs.order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>asset_processor},{class: 'selectpicker', "data-width"=>'230px'} 
 
 .form-group
   .col-sm-2.control-label
     = f.label t 'asset.defect.processed_on', for: :processed_on
   .col-md-2
-    = f.text_field :processed_on, class: 'date_picker_reverse form-control' 
+    = f.text_field :processed_on, class: 'date_picker_reverse form-control', value: @defective.processed_on.try(:strftime, '%d-%m-%Y')
 
 .form-group
   .col-sm-2.control-label
@@ -48,4 +48,4 @@
       - myhod = Position.where('id IN (?)', bosses).pluck(:staff_id) 
     - else
       - myhod = current_user.userable_id 
-    = f.collection_select :decision_by, Staff.where(id: myhod), :id, :staff_with_rank,{:include_blank =>t('helpers.prompt.select_staff'), :selected=>asset_processor},{class: 'selectpicker', "data-width"=>'230px'} 
+    = f.collection_select :decision_by, Staff.where(id: myhod), :id, :staff_with_rank_position,{:include_blank =>t('helpers.prompt.select_staff'), :selected=>asset_processor},{class: 'selectpicker', "data-width"=>'230px'} 

@@ -2,6 +2,10 @@ class Maint < ActiveRecord::Base
    belongs_to :college
    belongs_to :asset
    belongs_to :maintainer, :class_name => 'AddressBook'
+   
+   def render_maintenance_type
+     ((DropDown::SCHEDULE_MAINT+DropDown::UNSCHEDULE_MAINT).find_all{|disp, value| value == maint_type}).map {|disp, value| disp} [0]
+   end
 end
 
 # == Schema Information

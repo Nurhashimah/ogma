@@ -11,6 +11,7 @@ class Asset < ActiveRecord::Base
   belongs_to :hmlocation, :class_name => 'Location', :foreign_key => 'location_id' #Harta Modal
   
   belongs_to :suppliedby,  :class_name => 'AddressBook', :foreign_key => 'supplier_id'
+  belongs_to :manufacturer, :class_name => 'AddressBook', :foreign_key => 'manufacturer_id'
   
   #belongs_to :location, :foreign_key => "location_id" --> not required - refer line 5
   #belongs_to :staff,    :class_name => 'Staff', :foreign_key => "assignedto_id"

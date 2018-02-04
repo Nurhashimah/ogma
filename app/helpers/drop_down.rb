@@ -808,4 +808,8 @@ KTYPE = [
        [ "Sokongan", 2 ],
        [ "Bersepadu", 4 ]
   ]
+  
+  SCHEDULE_MAINT= [['Penyelenggaraan Berjadual', '1']]
+  
+  UNSCHEDULE_MAINT=[['Penambahan/Penggantian/Naik Taraf', '2'],['Pembaikan sahaja', '3']]
 end

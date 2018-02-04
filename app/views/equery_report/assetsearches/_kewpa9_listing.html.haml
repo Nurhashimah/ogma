@@ -78,7 +78,7 @@
             %tr
               - if no==0
                 - no+=1
-                %td{rowspan: "#{defects.count}"}=counter+=1
+                %td{rowspan: "#{defects.count}"}=link_to "#{counter+=1}", asset_defect_path(defect)
                 %td{rowspan: "#{defects.count}"}=link_to asset.assetcode, asset_asset_path(asset)
                 %td{rowspan: "#{defects.count}"}=asset.name.blank? ? asset.typename : asset.name+": "+asset.typename
                 %td{rowspan: "#{defects.count}"}

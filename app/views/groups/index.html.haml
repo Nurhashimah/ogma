@@ -21,6 +21,10 @@
               %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')), group_list_groups_path(params.merge(format: 'pdf' ))
         
         .row
+          .col-md-12
+            .alert.alert-warning
+              %strong=t 'group.groups'
+              =t 'group.minimum_members'
           %table.table-striped.table-hover.ogma
             %thead
               %tr

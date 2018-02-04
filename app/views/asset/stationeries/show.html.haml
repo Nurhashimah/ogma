@@ -43,7 +43,7 @@
         - cost = stationery_add.unitcost * stationery_add.quantity.to_i	  
           %tr 
             %td= stationery_add.lpono 
-            %td= stationery_add.document
+            %td= stationery_add.try(:supplier).try(:name)
             %td= stationery_add.quantity.to_i
             %td= ringgols(stationery_add.unitcost)
             %td= ringgols(cost)
@@ -61,8 +61,8 @@
       %tbody
         - for stationery_use in @stationery.stationery_uses 
           %tr 
-            %td=current_user.college.code=='amsas' ? stationery_use.issuesupply.staff_with_rank  :  stationery_use.issuesupply.try(:staff_name_with_position)
-            %td=current_user.college.code=='amsas' ? stationery_use.receivesupply.staff_with_rank : stationery_use.receivesupply.try(:staff_name_with_position)
+            %td=current_user.college.code=='amsas' ? stationery_use.issuesupply.staff_with_rank_position  :  stationery_use.issuesupply.try(:staff_name_with_position)
+            %td=current_user.college.code=='amsas' ? stationery_use.receivesupply.staff_with_rank_position : stationery_use.receivesupply.try(:staff_name_with_position)
             %td= stationery_use.quantity.to_i.to_s+@stationery.unittype
             %td= stationery_use.issuedate.try(:strftime, "%d %b %Y")
 

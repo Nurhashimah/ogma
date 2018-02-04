@@ -1,11 +1,12 @@
 /DLM amsas
 - current_roles=current_user.roles.pluck(:authname)
+- circulator_action=current_user.college.name.include?("AMSAS") ? (t 'document.director_action') : (t 'document.first_action')
 .row
   .col-md-10.col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to (t 'document.document_details'),"#details_edit", "data-toggle" => "tab"
-      %li=link_to (t 'document.director_action'), "#director_action_edit", "data-toggle" => "tab" 
+      %li=link_to circulator_action, "#director_action_edit", "data-toggle" => "tab" 
       %li=link_to (t 'document.staff_action'), "#action_details_edit", "data-toggle" => "tab"  if @document.circulations.count > 0 
       
     .tab-content{style:"padding-top:1em"}

@@ -31,6 +31,20 @@ class Campus::AddressBooksController < ApplicationController
     end
   end
   
+  def update
+    @address_book = AddressBook.find(params[:id])
+    respond_to do |format|
+      if @address_book.update(address_book_params)
+        flash[:notice] = 'Contact successfully updated.'
+        format.html { redirect_to campus_address_books_path}
+        format.json { render action: 'show', status: :updated, location: @address_book }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @address_book.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
   def address_list
     @address_books = AddressBook.where('name ILIKE ?', "#{params[:search]}%")
     respond_to do |format|

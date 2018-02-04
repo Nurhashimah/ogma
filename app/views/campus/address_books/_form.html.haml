@@ -5,12 +5,12 @@
       .form-group
         %label.col-sm-2.control-label= f.label t 'campus.address.shortname', for: :short_name
         .col-md-3
-          = f.text_field :name, class: 'form-control'
+          = f.text_field :shortname, class: 'form-control'
           
       .form-group
         %label.col-sm-2.control-label= f.label t 'campus.address.name', for: :name
         .col-md-6
-          = f.text_field :shortname, class: 'form-control mandatory'
+          = f.text_field :name, class: 'form-control mandatory'
           
       .form-group
         %label.col-sm-2.control-label= f.label t 'campus.address.phone', for: :phone

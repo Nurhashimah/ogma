@@ -12,7 +12,8 @@ class Kewpa14Pdf < Prawn::Document
     text "No Siri Pendaftaran : #{@asset.assetcode}", :align => :left, :size => 12
     move_down 10
     text "Jenis  : #{@asset.typename}", :align => :left, :size => 12
-    text "Lokasi : #{@asset.try(:asset_placements).try(:location).try(:name)}", :align => :left, :size => 12
+    text "Lokasi : #{@asset.try(:hmlocation).try(:name)}", :align => :left, :size => 12
+    #text "Lokasi : #{@asset.try(:asset_placements).try(:location).try(:name)}", :align => :left, :size => 12
     move_down 20
     description
 
@@ -33,7 +34,7 @@ class Kewpa14Pdf < Prawn::Document
   header1 +
   @asset.maints.map do |maint|
     [ "#{maint.created_at.try(:strftime, "%d/%m/%y")}", "#{maint.details}","#{maint.workorderno}",
-      "#{maint.maintainer_id}",@view.currency(maint.maintcost.to_f), "#{maint.try(:asset).try(:staff).try(:name)}" ]
+      "#{maint.try(:maintainer).try(:name)}",@view.currency(maint.maintcost.to_f), "#{maint.try(:asset).try(:staff).try(:name)}" ]
  
   end 
 end

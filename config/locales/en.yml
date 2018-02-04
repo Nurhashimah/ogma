@@ -2785,6 +2785,7 @@ en:
       workorderno: "Work Order No"
       maintcost: Maintainance Cost
       details: Details
+      value_added: "Addition/Replacement/Upgrade"
     
   stationery:
     title: List Office Supplies
@@ -5266,6 +5267,7 @@ en:
     edit: Edit Group
     details: Group Details
     membership: Membership
+    minimum_members: "Each group must consist of minimum 2 members (staffs)."
 
   notifications:
     discipline_process: " Discipline reports require processing"

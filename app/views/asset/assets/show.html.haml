@@ -40,7 +40,7 @@
         %dt= t 'asset.name'
         %dd= @asset.name
         %dt= t 'asset.manufacturer' 
-        %dd= @asset.manufacturer_id
+        %dd= @asset.try(:manufacturer).try(:name)
         %dt= t 'asset.country_id'
         %dd= @asset.render_origin
         %dt= t 'asset.model' 
@@ -64,7 +64,7 @@
         / NOTE - 3-Staff Residence, 4-Student Residence
         %dt= t 'asset.assigned_to'
         %dd
-          = current_user.college.code=="kskbjb" ? @asset.assignedto.try(:name) : @asset.assignedto.try(:staff_with_rank)
+          = current_user.college.code=="kskbjb" ? @asset.assignedto.try(:name) : @asset.assignedto.try(:staff_with_rank_position_unit)
           = @asset.assettype==2 ? @asset.asset_placements.map{|x|x.staff.staff_with_rank}.uniq.join(", ") : ""
         %dt= t 'asset.status'
         %dd= @asset.status
@@ -83,9 +83,9 @@
           %dt= t 'asset.receiveddate'
           %dd= @asset.receiveddate.try(:strftime, "%d/%m/%y")
           %dt= t 'asset.receivedby'
-          %dd= @asset.receiver.try(:name)
+          %dd= @asset.receiver.try(:staff_with_rank_position)
           %dt= t 'asset.suppliedby'
-          %dd= @asset.supplier_id
+          %dd= @asset.try(:suppliedby).try(:name)
   
     #placement.tab-pane.fade
       %table.table.table-condensed.table-hover{:style => "width: 50%; "}
@@ -120,13 +120,18 @@
                 %th= t 'asset.maint.workorderno' 
                 %th= t 'asset.maint.maintcost' 
                 %th= t 'asset.maint.details' 
-            %tbody	  
-              - for maint in @asset.maints	  
+                %th= t 'asset.maint.value_added'
+            %tbody
+              - for maint in @asset.maints
                 %tr
                   %td= maint.maintainer.try(:name)
                   %td= maint.workorderno
                   %td= maint.maintcost
                   %td= maint.details
+                  %td
+                    = maint.render_maintenance_type
+                    - if (maint.maint_type=='2' || maint.maint_type=='3') && !maint.warranty.blank?
+                      =" (Warranty : #{maint.warranty} #{(t 'time.months')})"
 
 .row
   .col-md-6.col-md-offset-2

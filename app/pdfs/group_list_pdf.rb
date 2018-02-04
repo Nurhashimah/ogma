@@ -27,7 +27,7 @@ class Group_listPdf < Prawn::Document
 
   def line_item_rows
     counter = counter||0
-    header=[[{content: "#{I18n.t('group.list').upcase}<br> #{@college.name.upcase}", colspan: 5}],
+    header=[[{content: "#{@college.name.upcase}<br>#{I18n.t('group.list').upcase}", colspan: 5}],
             ["No", I18n.t('group.membership'), I18n.t('group.name'), I18n.t('group.description'), "#{I18n.t('group.members')} (#{I18n.t('group.position')})"]]
     body =[]
     @groups.each do |group|

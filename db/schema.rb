@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180131172635) do
+ActiveRecord::Schema.define(version: 20180203190122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1689,7 +1689,9 @@ ActiveRecord::Schema.define(version: 20180131172635) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "college_id"
-    t.string   "data"
+    t.string   "maint_type"
+    t.string   "warranty"
+    t.text     "data"
   end
 
   create_table "marks", force: true do |t|
@@ -2408,7 +2410,6 @@ ActiveRecord::Schema.define(version: 20180131172635) do
   create_table "stationery_adds", force: true do |t|
     t.integer  "stationery_id"
     t.string   "lpono"
-    t.string   "document"
     t.decimal  "unitcost"
     t.date     "received"
     t.datetime "created_at"
@@ -2416,6 +2417,7 @@ ActiveRecord::Schema.define(version: 20180131172635) do
     t.integer  "quantity"
     t.integer  "college_id"
     t.string   "data"
+    t.integer  "supplier_id"
   end
 
   create_table "stationery_uses", force: true do |t|

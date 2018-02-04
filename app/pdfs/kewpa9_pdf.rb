@@ -21,18 +21,25 @@ class Kewpa9Pdf < Prawn::Document
   end
   
   def table1
+    related_maints=@defective.asset.maints.where('maints.created_at <?', @defective.created_at)
+    if related_maints.count > 0
+      last_maint_before_defect=@view.currency(related_maints.last.maintcost)
+    else
+      last_maint_before_defect=" - "
+    end
     data1 = [[{content: "1. Jenis Aset", colspan: 2}, ": #{@defective.try(:asset).try(:typename)}"],
              [{content: "2. Keterangan Aset", colspan: 2},": #{@defective.try(:asset).try(:name)}"],
              [{content: "3. No Siri Pendaftaran", colspan: 2},": #{@defective.try(:asset).try(:assetcode)}"],
-             [{content: "4. Kos Penyelenggaraan Terdahulu", colspan: 2},": #{@defective.try(:asset).try(:maint).try(:maintcost)}"],
+             [{content: "4. Kos Penyelenggaraan Terdahulu", colspan: 2},": #{last_maint_before_defect}"],
+             ["", {content: "(jika ada)", colspan: 2}],
              [{content: "5. Pengguna Terakhir", colspan: 2},": #{@defective.reporter.try(:name)}  #{@defective.reporter.try(:position_old)}"],
              [{content: "6. Tarikh Kerosakan", colspan: 2},": #{@defective.created_at.try(:strftime, "%d/%m/%y")}"],
              [{content: "7. Perihal Kerosakan", colspan: 2},":"],
              ["", "- #{@defective.description}",""]]
              
              table(data1, :column_widths => [15, 165, 320], :cell_style => { :size => 11}) do
-               row(0..7).borders = [ ]
-               row(7).align = :left
+               row(0..8).borders = [ ]
+               row(8).align = :left
              end
   end
   
@@ -51,7 +58,7 @@ class Kewpa9Pdf < Prawn::Document
   def signatory
      
       text "Nama : #{@defective.processor.try(:name)}", :align => :left, :size => 11
-      text "Jawatan : #{@defective.processor.try(:position).try(:name)}", :align => :left, :size => 11
+      text "Jawatan : #{@defective.processor.try(:positions).try(:first).try(:name)}", :align => :left, :size => 11
       text "Tarikh : #{@defective.processed_on.try(:strftime, "%d/%m/%y")}", :align => :left, :size => 11
       move_down 20
       text "Bahagian II (Keputusan Ketua Jabatan)", :align => :left, :size => 11

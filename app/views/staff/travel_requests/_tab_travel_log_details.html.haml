@@ -16,8 +16,8 @@
         &nbsp;&nbsp;|&nbsp;&nbsp;
         =t 'staff.travel_request.mileage_value_rm'
       
-    - if @travel_request.travel_claim_logs && @travel_request.staff_id == current_user.userable_id && @travel_request.hod_accept == true
-      - @travel_request.travel_claim_logs.each do |travel_log|
+    - if @travel_request.travel_claim_logs && ((@travel_request.staff_id == current_user.userable_id) || is_developer? ) && @travel_request.hod_accept == true
+      - @travel_request.travel_claim_logs.order(travel_on: :asc, start_at: :asc).each do |travel_log|
         %dt &nbsp;
         %dd
           = travel_log.travel_on.try(:strftime, '%d %b %Y')

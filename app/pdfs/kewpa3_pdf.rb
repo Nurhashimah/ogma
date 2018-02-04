@@ -131,7 +131,11 @@ class Kewpa3Pdf < Prawn::Document
       elsif j != nil
         staffname = a.split("b")[0]
       elsif k!= nil
-        staffname= a.split(" ")[0,3].join(" ") if (race==2 || religion==4)
+	if k.to_i.is_a? Integer
+	  staffname=a
+	else
+          staffname= a.split(" ")[0,3].join(" ") if (race==2 || religion==4)
+	end
       end   
       @e << staffname
     end

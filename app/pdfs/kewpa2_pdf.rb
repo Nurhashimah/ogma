@@ -220,8 +220,8 @@ class Kewpa2Pdf < Prawn::Document
    counter = counter || 0
    header1 = [["Bil ", "Tarikh", "Butiran", "Tempoh Jaminan", "Kos (RM)", " Nama & Tandatangan"]]
    header1 +
-   @asset.maints.map do |maint|
-     ["#{counter += 1}", "#{maint.created_at.try(:strftime, "%d/%m/%y")}", "#{maint.details} ", "#{maint.workorderno} ",
+   @asset.maints.where(maint_type: '2').map do |maint|
+     ["#{counter += 1}", "#{maint.created_at.try(:strftime, "%d/%m/%y")}", "#{maint.details} ", "#{maint.warranty} #{I18n.t('time.months')}",
        @view.currency(maint.maintcost.to_f),"#{maint.try(:asset).try(:staff).try(:name)}"]
    end
  end 

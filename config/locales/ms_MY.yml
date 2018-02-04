@@ -2675,6 +2675,7 @@ ms_MY:
       workorderno: "No. Perintah Kerja"
       maintcost: Kos Senggaraan
       details: Butiran
+      value_added: "Penambahan/Penggantian/Naik Taraf"
 
   stationery:
     title: Senarai Keperluan Pejabat
@@ -5182,6 +5183,7 @@ ms_MY:
     edit: Sunting Kumpulan
     details: Butiran Kumpulan
     membership: Keahlian
+    minimum_members: "Setiap kumpulan mesti mengandungi minima 2 ahli (staf)."
 
   notifications:
     discipline_process: " Laporan disiplin pelajar untuk diproses"
