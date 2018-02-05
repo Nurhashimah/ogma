@@ -16,7 +16,7 @@ class Bulletin < ActiveRecord::Base
    validates_attachment_content_type :data, 
                                      :content_type => ['application/pdf','application/txt', 'application/msword',
                                                        'application/msexcel','image/png','image/jpeg','text/plain',
-                                                       'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+                                                       'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'video/mp4', 'video/webm', 'application/binary'],
                                      :storage => :file_system,
                                      :message => "Invalid File Format" 
                           

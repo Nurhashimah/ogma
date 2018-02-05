@@ -26,10 +26,11 @@
       %dd
         - if @bulletin.data.exists? then
           = @bulletin.data_file_name
-          = link_to (t 'bulletin.download'), @bulletin.data.url 
+          |
+          = link_to (t 'download'), @bulletin.data.url 
         - else
           No File Available
-		  
+  
 
 .row
   .col-md-4.col-md-offset-3
