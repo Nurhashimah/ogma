@@ -108,3 +108,8 @@
             .col-md-2
               = f.text_field :version, :placeholder => t('training.trainingnote.version'), class: 'form-control'
 
+          .form-group
+            .col-sm-2.control-label
+              = f.label "Youtube embed link "
+            .col-md-5
+              = f.text_field :youtube_link, class: 'form-control'

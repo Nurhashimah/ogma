@@ -184,7 +184,7 @@
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def trainingnote_params
-      params.require(:trainingnote).permit(:timetable_id, :title, :reference, :version, :staff_id, :release, :document, :topicdetail_id)
+      params.require(:trainingnote).permit(:timetable_id, :title, :reference, :version, :staff_id, :release, :document, :topicdetail_id, {:data => []}, :youtube_link)
        #params.require(:trainingnote).permit(:timetable_id, :reference, :version, :staff_id, :release, :document_file_name, :document_content_type, :document_file_size, :document_updated_at, :topicdetail_id)
     end
 end

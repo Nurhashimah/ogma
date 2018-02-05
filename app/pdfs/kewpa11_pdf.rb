@@ -10,13 +10,13 @@ class Kewpa11Pdf < Prawn::Document
     text "(Diisi oleh Pegawai Pemeriksa)", :align => :center, :size => 12
     move_down 10
     make_heading
-    make_table2a if @location.asset_placements.p_inventory.count > 1
+    make_table2a if @location.asset_placements.p_inventory.count > 0 #1
     #move_down 500 #for test
     if y < 250
       start_new_page
       make_heading
     end
-    make_table2b if @location.asset_placements.p_inventory.count > 0
+    make_table2b if @location.asset_placements.p_inventory.count < 6#> 0 #last line
     make_empty_rows
     signatory
   end

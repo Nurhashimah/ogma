@@ -491,6 +491,8 @@ class Training::WeeklytimetablesController < ApplicationController
       @weeklytimetables = @search.result
     elsif params[:ids]
       @weeklytimetables = Weeklytimetable.where(id: params[:ids])
+    else
+      @weeklytimetables=Weeklytimetable.all
     end
      respond_to do |format|
        format.pdf do

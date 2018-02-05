@@ -60,7 +60,7 @@ class Programme_reportPdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('training.programme.title').upcase}<br>#{@college.name.upcase}", colspan: 8+6}], 
+    header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('training.programme.title').upcase}", colspan: 8+6}], 
               [ 'No', {content: I18n.t('training.programme.combo_code'), colspan: 7}, I18n.t('training.programme.credits'),"Status", I18n.t('training.programme.duration'), I18n.t('training.programme.lecture'), I18n.t('training.programme.tutorial'), I18n.t('training.programme.practical')], ["","","","","","","","","","","","","",""]]
     body=[]
     level=@programmes.pluck(:ancestry_depth).max #5

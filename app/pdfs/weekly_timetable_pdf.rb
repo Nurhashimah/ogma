@@ -6,8 +6,8 @@ class Weekly_timetablePdf < Prawn::Document
     
     @count1=@weeklytimetable.timetable_monthurs.timetable_periods.count
     @count2=@weeklytimetable.timetable_friday.timetable_periods.count 
-    @break_format1 = @weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).pluck(:is_break)
-    @break_format2 = @weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).pluck(:is_break)
+    @break_format1 = @weeklytimetable.timetable_monthurs.timetable_periods.order(seq: :asc).pluck(:is_break)
+    @break_format2 = @weeklytimetable.timetable_friday.timetable_periods.order(seq: :asc).pluck(:is_break)
     @daycount=4
     @weekdays_end = @weeklytimetable.startdate.to_date+4.days
     @daycount2 = (@weeklytimetable.enddate.to_date - @weekdays_end).to_i 
@@ -19,19 +19,23 @@ class Weekly_timetablePdf < Prawn::Document
       image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
       move_down 3
     else
-      bounding_box([10,520], :width => 400, :height => 85) do |y2|
-        image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>72.9, :height =>58.32
-      end
-      bounding_box([700,520], :width => 400, :height => 75) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
+      if @college.name.include?("AMSAS")
+	  bounding_box([10,520], :width => 400, :height => 85) do |y2|
+	    image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>72.9, :height =>58.32
+	  end
+	  bounding_box([700,520], :width => 400, :height => 75) do |y2|
+	    image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
+	  end
       end
       bounding_box([200, 520], :width => 400, :height => 75) do |y2|
         move_down 10
-        text "PPL APMM", :align => :center, :style => :bold, :size => 10
-	if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-RAN')
-          text "NO. DOKUMEN: BK-LAT-RAN-01-01", :align => :center, :style => :bold, :size => 10
-	else
-	  text "NO. DOKUMEN: BK-LAT-URK-01-01", :align => :center, :style => :bold, :size => 10
+	if @college.name.include?("AMSAS")
+	    text "PPL APMM", :align => :center, :style => :bold, :size => 10
+	    if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-RAN')
+	      text "NO. DOKUMEN: BK-LAT-RAN-01-01", :align => :center, :style => :bold, :size => 10
+	    else
+	      text "NO. DOKUMEN: BK-LAT-URK-01-01", :align => :center, :style => :bold, :size => 10
+	    end
 	end
         text "RANCANGAN LATIHAN MINGGUAN", :align => :center, :style => :bold, :size => 10
       end
@@ -72,7 +76,7 @@ class Weekly_timetablePdf < Prawn::Document
           text "PPL APMM", :align => :center, :style => :bold, :size => 10
           text "NO. DOKUMEN: BK-LAT-RAN-01-01", :align => :center, :style => :bold, :size => 10
           text "RANCANGAN LATIHAN MINGGUAN", :align => :center, :style => :bold, :size => 10
-	  #text "#{@weeklytimetable.weeklytimetable_details.count}~~#{@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)}", :align => :center, :style => :bold, :size => 10
+	  #text "#{@weeklytimetable.weeklytimetable_details.count}~~#{@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)}", :align => :center, :style => :bold, :size => 10
         end
       end
       if college.code=="kskbjb"
@@ -112,31 +116,52 @@ class Weekly_timetablePdf < Prawn::Document
     #[1]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
     if @college.code=='amsas' 
       
-      ### NOTE - 18Jan2017 - new VS old ISO format - start
-      if @count1 > 8 && @count1 < 12
-        ##BK-LAT-RAN-01-01 (old ISO format)
-        all_col = [55]
-        isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
-        1.upto(@count1) do |col|
-          if isbreak.include?(col)
-            all_col << 55
-          else
-            all_col << 90
-          end
-        end 
-      elsif @count1 > 11
-        ##BK-LAT-URK-01-01 (new ISO format)
-        all_col = [55]
-        isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
-        1.upto(@count1) do |col|
-          if isbreak.include?(col)
-            all_col << 45
-          else
-            all_col << 45
-          end
-        end 
-      end
-      ###- 18Jan2017 - new VS old ISO format - end
+      ###5Feb2018-start------------ other than existing AMSAS Timetable format
+        if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT')
+	  ### NOTE - 18Jan2017 - new VS old ISO format - start
+	  if @count1 > 8 && @count1 < 12
+	    ##BK-LAT-RAN-01-01 (old ISO format)
+	    all_col = [55]
+	    isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+	    1.upto(@count1) do |col|
+	      if isbreak.include?(col)
+		all_col << 55
+	      else
+		all_col << 90
+	      end
+	    end 
+	  elsif @count1 > 11
+	    ##BK-LAT-URK-01-01 (new ISO format)
+	    all_col = [55]
+	    isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+	    1.upto(@count1) do |col|
+	      if isbreak.include?(col)
+		all_col << 45
+	      else
+		all_col << 45
+	      end
+	    end 
+	  end
+	  ###- 18Jan2017 - new VS old ISO format - end
+	else
+
+	  ###5Feb2018----------other than existing amsas format
+	  all_col = [55]
+          break_count=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
+	  classes_count=@count1-break_count
+	  same_size=700/@count1
+	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
+	  isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+	  1.upto(@count1) do |col|
+	      if isbreak.include?(col)
+		all_col << 55#break_size #100
+	      else
+		all_col << class_size #200
+	      end
+	   end 
+	   
+	end
+      ###5Feb2018-end-----------
       
     else
       all_col = [55]
@@ -157,13 +182,13 @@ class Weekly_timetablePdf < Prawn::Document
     
     header_col = [""]
     allrows_content=[]  
-    @weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@count1, false).map do |row_things|
+    @weeklytimetable.timetable_monthurs.timetable_periods.order(seq: :asc).in_groups_of(@count1, false).map do |row_things|
       #header (Sun - Wed)
       for periods in row_things
         if @college.code=='amsas'
           header_col << periods.timing_24hrs
         else
-          header_col << "#{periods.sequence} <br> #{periods.timing}"
+          header_col << "#{periods.seq} <br> #{periods.timing}"
         end
       end
       #rows & columns of data
@@ -176,7 +201,7 @@ class Weekly_timetablePdf < Prawn::Document
 	    #break part
 	    #1)Amsas - to display non_class items accordingly
             if @weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
-              non_class_value=@weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: col).first.non_class
+              non_class_value=@weeklytimetable.timetable_monthurs.timetable_periods.where(seq: col).first.non_class
               rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
             else
               rehat=I18n.t('training.weeklytimetable.break')
@@ -191,7 +216,11 @@ class Weekly_timetablePdf < Prawn::Document
 	      if xx.day2 == row && xx.time_slot2 == col 
 	        #render 'subtab_class_details', {:xx=>xx}
 		if @college.code=='amsas'
-		    gg+="#{xx.weeklytimetable_subject.name}"
+		    if @college.name.include?("AMSAS")
+		      gg+="#{xx.weeklytimetable_subject.name}"
+		    else
+		      gg+="#{xx.weeklytimetable_topic.name}"
+		    end
 		else
                     gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4}"
 		end
@@ -210,7 +239,8 @@ class Weekly_timetablePdf < Prawn::Document
     #data = [header_col, abab, abab, abab]
     #data = [header_col]+[abab, abab, abab]
     college_code=@college.code
-    isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
+    college_name=@college.name
+    isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
     
     data = [header_col]+allrows_content
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
@@ -224,11 +254,17 @@ class Weekly_timetablePdf < Prawn::Document
           self.width = all_col.sum-95 ###9July2015  #KSKBJB (evening session)
         end
       else
-        self.width = all_col.sum-45#755
+	if college_code=="amsas" && college_name.include?("AMSAS")==false #5Feb2018
+	  self.width=all_col.sum
+	else
+          self.width = all_col.sum-45#755
+	end
       end
       row(0).background_color = 'ABA9A9'  
       cells[1,2].valign = :center
-      cells[1,5].valign = :center
+      if header_col.count > 5
+        cells[1,5].valign = :center
+      end
       if header_col.count > 8
         #asal - cells[1,8].valign = :center
         if college_code=='amsas'
@@ -277,32 +313,52 @@ class Weekly_timetablePdf < Prawn::Document
     #size & columns count
     #[2]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
     if @college.code=='amsas' 
-      
-      ### NOTE - 18Jan2017 - new VS old ISO format - start
-      if @count1 > 8 && @count1 < 12
-       ##BK-LAT-RAN-01-01 (old ISO format)
-       all_col = [55]
-       isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
-       1.upto(@count1) do |col|
-	 if isbreak.include?(col)
-	   all_col << 55
-	 else
-           all_col << 90
-	 end
-       end 
-      elsif @count1 > 11
-       ##BK-LAT-URK-01-01 (new ISO format)
-       all_col = [55]
-       isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
-       1.upto(@count1) do |col|
-	 if isbreak.include?(col)
-	   all_col << 40
-	 else
-           all_col << 40
-	 end
-       end 
-      end
-      ###- 18Jan2017 - new VS old ISO format - end
+       ###5Feb2018-start------------ other than existing AMSAS Timetable format
+        if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT')
+	    ### NOTE - 18Jan2017 - new VS old ISO format - start
+	    if @count1 > 8 && @count1 < 12
+		##BK-LAT-RAN-01-01 (old ISO format)
+		all_col = [55]
+		isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+		1.upto(@count1) do |col|
+		  if isbreak.include?(col)
+		    all_col << 55
+		  else
+		    all_col << 90
+		  end
+		end 
+	    elsif @count1 > 11
+		##BK-LAT-URK-01-01 (new ISO format)
+		all_col = [55]
+		isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+		1.upto(@count1) do |col|
+		  if isbreak.include?(col)
+		    all_col << 40
+		  else
+		    all_col << 40
+		  end
+		end 
+	    end
+	###- 18Jan2017 - new VS old ISO format - end
+      else
+	
+	##### - 5Feb2018 - other than existing BK-LAT format
+	  all_col = [55]
+          break_count=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
+	  classes_count=@count1-break_count
+	  same_size=700/@count1
+	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
+	  isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+	  1.upto(@count1) do |col|
+	      if isbreak.include?(col)
+		all_col << 55 #break_size #100
+	      else
+		all_col << class_size #200
+	      end
+	   end  
+	#####end for 5Feb2018
+
+	end
       
     else
       ###asal-start
@@ -337,7 +393,7 @@ class Weekly_timetablePdf < Prawn::Document
             if @break_format1[col2-1]==true && row2==1
                 #3)Amsas - to display non_class items accordingly
                 if @weeklytimetable.timetable_friday.timetable_periods.where('non_class is not null').count > 0
-                    non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(sequence: col2).first.non_class
+                    non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(seq: col2).first.non_class
                     rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
                 else
                     rehat= I18n.t('training.weeklytimetable.break')
@@ -377,20 +433,20 @@ class Weekly_timetablePdf < Prawn::Document
       #Display HEADER(time slot) + CONTENT(inc day/date column) of Friday when different format in use - NOTE break & classes span accordingly
       
       ##Header+Thursday Content row - start
-      @weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).in_groups_of(@count2, false).map do |row_things|  
+      @weeklytimetable.timetable_friday.timetable_periods.order(seq: :asc).in_groups_of(@count2, false).map do |row_things|  
         #Header (Thursday)
         for periods in row_things
           if colfriday == @break_tospan || @classes_tospan.include?(colfriday)==true
             if @college.code=='amsas'
               header_col << {content: periods.timing_24hrs, colspan: @span_count}
             else
-              header_col << {content: "#{periods.sequence} <br> #{periods.timing}", colspan: @span_count}
+              header_col << {content: "#{periods.seq} <br> #{periods.timing}", colspan: @span_count}
             end
           else
             if @college.code=='amsas'
               header_col << periods.timing_24hrs
             else
-              header_col << "#{periods.sequence} <br> #{periods.timing}"
+              header_col << "#{periods.seq} <br> #{periods.timing}"
             end
           end
           colfriday+=1
@@ -444,6 +500,7 @@ class Weekly_timetablePdf < Prawn::Document
     end
     count1=@count1
     college_code=@college.code
+    college_name=@college.name
     
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
       #self.width = all_col.sum-80 #use this if below error #750 #705
@@ -457,6 +514,8 @@ class Weekly_timetablePdf < Prawn::Document
 	  if count1 > 8 && college_code=='amsas'
 	    #[2]Amsas - TOTAL up column sizes, based on non_class(is_break==true) vs class(is_break==false) cells - MATCH above
             self.width = all_col.sum#=755#950 #################################
+	  elsif college_code=='amsas' && college_name.include?("AMSAS")==false
+	    self.width = all_col.sum
 	  else
 	    #KSKBJB (evening session) not define
 	    #unremark this if error arise #all_col.sum-95
@@ -469,7 +528,9 @@ class Weekly_timetablePdf < Prawn::Document
       else
         row(0).background_color = 'ABA9A9'  
         cells[1,2].valign = :center
-        cells[1,4].valign = :center
+	if count1 > 4 #5Feb2018
+          cells[1,4].valign = :center
+	end
       end
       if header_col.count > 8
         cells[1,8].valign = :center
@@ -484,32 +545,50 @@ class Weekly_timetablePdf < Prawn::Document
     #size & columns count
     #[3]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
     if @college.code=='amsas'
-	
-      ### NOTE - 18Jan2017 - new VS old ISO format - start
-      if @count1 > 8 && @count1 < 12
-        ##BK-LAT-RAN-01-01 (old ISO format)
-        all_col = [55]
-        isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
-        1.upto(@count1) do |col|
-          if isbreak.include?(col)
-            all_col << 55
-          else
-            all_col << 90
-          end
-        end 
-      elsif @count1 > 11
-        ##BK-LAT-URK-01-01 (new ISO format)
-        all_col = [55]
-        isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
-        1.upto(@count1) do |col|
-          if isbreak.include?(col)
-            all_col << 45
-          else
-            all_col << 45
-          end
-        end 
-      end
+	###5Feb2018-start------------ other than existing AMSAS Timetable format
+        if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT')
+	    ### NOTE - 18Jan2017 - new VS old ISO format - start
+	    if @count1 > 8 && @count1 < 12 
+		##BK-LAT-RAN-01-01 (old ISO format)
+		all_col = [55]
+		isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+		1.upto(@count1) do |col|
+		  if isbreak.include?(col)
+		    all_col << 55
+		  else
+		    all_col << 90
+		  end
+		end 
+	    elsif @count1 > 11
+		##BK-LAT-URK-01-01 (new ISO format)
+		all_col = [55]
+		isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+		1.upto(@count1) do |col|
+		  if isbreak.include?(col)
+		    all_col << 45
+		  else
+		    all_col << 45
+		  end
+		end 
+	    end
       ###- 18Jan2017 - new VS old ISO format - end
+      else
+	##############5Feb2018- start - other than existing BK-LAT format
+	  all_col = [55]
+          break_count=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
+	  classes_count=@count1-break_count
+	  same_size=700/@count1
+	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
+	  isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+	  1.upto(@count1) do |col|
+	      if isbreak.include?(col)
+		all_col << 55 #break_size #100
+	      else
+		all_col << class_size #200
+	      end
+	   end
+	##########
+	end
       
     else
       all_col = [55]
@@ -529,14 +608,14 @@ class Weekly_timetablePdf < Prawn::Document
     
     ##Header : Weekend+WeekendContent row - start
     if @daycount2 > 0
-      @weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@count1, false).map do |row_things|  
+      @weeklytimetable.timetable_monthurs.timetable_periods.order(seq: :asc).in_groups_of(@count1, false).map do |row_things|  
         #4)Amsas - No changes required, most of the time weekends classes are displayed on 2nd page, no need to hide weeekend header(time slot/period)
         #Header (Weekend)
         for periods in row_things
           if @college.code=='amsas'
              header_col << periods.timing_24hrs
           else
-            header_col << "#{periods.sequence} <br> #{periods.timing}"
+            header_col << "#{periods.seq} <br> #{periods.timing}"
           end
         end
         #Day & date(column) : (ADDITIONAL - Weekends classes) - row starts after timeslot header
@@ -551,7 +630,7 @@ class Weekly_timetablePdf < Prawn::Document
               #onerow_content << {content: "REHAT", rowspan: @daycount2}
               #5)Amsas - to display non_class items accordingly
                 if @weeklytimetable.timetable_friday.timetable_periods.where('non_class is not null').count > 0
-                    non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(sequence: col2).first.non_class
+                    non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(seq: col2).first.non_class
                     rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
                 else
                     rehat= I18n.t('training.weeklytimetable.break')
@@ -585,7 +664,7 @@ class Weekly_timetablePdf < Prawn::Document
     ##Header : Weekend+WeekendContent row - end
     
     college_code=@college.code
-    isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
+    isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
 
     data = [header_col]+allrows_content
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do

@@ -16,6 +16,9 @@
         /= link_to image_tag('attach.png')+" || "+(t 'download'), @trainingnote.document.url
         //= link_to image_tag('attach.png'),  "http://#{request.host}:3003"+@trainingnote.document.url
         //= link_to @trainingnote.document_file_name, "http://#{request.host}:3003"+@trainingnote.document.url , :width => '57px'
+        
+    %dt Youtube embed link
+    %dd=@trainingnote.youtube_link
  
     %dt=t 'training.trainingnote.title'
     %dd=h @trainingnote.title
@@ -31,3 +34,26 @@
     
     /%dt=t 'training.trainingnote.timetable'
     /%dd=h @trainingnote.timetable_id
+    
+    /demo purpose - image 
+    - if ["image/png", "image/jpeg", "image/gif", "image/jpg"].include?(@trainingnote.document_content_type)
+      %dt Saved Image
+      %dd{style: 'padding-left: 70px; padding-top: 10px;'}=image_tag(@trainingnote.document.url, :width =>600, :height =>400, :border => 10)
+    
+    /demo purpose - play uploaded video - offline - 5Feb2018
+    - if ["video/mp4", "video/webm"].include?(@trainingnote.document_content_type)
+      %dt Saved Video
+      %dd{style: 'padding-left:70px; padding-top:10px;'}
+        = content_tag(:iframe,'', width: 600, height: 400, src: @trainingnote.document.url)
+        .small="Format : "+@trainingnote.document_content_type
+      
+    /demo purpose - embed video from Youtube - online - 5Feb2018
+    - unless @trainingnote.youtube_link.blank?
+      %dt 
+        Youtube embed video 
+      %dd{style: 'padding-left:70px; padding-top:10px;'}
+        /= content_tag(:iframe,'', width: 300, height: 200, src:"https://www.youtube.com/embed/QHGbH1ZaCz4")
+        = content_tag(:iframe,'', width: 600, height: 400, src: @trainingnote.youtube_link)
+        .small (Requires internet connection)
+      
+      

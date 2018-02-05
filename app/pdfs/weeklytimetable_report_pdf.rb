@@ -34,7 +34,7 @@ class Weeklytimetable_reportPdf < Prawn::Document
     else
       coltospan=10
     end
-    header = [[{content: "#{I18n.t('training.weeklytimetable.list').upcase}<br> #{@college.name.upcase}", colspan: coltospan}]]
+    header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('training.weeklytimetable.list').upcase}", colspan: coltospan}]]
     head_a= [ 'No', I18n.t('training.weeklytimetable.programme_id'), I18n.t('training.weeklytimetable.intake_id'), I18n.t('training.weeklytimetable.startdate'), I18n.t('training.weeklytimetable.enddate')]
     head_b=[I18n.t('training.weeklytimetable.semester')]
     head_c=[I18n.t('training.weeklytimetable.prepared_by'), I18n.t('training.weeklytimetable.is_submitted'), I18n.t('training.weeklytimetable.endorser'), I18n.t('training.weeklytimetable.is_approved')]

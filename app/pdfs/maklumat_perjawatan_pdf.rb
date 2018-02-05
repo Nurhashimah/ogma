@@ -7,9 +7,10 @@ class Maklumat_perjawatanPdf < Prawn::Document
     font "Helvetica"
     text "LAMPIRAN A", :align => :right, :size => 11, :style => :bold
     move_down 5
-    text "MAKLUMAT PERJAWATAN DI KOLEJ-KOLEJ LATIHAN", :align => :center, :size => 11, :style => :bold
+    text "#{'MAKLUMAT PERJAWATAN DI KOLEJ-KOLEJ LATIHAN' if @college.code=='amsas' && @college.name.include?('AMSAS')}", :align => :center, :size => 11, :style => :bold
+    text "#{'MAKLUMAT PERJAWATAN' if @college.code=='amsas' && @college.name.include?('AMSAS')==false}", :align => :center, :size => 11, :style => :bold
     text "#{'KEMENTERIAN KESIHATAN MALAYSIA' if @college.code=='kskbjb'}", :align => :center, :size => 11, :style => :bold
-    text "#{'PUSAT PENDIDIKAN DAN LATIHAN AGENSI PENGUATKUASAAN MARITIM MALAYSIA' if @college.code=='amsas'}", :align => :center, :size => 11, :style => :bold
+    text "#{'PUSAT PENDIDIKAN DAN LATIHAN AGENSI PENGUATKUASAAN MARITIM MALAYSIA' if @college.code=='amsas'  && @college.name.include?('AMSAS')}", :align => :center, :size => 11, :style => :bold
     text "SEHINGGA #{I18n.l((Position.all.order(updated_at: :desc).pluck(:updated_at).first), format: '%d-%m-%Y')}", :align => :center, :size => 11, :style => :bold   
     move_down 10
     text "KOLEJ: #{@college.name.upcase}", :align => :left, :size => 11, :style => :bold    

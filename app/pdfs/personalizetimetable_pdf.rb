@@ -48,18 +48,22 @@ class PersonalizetimetablePdf < Prawn::Document
       text "INSTITUSI : #{college.name.upcase}", :align => :left, :size => 9    
       text "NAMA PENSYARAH : #{@test_lecturer.userable.rank_id? ? @test_lecturer.userable.staff_with_rank : @test_lecturer.userable.name}", :align => :left, :size => 9
     else
-      bounding_box([10,520], :width => 400, :height => 85) do |y2|
-        image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>72.9, :height =>58.32
-      end
-      bounding_box([700,520], :width => 400, :height => 75) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
+      if @college.name.include?("AMSAS")
+	  bounding_box([10,520], :width => 400, :height => 85) do |y2|
+	    image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>72.9, :height =>58.32
+	  end
+	  bounding_box([700,520], :width => 400, :height => 75) do |y2|
+	    image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
+	end
       end
       bounding_box([200, 520], :width => 400, :height => 75) do |y2|
         move_down 10
-        text "PPL APMM", :align => :center, :style => :bold, :size => 10
-        text "NO. DOKUMEN: BK-LAT-RAN-01-01", :align => :center, :style => :bold, :size => 10
-        text "RANCANGAN LATIHAN MINGGUAN", :align => :center, :style => :bold, :size => 10
+	if @college.name.include?("AMSAS")
+	    text "PPL APMM", :align => :center, :style => :bold, :size => 10
+	    text "NO. DOKUMEN: BK-LAT-RAN-01-01", :align => :center, :style => :bold, :size => 10
+	end
       end
+       text "RANCANGAN LATIHAN MINGGUAN", :align => :center, :style => :bold, :size => 10
       text "NAMA PENGAJAR / JURULATIH : #{@test_lecturer.userable.rank_id? ? @test_lecturer.userable.staff_with_rank : @test_lecturer.userable.name}", :align => :left, :size => 9
     end
     

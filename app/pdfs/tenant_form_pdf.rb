@@ -17,20 +17,26 @@ class Tenant_formPdf < Prawn::Document
     move_down 10
     table_tenancy2
     move_down 15
-    footer
+    if @college.code=="amsas" && @college.name.include?("AMSAS")
+      footer
+    end
     start_new_page
     title_logo
     move_down 10
     table_heading
     move_down 10
     table_notes
-    footer
+    if @college.code=="amsas" && @college.name.include?("AMSAS")
+      footer
+    end
   end
   
   def title_logo
     
     bounding_box([10,780], :width => 400, :height => 100) do |y2|
-       image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
+      if @college.code=="kskbjb" || (@college.code=="amsas" && @college.name.include?("AMSAS"))
+        image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
+      end
     end
     bounding_box([150,760], :width => 350, :height => 100) do |y2|
       if @college.code=="kskbjb"
@@ -39,9 +45,13 @@ class Tenant_formPdf < Prawn::Document
         move_down 1
         text "#{I18n.t('student.tenant.title')}"
       elsif @college.code="amsas"
-        draw_text "PPL APMM", :at => [80, 85], :style => :bold
-        draw_text "NO.DOKUMEN: BK-LAT-KS-02-02", :at => [15, 60], :style => :bold
-        draw_text "BORANG KEDIAMAN ASRAMA", :at => [20, 45], :style => :bold
+	if @college.name.include?("AMSAS")
+          draw_text "PPL APMM", :at => [80, 85], :style => :bold
+          draw_text "NO.DOKUMEN: BK-LAT-KS-02-02", :at => [15, 60], :style => :bold
+	else
+          draw_text "#{@college.name}", :at => [80, 85], :style => :bold
+	end
+	draw_text "BORANG KEDIAMAN ASRAMA", :at => [20, 45], :style => :bold
       end
     end
     
@@ -51,7 +61,9 @@ class Tenant_formPdf < Prawn::Document
       end
     elsif @college.code="amsas"
       bounding_box([430,780], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+	if @college.name.include?("AMSAS")
+          image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+	end
       end
     end
   end
@@ -135,8 +147,13 @@ class Tenant_formPdf < Prawn::Document
   end
   
   def table_tenancy2
+    if @college.name.include?("AMSAS")
+      trainee_by="<u>Oleh : KULA / BLA / JL</u>"
+    else
+      trainee_by=""
+    end
     data=[[{content: "B. PENEMPATAN ASRAMA", colspan: 2}], 
-          ["5. <u>Oleh Pelatih</u>", "<u>Oleh : KULA / BLA / JL</u>"],
+          ["5. <u>Oleh Pelatih</u>", "#{trainee_by}"],
           ["Nama Pelatih : ", "Nama Pelatih : "],
           ["Tandatangan : ", "Tandatangan : "],
           ["Tarikh : #{@tenant.updated_at.try(:strftime, '%d-%m-%Y')}", "Tarikh : #{@tenant.updated_at.try(:strftime, '%d-%m-%Y')}"],["",""]]

@@ -25,7 +25,7 @@ class Topicdetail_reportPdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('training.topicdetail.list').upcase}<br> #{@college.name.upcase}", colspan: 10}],
+    header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('training.topicdetail.list').upcase}", colspan: 10}],
               [ 'No', "#{I18n.t('training.topicdetail.programme')}<br> - #{@college.code=='kskbjb' ? I18n.t('training.topicdetail.subject') : I18n.t('training.programme.module')+'>'+I18n.t('training.topicdetail.subject')}", I18n.t('training.topicdetail.topic_code'), I18n.t('training.topicdetail.version_no'), I18n.t('training.topicdetail.duration'), I18n.t('training.topicdetail.theory'), I18n.t('training.topicdetail.tutorial'), I18n.t('training.topicdetail.practical'), I18n.t('training.topicdetail.training_notes'), I18n.t('training.topicdetail.prepared_by') ]]
     header +
     @topicdetails.map do |topicd|

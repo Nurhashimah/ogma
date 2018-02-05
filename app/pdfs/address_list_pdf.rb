@@ -25,7 +25,7 @@ class Address_listPdf < Prawn::Document
 
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('campus.address.title').upcase}<br> #{@college.name.upcase}", colspan: 5}],
+    header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('campus.address.title').upcase}", colspan: 5}],
               [ 'No', I18n.t('campus.address.name'), I18n.t('campus.address.shortname'), I18n.t('campus.address.address'), I18n.t('campus.address.internet')]]
     header +
     @address_books.map do |contact|

@@ -24,7 +24,7 @@ class Bookingfacilities_reportPdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('campus.bookingfacilities.list').upcase}<br> #{@college.name.upcase}", colspan: 7}],
+    header = [[{content: " #{@college.name.upcase}<br>#{I18n.t('campus.bookingfacilities.list').upcase}", colspan: 7}],
                     ["No", I18n.t('campus.bookingfacilities.location_id'), I18n.t('campus.bookingfacilities.staff_id'), I18n.t('campus.bookingfacilities.request_date'), "#{I18n.t('campus.bookingfacilities.start_date')} - #{I18n.t('campus.bookingfacilities.end_date') }", I18n.t('campus.bookingfacilities.approval'), I18n.t('campus.bookingfacilities.approval2')]]
     header +
       @bookingfacilities.map do |bfacility|

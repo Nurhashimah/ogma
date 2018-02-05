@@ -1,4 +1,5 @@
 class Trainingnote < ActiveRecord::Base
+  serialize :data, Hash
   
   # befores, relationships, validations, before logic, validation logic, 
    #controller searches, variables, lists, relationship checking
@@ -12,6 +13,7 @@ class Trainingnote < ActiveRecord::Base
   
   #refer LessonPlan -> copy_attached_doc_trainingnotes
   belongs_to :schedule, :class_name => 'WeeklytimetableDetail', :foreign_key => 'timetable_id'
+  belongs_to :college
 
   #trial section
   has_many :lesson_plan_trainingnotes# , :dependent => :nullify #:destroy # --> once trainingnote in topic details removed, lesson_plan_trainingnote's record will be REMOVED
@@ -21,12 +23,21 @@ class Trainingnote < ActiveRecord::Base
   has_attached_file :document,
                     :url => "/assets/notes/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/notes/:id/:style/:basename.:extension"
-  validates_attachment_size :document, :less_than => 25.megabytes  
-  validates_attachment_content_type :document, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif","text/plain","application/pdf", "application/mspowerpoint","application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.openxmlformats-officedocument.presentationml.presentation","application/vnd.oasis.opendocument.text","application/vnd.oasis.opendocument.presentation"]
+  validates_attachment_size :document, :less_than => 50.megabytes  
+  validates_attachment_content_type :document, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif","text/plain","application/pdf", "application/mspowerpoint","application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.openxmlformats-officedocument.presentationml.presentation","application/vnd.oasis.opendocument.text","application/vnd.oasis.opendocument.presentation", "video/mp4","video/webm", "application/binary"]
   
   #validates :document_file_name, uniqueness: true
   validates :staff_id, presence: true
   #attr_accessor :topic_id
+  
+  
+  def youtube_link=(value)
+    data[:youtube_link] = value
+  end
+  def youtube_link
+    data[:youtube_link]
+  end
+  
 
   #to retrieve topic id if notes uploaded from topic detail
   def get_topic_id_from_topicdetail

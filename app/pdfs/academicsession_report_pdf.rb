@@ -26,7 +26,7 @@ class Academicsession_reportPdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('training.academic_session.list').upcase}<br> #{@college.name.upcase}", colspan: 3}],
+    header = [[{content: " #{@college.name.upcase}<br>#{I18n.t('training.academic_session.list').upcase}", colspan: 3}],
               [ 'No', 'Semester', I18n.t('training.academic_session.total_week')]]
     header +
     @academicsessions.map do |academic_session|
