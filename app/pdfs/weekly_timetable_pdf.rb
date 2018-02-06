@@ -117,13 +117,29 @@ class Weekly_timetablePdf < Prawn::Document
 	    ##BK-LAT-URK-01-01 (new ISO format)
 	    all_col = [55]
 	    isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
-	    1.upto(@count1) do |col|
-	      if isbreak.include?(col)
-		all_col << 45
-	      else
-		all_col << 45
-	      end
-	    end 
+	    
+	    #distribute--columns width accordingly----to space avalable----------6Feb2018--start
+            break_count=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).count
+            classes_count=@count1-break_count
+            class_size=(700-(40*break_count))/classes_count   #limit to 40 instead of 55
+            1.upto(@count1) do |col|
+              if isbreak.include?(col)
+                all_col << 40 #limit to 40 instead of 55
+              else
+                all_col << class_size #200
+              end
+	    end  
+#         distribute--columns width accordingly----to space avalable----------6Feb2018--end
+		
+#         below - before 6Feb2018---------------start--------------------
+# 	    1.upto(@count1) do |col|
+# 	      if isbreak.include?(col)
+# 		all_col << 45
+# 	      else
+# 		all_col << 45
+# 	      end
+# 	    end 
+# 	    -before 6Feb2018----------------------end---------------------------
 	  end
 	  ###- 18Jan2017 - new VS old ISO format - end
 	else
@@ -322,12 +338,12 @@ class Weekly_timetablePdf < Prawn::Document
     #[2]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
     if @college.code=='amsas' 
        ###5Feb2018-start------------ other than existing AMSAS Timetable format
-        if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT')
+        if @weeklytimetable.timetable_friday.name.include?('BK-LAT')
 	    ### NOTE - 18Jan2017 - new VS old ISO format - start
 	    if @count1 > 8 && @count1 < 12
 		##BK-LAT-RAN-01-01 (old ISO format)
 		all_col = [55]
-		isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+		isbreak=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).pluck(:seq)
 		1.upto(@count1) do |col|
 		  if isbreak.include?(col)
 		    all_col << 55
@@ -338,26 +354,42 @@ class Weekly_timetablePdf < Prawn::Document
 	    elsif @count1 > 11
 		##BK-LAT-URK-01-01 (new ISO format)
 		all_col = [55]
-		isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
-		1.upto(@count1) do |col|
-		  if isbreak.include?(col)
-		    all_col << 40
-		  else
-		    all_col << 40
-		  end
-		end 
+		isbreak=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).pluck(:seq)
+
+# 		distribute--columns width accordingly----to space avalable----------6Feb2018--start
+                break_count=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).count
+                classes_count=@count1-break_count
+                class_size=(700-(40*break_count))/classes_count   #limit to 40 instead of 55
+                1.upto(@count1) do |col|
+                  if isbreak.include?(col)
+                    all_col << 40 #limit to 40 instead of 55
+                  else
+                    all_col << class_size #200
+                  end
+	        end  
+# 		distribute--columns width accordingly----to space avalable----------6Feb2018--end
+		
+# 		below - before 6Feb2018---------------start--------------------
+# 		1.upto(@count1) do |col|
+# 		  if isbreak.include?(col)
+# 		    all_col << 40
+# 		  else
+# 		    all_col << 40
+# 		  end
+# 		end 
+# 		-before 6Feb2018----------------end---------------------------------
 	    end
 	###- 18Jan2017 - new VS old ISO format - end
       else
 	
 	##### - 5Feb2018 - other than existing BK-LAT format
 	  all_col = [55]
-          break_count=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
+          break_count=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).count
 	  classes_count=@count1-break_count
 # 	  same_size=700/@count1
 # 	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
 	  class_size=(700-(55*break_count))/classes_count
-	  isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+	  isbreak=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).pluck(:seq)
 	  1.upto(@count1) do |col|
 	      if isbreak.include?(col)
 		all_col << 55 #break_size #100
