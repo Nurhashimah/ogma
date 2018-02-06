@@ -1,4 +1,4 @@
-class PersonalizetimetablePdf < Prawn::Document
+class PersonalizetimetableOldPdf < Prawn::Document
   def initialize(personalize, view, test_lecturer,selected_date, college)
     super({top_margin: 20, page_size: 'A4', page_layout: :landscape })
     @personalize = personalize
@@ -39,34 +39,7 @@ class PersonalizetimetablePdf < Prawn::Document
     @daycount2 = (@j.weeklytimetable.enddate.to_date - @weekdays_end).to_i 
     font "Helvetica"
     
-    table_heading
-    table_schedule_sun_wed
-    table_schedule_thurs
-    
-    if @daycount2 < 1
-      if @college.code=='amsas' && @college.name.include?("AMSAS")
-        move_down 50
-        table_ending
-      else
-	move_down 50
-        table_signatory
-      end
-    else
-      start_new_page
-      table_heading
-      table_weekend
-      move_down 100
-      if @college.code=='amsas' && @college.name.include?("AMSAS")
-        table_ending
-      else
-        table_signatory
-      end
-    end
-
-  end
-  
-  def table_heading
-    if @college.code=="kskbjb"
+    if college.code=="kskbjb"
       text "BPL.KKM.PK(T)", :align => :right, :size => 8
       image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
       move_down 3
@@ -96,40 +69,67 @@ class PersonalizetimetablePdf < Prawn::Document
     
     text "TARIKH : #{@sdt} HINGGA : #{@edt}", :align =>:left, :size => 9
     move_down 5
+    #TEMPORARY disable - TODO - fix these parts : NOTE - cross templates (RAN, URK, Sunday start & others)
+    #table_schedule_sun_wed
+    #table_schedule_thurs
+    text "#{@column_count_friday} ~ #{@column_count_monthur}"
+    
+    if @daycount2 > 0
+      start_new_page
+      ##same page header
+      if college.code=="kskbjb"
+        text "BPL.KKM.PK(T)", :align => :right, :size => 8
+	image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
+        move_down 3
+	text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
+	move_down 3
+        text "INSTITUSI : #{college.name.upcase}", :align => :left, :size => 9
+        text "NAMA PENSYARAH : #{@test_lecturer.userable.rank_id? ? @test_lecturer.userable.staff_with_rank : @test_lecturer.userable.name}", :align => :left, :size => 9
+        text "TARIKH : #{@j.weeklytimetable.startdate.try(:strftime, '%d/%m/%Y') } HINGGA : #{@j.weeklytimetable.enddate.try(:strftime, '%d/%m/%Y')}", :align =>:left, :size =>9
+      else
+        move_down 10
+	##
+	bounding_box([10,520], :width => 400, :height => 100) do |y2|
+          image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>72.9, :height =>58.32
+        end
+        bounding_box([700,520], :width => 400, :height => 90) do |y2|
+          image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
+        end
+        bounding_box([200, 520], :width => 400, :height => 90) do |y2|
+          move_down 10
+          text "PPL APMM", :align => :center, :style => :bold, :size => 10
+          text "NO. DOKUMEN: BK-LAT-RAN-01-01", :align => :center, :style => :bold, :size => 10
+          text "RANCANGAN LATIHAN MINGGUAN", :align => :center, :style => :bold, :size => 10
+        end
+	##
+      end
+      
+      
+      ##same page header
+      table_weekend
+      if @college.code=='amsas'
+        move_down 100
+        table_ending
+      else
+        table_signatory
+      end
+    end
+
   end
   
   def table_schedule_sun_wed
     #size & columns count
-    
-#     #[2]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
-#     if @college.code=='amsas' && @column_count_monthur > 8
-#        all_col = [55]
-#        isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
-#        1.upto(@column_count_monthur) do |col|
-# 	 if isbreak.include?(col)
-# 	   all_col << 55
-# 	 else
-#            all_col << 90
-# 	 end
-#        end 
-       
-    if @college.code=='amsas'
-      #SIMPLIFIED one ----start 6Feb2018
-      all_col = [55]
-      break_count=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
-      classes_count=@column_count_monthur-break_count
-      class_size=(700-(40*break_count))/classes_count if @column_count_monthur > 11
-      class_size=(700-(55*break_count))/classes_count if @column_count_monthur < 12
-      isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
-      1.upto(@column_count_monthur) do |col|
-        if isbreak.include?(col)
-          all_col << 40 if @column_count_monthur > 11
-          all_col << 55 if @column_count_monthur < 12
-        else
-          all_col << class_size
-        end
-      end 
-      #SIMPLIFIED one ----end 6Feb2018
+    #[2]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
+    if @college.code=='amsas' && @column_count_monthur > 8
+       all_col = [55]
+       isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+       1.upto(@column_count_monthur) do |col|
+	 if isbreak.include?(col)
+	   all_col << 55
+	 else
+           all_col << 90
+	 end
+       end 
     else
       #asal-start
       all_col = [55]
@@ -194,26 +194,11 @@ class PersonalizetimetablePdf < Prawn::Document
           gg=""
           nos=0
           @detailing_monthurs.each do |j|
-            if j.day2 == row  && j.time_slot2 == col 
-	      if j.weeklytimetable.hod_approved == true
-		if nos==0
-		  nos+=1
-		  if @college.code=='amsas'
-		    if @college.name.include?("AMSAS")
-		      gg+="#{j.weeklytimetable_subject.name}"
-		    else
-		      gg+="#{j.weeklytimetable_topic.name}"
-		    end
-		  else
-		    gg+="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{j.location_desc}#{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description} #{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
-		  end
-		end
-	      else
-		if nos==0
-		  nos+=1
-                  gg+="*"
-		end
-	      end
+            if j.day2 == row  && j.time_slot2 == col && j.weeklytimetable.hod_approved == true
+              if nos==0
+                nos+=1
+                gg+="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{j.location_desc}#{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description} #{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
+              end
             end
           end
           onerow_content << gg
@@ -227,35 +212,19 @@ class PersonalizetimetablePdf < Prawn::Document
     
     data = [header_col]+allrows_content
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
-      
-#       if header_col.count > 8
-# 	#[1]Amsas - TOTAL up column sizes, based on non_class(is_break==true) vs class(is_break==false) cells - MATCH ABOVE
-#         if college_code=='amsas'
-#           self.width=all_col.sum
-# 	else
-#           self.width = all_col.sum-95 #-80
-# 	end
-#       else
-#         self.width = all_col.sum-45
-#       end
-      
-      #SIMPLIFIED one ----start 6Feb2018
-      if college_code=="amsas"
-        self.width=all_col.sum
-      else
-        if header_col.count > 8
-	  self.width=all_col.sum-95 ###9July2015  #KSKBJB (evening session)
+      if header_col.count > 8
+	#[1]Amsas - TOTAL up column sizes, based on non_class(is_break==true) vs class(is_break==false) cells - MATCH ABOVE
+        if college_code=='amsas'
+          self.width=all_col.sum
 	else
-	  self.width=all_col.sum-45
+          self.width = all_col.sum-95 #-80
 	end
+      else
+        self.width = all_col.sum-45
       end
-      #SIMPLIFIED one ----end 6Feb2018
-      
       row(0).background_color = 'ABA9A9'  
       cells[1,2].valign = :center
-      if header_col.count > 5
-        cells[1,5].valign = :center
-      end
+      cells[1,5].valign = :center
       if header_col.count > 8
 	if college_code=='amsas'
           for abreak in isbreak
@@ -304,35 +273,16 @@ class PersonalizetimetablePdf < Prawn::Document
     
     #size & columns count
     #[2]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
-    
-#     if @college.code=='amsas' && @column_count_monthur > 8
-#        all_col = [55]
-#        isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
-#        1.upto(@column_count_monthur) do |col|
-# 	 if isbreak.include?(col)
-# 	   all_col << 55
-# 	 else
-#            all_col << 90
-# 	 end
-#        end 
-    
-    if @college.code=='amsas'
-      #SIMPLIFIED one ----start 6Feb2018
-      all_col = [55]
-      break_count=@j.weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).count
-      classes_count=@column_count_friday-break_count
-      class_size=(700-(40*break_count))/classes_count if @column_count_friday > 11
-      class_size=(700-(55*break_count))/classes_count if @column_count_friday < 12
-      isbreak=@j.weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).pluck(:seq)
-      1.upto(@column_count_friday) do |col|
-        if isbreak.include?(col)
-          all_col << 40 if @column_count_friday > 11
-          all_col << 55 if @column_count_friday< 12
-        else
-          all_col << class_size
-        end
-      end 
-      #SIMPLIFIED one ----end 6Feb2018
+    if @college.code=='amsas' && @column_count_monthur > 8
+       all_col = [55]
+       isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+       1.upto(@column_count_monthur) do |col|
+	 if isbreak.include?(col)
+	   all_col << 55
+	 else
+           all_col << 90
+	 end
+       end 
     else
       #asal-start
       all_col = [55]
@@ -410,26 +360,11 @@ class PersonalizetimetablePdf < Prawn::Document
           gg=""
           nos=0
           @detailing_friday.each do |j|
-            if j.is_friday == true && j.time_slot == col2 
-	      if j.weeklytimetable.hod_approved == true
-		if nos==0
-		  nos+=1
-		  if @college.code=='amsas'
-		    if @college.name.include?("AMSAS")
-		      gg+="#{j.weeklytimetable_subject.name}"
-		    else
-		      gg+="#{j.weeklytimetable_topic.name}"
-		    end
-		  else
-		    gg="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{j.location_desc}#{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description} #{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
-		  end
-		end
-	      else
-		if nos==0
-		  nos+=1
-		  gg+="*"
-		end
-	      end
+            if j.is_friday == true && j.time_slot == col2 && j.weeklytimetable.hod_approved == true
+              if nos==0
+                nos+=1
+                gg="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{j.location_desc}#{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description} #{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
+              end
             end
           end
           allrows_content<< {content: gg, colspan: @span_count}
@@ -437,26 +372,11 @@ class PersonalizetimetablePdf < Prawn::Document
           hh=""
           nos=0
           @detailing_friday.each do |j|
-            if j.is_friday == true  && j.time_slot == col2 
-	      if j.weeklytimetable.hod_approved == true
-		if nos==0
-		  nos+=1
-		  if @college.code=='amsas'
-		    if @college.name.include?("AMSAS")
-		      hh+="#{j.weeklytimetable_subject.name}"
-		    else
-		      hh+="#{j.weeklytimetable_topic.name}"
-		    end
-		  else
-		    hh="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{j.location_desc}#{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description} #{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
-		  end
-		end
-	      else
-		if nos==0
-		  nos+=1
-		  hh+="*"
-		end
-	      end
+            if j.is_friday == true  && j.time_slot == col2 && j.weeklytimetable.hod_approved == true
+              if nos==0
+                nos+=1
+                hh="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{j.location_desc}#{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description} #{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
+              end
             end
           end
           allrows_content<< hh
@@ -498,36 +418,16 @@ class PersonalizetimetablePdf < Prawn::Document
     
     #size & columns count
     #[2]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
- 
-#     if @college.code=='amsas' && @column_count_monthur > 8
-#        all_col = [55]
-#        isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
-#        1.upto(@column_count_monthur) do |col|
-# 	 if isbreak.include?(col)
-# 	   all_col << 55
-# 	 else
-#            all_col << 90
-# 	 end
-#        end 
-    
-    if @college.code=='amsas'
-            
-      #SIMPLIFIED one ----start 6Feb2018
-      all_col = [55]
-      break_count=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
-      classes_count=@column_count_monthur-break_count
-      class_size=(700-(40*break_count))/classes_count if @column_count_monthur > 11
-      class_size=(700-(55*break_count))/classes_count if @column_count_monthur < 12
-      isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
-      1.upto(@column_count_monthur) do |col|
-        if isbreak.include?(col)
-          all_col << 40 if @column_count_monthur > 11
-          all_col << 55 if @column_count_monthur < 12
-        else
-          all_col << class_size
-        end
-      end 
-      #SIMPLIFIED one ----end 6Feb2018
+    if @college.code=='amsas' && @column_count_monthur > 8
+       all_col = [55]
+       isbreak=@j.weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+       1.upto(@column_count_monthur) do |col|
+	 if isbreak.include?(col)
+	   all_col << 55
+	 else
+           all_col << 90
+	 end
+       end 
     else
       #asal-start
       all_col = [55]
@@ -592,26 +492,11 @@ class PersonalizetimetablePdf < Prawn::Document
               #1-display Sat slot accordingly for Week starting on Sunday 
               #2-OR display Weekends slot (Sat & Sun) for week starting on Monday
               @detailing_monthurs.each do |j2|
-                if j2.day2 == row2+@daycount+1 && j2.time_slot2 == col2 
-		  if @j.weeklytimetable.hod_approved == true
-		    if nos==0
-		      nos+=1
-		      if @college.code=='amsas'
-			if @college.name.include?("AMSAS")
-			  gg+="#{j2.weeklytimetable_subject.name}"
-			else
-			  gg+="#{j2.weeklytimetable_topic.name}"
-			end
-		      else
-			gg+="#{j2.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j2.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j2.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j2.weeklytimetable_topic.parent.name if j2.weeklytimetable_topic.ancestry_depth == 4}  #{j2.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j2.weeklytimetable_topic.parent.subject_abbreviation.upcase if j2.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j2.weeklytimetable_topic.name  if j2.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j2.lecture_method==1} #{j2.location_desc}#{"(T)" if j2.lecture_method==2}#{"(A)" if j2.lecture_method==3} #{'<br>'+j2.weeklytimetable_lecturer.name} #{'<br>'+j2.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j2.weeklytimetable.schedule_intake.description}  #{I18n.t('training.weeklytimetable.intake')+ " ("+ j2.weeklytimetable.schedule_intake.name+")"}"
-		      end
-		    end
-		  else
-		    if nos==0
-		      nos+=1
-		      gg+="*"
-		    end
-		  end
+                if j2.day2 == row2+@daycount+1 && j2.time_slot2 == col2 && @j.weeklytimetable.hod_approved == true
+                  if nos==0
+                    nos+=1
+                    gg+="#{j2.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j2.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j2.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j2.weeklytimetable_topic.parent.name if j2.weeklytimetable_topic.ancestry_depth == 4}  #{j2.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j2.weeklytimetable_topic.parent.subject_abbreviation.upcase if j2.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j2.weeklytimetable_topic.name  if j2.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j2.lecture_method==1} #{j2.location_desc}#{"(T)" if j2.lecture_method==2}#{"(A)" if j2.lecture_method==3} #{'<br>'+j2.weeklytimetable_lecturer.name} #{'<br>'+j2.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j2.weeklytimetable.schedule_intake.description}  #{I18n.t('training.weeklytimetable.intake')+ " ("+ j2.weeklytimetable.schedule_intake.name+")"}"
+                  end
                 end
               end #end for detailing_monthurs
             end  #end for weekend_dayname friday
@@ -629,35 +514,19 @@ class PersonalizetimetablePdf < Prawn::Document
     
     data = [header_col]+allrows_content
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
-      
-#       if header_col.count > 8
-# 	#[1]Amsas - TOTAL up column sizes, based on non_class(is_break==true) vs class(is_break==false) cells - MATCH ABOVE
-#         if college_code=='amsas'
-#           self.width=all_col.sum
-# 	else
-#           self.width = all_col.sum-95 #-80
-# 	end
-#       else
-#         self.width = all_col.sum-45
-#       end
-      
-      #SIMPLIFIED one ----start 6Feb2018
-      if college_code=="amsas"
-        self.width=all_col.sum
-      else
-        if header_col.count > 8
-	  self.width=all_col.sum-95 ###9July2015  #KSKBJB (evening session)
+      if header_col.count > 8
+	#[1]Amsas - TOTAL up column sizes, based on non_class(is_break==true) vs class(is_break==false) cells - MATCH ABOVE
+        if college_code=='amsas'
+          self.width=all_col.sum
 	else
-	  self.width=all_col.sum-45
+          self.width = all_col.sum-95 #-80
 	end
+      else
+        self.width = all_col.sum-45
       end
-      #SIMPLIFIED one ----end 6Feb2018
-      
       row(0).background_color = 'ABA9A9'  
       cells[1,2].valign = :center
-      if header_col.count > 5
-        cells[1,5].valign = :center
-      end
+      cells[1,5].valign = :center
        if header_col.count > 8
 	 if college_code=='amsas'
            for abreak in isbreak
@@ -701,7 +570,7 @@ class PersonalizetimetablePdf < Prawn::Document
                   ["#{'.'*90}","#{'.'*90}"],
                   ["Nama: #{@college.code=="amsas" ? @j.weeklytimetable.schedule_creator.staff_with_rank : @j.weeklytimetable.schedule_creator.name}","Nama #{approver}"],
                   ["Pengajar Penyelaras","#{@j.weeklytimetable.endorsed_by? ? @j.weeklytimetable.schedule_approver.positions.first.try(:name) : "-"}"],
-		["Pelatih Ambilan #{@j.weeklytimetable.try(:schedule_intake).try(:name)}","#{@college.code=='kskbjb' ? @college.code.upcase : @college.name}"]]
+                  ["Pelatih Ambilan #{@j.weeklytimetable.try(:schedule_intake).try(:name)}","#{@college.code.upcase}"]]
     table(data1, :column_widths => [350], :cell_style => { :size => 9}) do
       columns(0..1).borders=[]
       rows(0..4).height=18
