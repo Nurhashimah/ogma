@@ -41,12 +41,22 @@
       %dd{style: 'padding-left: 70px; padding-top: 10px;'}=image_tag(@trainingnote.document.url, :width =>600, :height =>400, :border => 10)
     
     /demo purpose - play uploaded video - offline - 5Feb2018
-    - if ["video/mp4", "video/webm"].include?(@trainingnote.document_content_type)
-      %dt Saved Video
-      %dd{style: 'padding-left:70px; padding-top:10px;'}
-        = content_tag(:iframe,'', width: 600, height: 400, src: @trainingnote.document.url)
-        .small="Format : "+@trainingnote.document_content_type
-      
+    - if @trainingnote.document.exists?
+      - if ["video/mp4", "video/webm"].include?(@trainingnote.document_content_type)
+        %dt Saved Video
+        %dd{style: 'padding-left:70px; padding-top:10px;'}
+          = content_tag(:iframe,'', width: 600, height: 400, src: @trainingnote.document.url)
+          .small="Format : "+@trainingnote.document_content_type
+    - else
+      - upload_via_lp=LessonPlan.where(data_title: @trainingnote.title).where(data_file_name: @trainingnote.document_file_name)
+      - if upload_via_lp.count > 0
+        /= link_to image_tag('attach.png')+" || "+(t 'download')+" : "+@trainingnote.document_file_name, upload_via_lp.last.data.url
+        - if ["video/mp4", "video/webm"].include?(upload_via_lp.last.data_content_type)
+          %dt Saved Video
+          %dd{style: 'padding-left:70px; padding-top:10px;'}
+            = content_tag(:iframe,'', width: 600, height: 400, src: upload_via_lp.last.data.url)
+            .small="Format : "+upload_via_lp.last.data_content_type
+        
     /demo purpose - embed video from Youtube - online - 5Feb2018
     - unless @trainingnote.youtube_link.blank?
       %dt 

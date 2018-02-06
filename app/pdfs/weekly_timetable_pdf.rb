@@ -149,8 +149,9 @@ class Weekly_timetablePdf < Prawn::Document
 	  all_col = [55]
           break_count=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
 	  classes_count=@count1-break_count
-	  same_size=700/@count1
-	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
+# 	  same_size=700/@count1
+# 	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
+	  class_size=(700-(55*break_count))/classes_count
 	  isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
 	  1.upto(@count1) do |col|
 	      if isbreak.include?(col)
@@ -303,7 +304,12 @@ class Weekly_timetablePdf < Prawn::Document
     end
     ###
     
-    @span_count=2            
+    if @college.code=="amsas"      #amsas & other college has no span for break columns? 6Feb2018 - shall override any span criterias defined above 
+      @span_count=1            
+    else
+      @span_count=2
+    end
+    
     header_col = [""]
     colfriday=1
     #Day & date(column - data assigned here)
@@ -346,8 +352,9 @@ class Weekly_timetablePdf < Prawn::Document
 	  all_col = [55]
           break_count=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
 	  classes_count=@count1-break_count
-	  same_size=700/@count1
-	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
+# 	  same_size=700/@count1
+# 	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
+	  class_size=(700-(55*break_count))/classes_count
 	  isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
 	  1.upto(@count1) do |col|
 	      if isbreak.include?(col)
@@ -438,13 +445,13 @@ class Weekly_timetablePdf < Prawn::Document
         for periods in row_things
           if colfriday == @break_tospan || @classes_tospan.include?(colfriday)==true
             if @college.code=='amsas'
-              header_col << {content: periods.timing_24hrs, colspan: @span_count}
+              header_col << {content: periods.timing_24hrs+"sana", colspan: @span_count}
             else
               header_col << {content: "#{periods.seq} <br> #{periods.timing}", colspan: @span_count}
             end
           else
             if @college.code=='amsas'
-              header_col << periods.timing_24hrs
+              header_col << periods.timing_24hrs+"sini"
             else
               header_col << "#{periods.seq} <br> #{periods.timing}"
             end
@@ -455,10 +462,29 @@ class Weekly_timetablePdf < Prawn::Document
         #Content for THURSDAY-(start) - COMPULSORY long break on the fouth time slot-START
         1.upto(@count2) do |col2|
           if @break_format2[col2-1]==true 
-            if col2 == @break_tospan
-              allrows_content<< {content: "REHAT", colspan: @span_count}
+            if (col2 == @break_tospan) && @span_count > 1#rescue here - as of @span_count (for AMSAS) as of line #307 - fixed 6Feb2018
+              allrows_content<< {content: "REHAT ---kk", colspan: @span_count}
             else
-              allrows_content<< "REHAT"
+#               if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-RAN')
+#                 rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==col2}.map{|disp, value|disp}[0]
+#               els
+	      if @college.code=='amsas'
+		non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(seq: col2).first.non_class
+		new_dropdown=TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+		old_dropdown=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0] 
+		if @college.name.include?("AMSAS")
+	          if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-URK')
+                    rehat=new_dropdown.titleize
+                  else
+		    rehat=old_dropdown
+	          end
+		else
+		  rehat=new_dropdown.titleize
+		end
+	      else #kskbjb
+		rehat= I18n.t('training.weeklytimetable.break')
+	      end
+	      allrows_content << rehat #"REHAT --lllll #{col2}"
             end       
  
           #NON-BREAK columns----start
@@ -520,6 +546,9 @@ class Weekly_timetablePdf < Prawn::Document
 	    #KSKBJB (evening session) not define
 	    #unremark this if error arise #all_col.sum-95
           end
+	else
+	  #cather different format use for (Mon-Thurs vs Friday) - 6Feb2018
+	  self.width = all_col.sum
         end
       end
       
@@ -577,8 +606,9 @@ class Weekly_timetablePdf < Prawn::Document
 	  all_col = [55]
           break_count=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
 	  classes_count=@count1-break_count
-	  same_size=700/@count1
-	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
+# 	  same_size=700/@count1
+# 	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
+	  class_size=(700-(55*break_count))/classes_count
 	  isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
 	  1.upto(@count1) do |col|
 	      if isbreak.include?(col)
