@@ -14,7 +14,35 @@ class Weekly_timetablePdf < Prawn::Document
     @college=college
     
     font "Helvetica"
-    if college.code=="kskbjb"
+    table_heading  
+    move_down 5
+    table_schedule_sun_wed
+    table_schedule_thurs
+    
+    if @daycount2 < 1
+      if @college.code=='amsas' && @college.name.include?("AMSAS")
+        move_down 50
+        table_ending
+      else
+	move_down 50
+        table_signatory
+      end
+    else
+      start_new_page
+      table_heading
+      table_weekend 
+      if @college.code=='amsas' && @college.name.include?("AMSAS")
+        move_down 100
+        table_ending
+      else
+	move_down 100
+        table_signatory
+      end
+    end
+  end
+  
+  def table_heading
+    if @college.code=="kskbjb"
       text "BPL.KKM.PK(T)", :align => :right, :size => 8
       image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
       move_down 3
@@ -41,7 +69,7 @@ class Weekly_timetablePdf < Prawn::Document
       end
     end
     
-    if college.code=="kskbjb"
+    if @college.code=="kskbjb"
       text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
       text "JADUAL WAKTU MINGGUAN", :align => :center, :size => 9
       move_down 3
@@ -53,51 +81,6 @@ class Weekly_timetablePdf < Prawn::Document
     end
     
     text "TARIKH : #{@weeklytimetable.startdate.to_date.strftime('%d-%m-%Y')} HINGGA : #{@weeklytimetable.enddate.to_date.strftime('%d-%m-%Y')}", :align =>:left, :size => 9
-    move_down 5
-    table_schedule_sun_wed
-    table_schedule_thurs
-    
-    if @daycount2 > 0
-      start_new_page
-      ##same page header
-      if college.code=="kskbjb"
-        text "BPL.KKM.PK(T)", :align => :right, :size => 8
-        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
-        move_down 3
-      else
-        bounding_box([10,520], :width => 400, :height => 100) do |y2|
-          image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>72.9, :height =>58.32
-        end
-        bounding_box([700,520], :width => 400, :height => 90) do |y2|
-          image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
-        end
-        bounding_box([200, 520], :width => 400, :height => 90) do |y2|
-          move_down 10
-          text "PPL APMM", :align => :center, :style => :bold, :size => 10
-          text "NO. DOKUMEN: BK-LAT-RAN-01-01", :align => :center, :style => :bold, :size => 10
-          text "RANCANGAN LATIHAN MINGGUAN", :align => :center, :style => :bold, :size => 10
-	  #text "#{@weeklytimetable.weeklytimetable_details.count}~~#{@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)}", :align => :center, :style => :bold, :size => 10
-        end
-      end
-      if college.code=="kskbjb"
-        text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
-	text "JADUAL WAKTU MINGGUAN", :align => :center, :size => 9
-        move_down 3
-        text "INSTITUSI : #{college.name.upcase}", :align => :left, :size => 9
-        text "KUMPULAN PELATIH : #{@weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)}", :align => :left, :size => 9
-        table_date_semester_week
-      ##same page header
-      else
-        move_down 5
-      end
-      table_weekend 
-      if @college.code=='amsas'
-        move_down 100
-        table_ending
-      else
-        table_signatory
-      end
-    end
   end
    
   def table_date_semester_week
@@ -199,16 +182,35 @@ class Weekly_timetablePdf < Prawn::Document
           #onerow_content << "row = #{row}, col = #{col}"
 	  #---------------------
 	  if @break_format1[col-1]==true && row==1 
-	    #break part
-	    #1)Amsas - to display non_class items accordingly
-            if @weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
+	    #########BREAK columns for @college.code=='amsas' -- start 6Feb2018
+	    if @college.code=='amsas'
               non_class_value=@weeklytimetable.timetable_monthurs.timetable_periods.where(seq: col).first.non_class
-              rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
-            else
-              rehat=I18n.t('training.weeklytimetable.break')
-	    end
-	    #onerow_content << {content: "REHAT", rowspan: 4}
+              new_dropdown=TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+              old_dropdown=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0] 
+	      if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-RAN')
+                rehat=old_dropdown
+              elsif
+                rehat=new_dropdown.titleize
+              end
+            else #kskbjb
+              rehat= I18n.t('training.weeklytimetable.break')
+            end
+# 	    allrows_content << rehat
 	    onerow_content << {content: rehat, rowspan: 4}
+	    #########BREAK columns for @college.code=='amsas' -- end 6Feb2018
+# 	    below - before 6Feb2018-------------------------------------
+# 	    #break part
+# 	    #1)Amsas - to display non_class items accordingly
+#             if @weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
+#               non_class_value=@weeklytimetable.timetable_monthurs.timetable_periods.where(seq: col).first.non_class
+#               rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+#             else
+#               rehat=I18n.t('training.weeklytimetable.break')
+# 	    end
+# 	    #onerow_content << {content: "REHAT", rowspan: 4}
+# 	    onerow_content << {content: rehat, rowspan: 4}
+# 	    ---------------------before 6Feb2018-------------------------------
+	    
 	  elsif @break_format1[col-1]==true && row!=1
 	    #do-not-remove : should not have any field or value
 	  elsif @break_format1[col-1]==false
@@ -463,28 +465,23 @@ class Weekly_timetablePdf < Prawn::Document
         1.upto(@count2) do |col2|
           if @break_format2[col2-1]==true 
             if (col2 == @break_tospan) && @span_count > 1#rescue here - as of @span_count (for AMSAS) as of line #307 - fixed 6Feb2018
-              allrows_content<< {content: "REHAT ---kk", colspan: @span_count}
+              allrows_content<< {content: "REHAT", colspan: @span_count}
             else
-#               if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-RAN')
-#                 rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==col2}.map{|disp, value|disp}[0]
-#               els
+	      #########BREAK columns for @college.code=='amsas' -- start 6Feb2018
 	      if @college.code=='amsas'
 		non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(seq: col2).first.non_class
 		new_dropdown=TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
 		old_dropdown=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0] 
-		if @college.name.include?("AMSAS")
-	          if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-URK')
-                    rehat=new_dropdown.titleize
+	          if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-RAN')
+                    rehat=old_dropdown
                   else
-		    rehat=old_dropdown
+		    rehat=new_dropdown.titleize
 	          end
-		else
-		  rehat=new_dropdown.titleize
-		end
 	      else #kskbjb
 		rehat= I18n.t('training.weeklytimetable.break')
 	      end
-	      allrows_content << rehat #"REHAT --lllll #{col2}"
+	      allrows_content << rehat
+	      #########BREAK columns for @college.code=='amsas' -- end 6Feb2018
             end       
  
           #NON-BREAK columns----start
@@ -658,14 +655,35 @@ class Weekly_timetablePdf < Prawn::Document
           1.upto(@count1) do |col2|
             if @break_format1[col2-1]==true && row2==1
               #onerow_content << {content: "REHAT", rowspan: @daycount2}
-              #5)Amsas - to display non_class items accordingly
-                if @weeklytimetable.timetable_friday.timetable_periods.where('non_class is not null').count > 0
-                    non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(seq: col2).first.non_class
-                    rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
-                else
-                    rehat= I18n.t('training.weeklytimetable.break')
+
+              #########BREAK columns for @college.code=='amsas' -- start 6Feb2018
+              if @college.code=='amsas'
+                non_class_value=@weeklytimetable.timetable_monthurs.timetable_periods.where(seq: col2).first.non_class
+                new_dropdown=TimetablePeriod::NON_CLASS_REV.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                old_dropdown=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0] 
+                if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT-RAN')
+                  rehat=old_dropdown
+                elsif
+                  rehat=new_dropdown.titleize
                 end
-                onerow_content << {content: rehat, rowspan: @daycount2}
+              else #kskbjb
+                rehat= I18n.t('training.weeklytimetable.break')
+              end
+              #allrows_content << rehat
+              onerow_content << {content: rehat, rowspan: @daycount2}
+              #########BREAK columns for @college.code=='amsas' -- end 6Feb2018
+
+# 	      before 6Feb2018---------------------start-----------------------------------  
+#               #5)Amsas - to display non_class items accordingly
+#                 if @weeklytimetable.timetable_friday.timetable_periods.where('non_class is not null').count > 0
+#                     non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(seq: col2).first.non_class
+#                     rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+#                 else
+#                     rehat= I18n.t('training.weeklytimetable.break')
+#                 end
+#                 onerow_content << {content: rehat, rowspan: @daycount2}
+# 	    before 6Feb2018--------------------------end------------------------------------
+	      
             elsif @break_format1[col2-1]==true && row2!=1
               #do-not-remove : should not have any field or value
             elsif @break_format1[col2-1]==false
@@ -694,6 +712,7 @@ class Weekly_timetablePdf < Prawn::Document
     ##Header : Weekend+WeekendContent row - end
     
     college_code=@college.code
+    college_name=@college.name
     isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
 
     data = [header_col]+allrows_content
@@ -708,11 +727,17 @@ class Weekly_timetablePdf < Prawn::Document
           self.width = all_col.sum-95 ###9July2015   #KSKBJB (evening session)
 	end
       else
-        self.width = all_col.sum-45#755
+	if college_code=="amsas" && college_name.include?("AMSAS")==false #6Feb2018
+	  self.width=all_col.sum
+	else
+          self.width = all_col.sum-45#755
+	end
       end
       row(0).background_color = 'ABA9A9'  
       cells[1,2].valign = :center
-      cells[1,5].valign = :center
+      if header_col.count > 4 #6Feb2018
+        cells[1,5].valign = :center
+      end
       if header_col.count > 8
         #asal - cells[1,8].valign = :center
         if college_code=='amsas'
@@ -755,7 +780,7 @@ class Weekly_timetablePdf < Prawn::Document
                   ["#{'.'*90}","#{'.'*90}"],
                   ["Nama: #{@college.code=="amsas" ? @weeklytimetable.schedule_creator.staff_with_rank : @weeklytimetable.schedule_creator.name}", approver],
                   ["Pengajar Penyelaras","#{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.positions.first.try(:name) : "-"}"],
-                  ["Pelatih Ambilan #{@weeklytimetable.try(:schedule_intake).try(:name)}", @college.code.upcase]]
+                  ["Pelatih Ambilan #{@weeklytimetable.try(:schedule_intake).try(:name)}", "#{@college.code=='kskbjb' ? @college.code.upcase : @college.name}"]]
     table(data1, :column_widths => [350], :cell_style => { :size => 9}) do
       columns(0..1).borders=[]
       rows(0..4).height=18
