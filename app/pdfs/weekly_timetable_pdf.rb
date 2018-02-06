@@ -99,69 +99,88 @@ class Weekly_timetablePdf < Prawn::Document
     #[1]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
     if @college.code=='amsas' 
       
-      ###5Feb2018-start------------ other than existing AMSAS Timetable format
-        if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT')
-	  ### NOTE - 18Jan2017 - new VS old ISO format - start
-	  if @count1 > 8 && @count1 < 12
-	    ##BK-LAT-RAN-01-01 (old ISO format)
-	    all_col = [55]
-	    isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
-	    1.upto(@count1) do |col|
-	      if isbreak.include?(col)
-		all_col << 55
-	      else
-		all_col << 90
-	      end
-	    end 
-	  elsif @count1 > 11
-	    ##BK-LAT-URK-01-01 (new ISO format)
-	    all_col = [55]
-	    isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
-	    
-	    #distribute--columns width accordingly----to space avalable----------6Feb2018--start
-            break_count=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).count
-            classes_count=@count1-break_count
-            class_size=(700-(40*break_count))/classes_count   #limit to 40 instead of 55
-            1.upto(@count1) do |col|
-              if isbreak.include?(col)
-                all_col << 40 #limit to 40 instead of 55
-              else
-                all_col << class_size #200
-              end
-	    end  
-#         distribute--columns width accordingly----to space avalable----------6Feb2018--end
-		
-#         below - before 6Feb2018---------------start--------------------
+      #SIMPLIFIED one ----start 6Feb2018
+      all_col = [55]
+      break_count=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
+      classes_count=@count1-break_count
+      class_size=(700-(40*break_count))/classes_count if @count1 > 11
+      class_size=(700-(55*break_count))/classes_count if @count1 < 12
+      isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+      1.upto(@count1) do |col|
+        if isbreak.include?(col)
+          all_col << 40 if @count1 > 11
+          all_col << 55 if @count1 < 12
+        else
+          all_col << class_size #200
+        end
+      end 
+      #SIMPLIFIED one ----end 6Feb2018
+      
+#       Before SIMPLIFIED 6Feb2018----------start
+#       ###5Feb2018-start------------ other than existing AMSAS Timetable format
+#         if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT')
+# 	  ### NOTE - 18Jan2017 - new VS old ISO format - start
+# 	  if @count1 > 8 && @count1 < 12
+# 	    ##BK-LAT-RAN-01-01 (old ISO format)
+# 	    all_col = [55]
+# 	    isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
 # 	    1.upto(@count1) do |col|
 # 	      if isbreak.include?(col)
-# 		all_col << 45
+# 		all_col << 55
 # 	      else
-# 		all_col << 45
+# 		all_col << 90
 # 	      end
 # 	    end 
-# 	    -before 6Feb2018----------------------end---------------------------
-	  end
-	  ###- 18Jan2017 - new VS old ISO format - end
-	else
-
-	  ###5Feb2018----------other than existing amsas format
-	  all_col = [55]
-          break_count=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
-	  classes_count=@count1-break_count
-# 	  same_size=700/@count1
-# 	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
-	  class_size=(700-(55*break_count))/classes_count
-	  isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
-	  1.upto(@count1) do |col|
-	      if isbreak.include?(col)
-		all_col << 55#break_size #100
-	      else
-		all_col << class_size #200
-	      end
-	   end 
-	   
-	end
-      ###5Feb2018-end-----------
+# 	  elsif @count1 > 11
+# 	    ##BK-LAT-URK-01-01 (new ISO format)
+# 	    all_col = [55]
+# 	    isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+# 	    
+# 	    #distribute--columns width accordingly----to space avalable----------6Feb2018--start
+#             break_count=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).count
+#             classes_count=@count1-break_count
+#             class_size=(700-(40*break_count))/classes_count   #limit to 40 instead of 55
+#             1.upto(@count1) do |col|
+#               if isbreak.include?(col)
+#                 all_col << 40 #limit to 40 instead of 55
+#               else
+#                 all_col << class_size #200
+#               end
+# 	    end  
+# #         distribute--columns width accordingly----to space avalable----------6Feb2018--end
+# 		
+# #         below - before 6Feb2018---------------start--------------------
+# # 	    1.upto(@count1) do |col|
+# # 	      if isbreak.include?(col)
+# # 		all_col << 45
+# # 	      else
+# # 		all_col << 45
+# # 	      end
+# # 	    end 
+# # 	    -before 6Feb2018----------------------end---------------------------
+# 	  end
+# 	  ###- 18Jan2017 - new VS old ISO format - end
+# 	else
+# 
+# 	  ###5Feb2018----------other than existing amsas format
+# 	  all_col = [55]
+#           break_count=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
+# 	  classes_count=@count1-break_count
+# # 	  same_size=700/@count1
+# # 	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
+# 	  class_size=(700-(55*break_count))/classes_count
+# 	  isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+# 	  1.upto(@count1) do |col|
+# 	      if isbreak.include?(col)
+# 		all_col << 55#break_size #100
+# 	      else
+# 		all_col << class_size #200
+# 	      end
+# 	   end 
+# 	   
+# 	end
+#       ###5Feb2018-end-----------  
+#       Before SIMPLIFIED 6Feb2018----------end
       
     else
       all_col = [55]
@@ -264,21 +283,37 @@ class Weekly_timetablePdf < Prawn::Document
     data = [header_col]+allrows_content
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
       #self.width = all_col.sum-80 #use this if below error
-      if header_col.count > 8
-        #[1]Amsas - TOTAL up column sizes, based on non_class(is_break==true) vs class(is_break==false) cells - MATCH ABOVE
-        if college_code=='amsas'
-          self.width=all_col.sum
-        else
-          #self.width = all_col.sum-80#750
-          self.width = all_col.sum-95 ###9July2015  #KSKBJB (evening session)
-        end
+      
+      #SIMPLIFIED one ----start 6Feb2018
+      if college_code=="amsas"
+        self.width=all_col.sum
       else
-	if college_code=="amsas" && college_name.include?("AMSAS")==false #5Feb2018
-	  self.width=all_col.sum
+        if header_col.count > 8
+	  self.width=all_col.sum-95 ###9July2015  #KSKBJB (evening session)
 	else
-          self.width = all_col.sum-45#755
+	  self.width=all_col.sum-45#755
 	end
       end
+      #SIMPLIFIED one ----end 6Feb2018
+      
+#       Before SIMPLIFIED 6Feb2018----------start
+#       if header_col.count > 8
+#         #[1]Amsas - TOTAL up column sizes, based on non_class(is_break==true) vs class(is_break==false) cells - MATCH ABOVE
+#         if college_code=='amsas'
+#           self.width=all_col.sum
+#         else
+#           #self.width = all_col.sum-80#750
+#           self.width = all_col.sum-95 ###9July2015  #KSKBJB (evening session)
+#         end
+#       else
+# 	if college_code=="amsas" && college_name.include?("AMSAS")==false #5Feb2018
+# 	  self.width=all_col.sum
+# 	else
+#           self.width = all_col.sum-45#755
+# 	end
+#       end
+#       Before SIMPLIFIED 6Feb2018--------end
+      
       row(0).background_color = 'ABA9A9'  
       cells[1,2].valign = :center
       if header_col.count > 5
@@ -337,69 +372,89 @@ class Weekly_timetablePdf < Prawn::Document
     #size & columns count
     #[2]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
     if @college.code=='amsas' 
-       ###5Feb2018-start------------ other than existing AMSAS Timetable format
-        if @weeklytimetable.timetable_friday.name.include?('BK-LAT')
-	    ### NOTE - 18Jan2017 - new VS old ISO format - start
-	    if @count1 > 8 && @count1 < 12
-		##BK-LAT-RAN-01-01 (old ISO format)
-		all_col = [55]
-		isbreak=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).pluck(:seq)
-		1.upto(@count1) do |col|
-		  if isbreak.include?(col)
-		    all_col << 55
-		  else
-		    all_col << 90
-		  end
-		end 
-	    elsif @count1 > 11
-		##BK-LAT-URK-01-01 (new ISO format)
-		all_col = [55]
-		isbreak=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).pluck(:seq)
+      
+      #SIMPLIFIED one ----start 6Feb2018
+      all_col = [55]
+      break_count=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).count
+      classes_count=@count1-break_count
+      class_size=(700-(40*break_count))/classes_count if @count1 > 11
+      class_size=(700-(55*break_count))/classes_count if @count1 < 12
+      isbreak=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).pluck(:seq)
+      1.upto(@count1) do |col|
+        if isbreak.include?(col)
+          all_col << 40 if @count1 > 11
+          all_col << 55 if @count1 < 12
+        else
+          all_col << class_size #200
+        end
+      end 
+      #SIMPLIFIED one ----end 6Feb2018
 
-# 		distribute--columns width accordingly----to space avalable----------6Feb2018--start
-                break_count=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).count
-                classes_count=@count1-break_count
-                class_size=(700-(40*break_count))/classes_count   #limit to 40 instead of 55
-                1.upto(@count1) do |col|
-                  if isbreak.include?(col)
-                    all_col << 40 #limit to 40 instead of 55
-                  else
-                    all_col << class_size #200
-                  end
-	        end  
-# 		distribute--columns width accordingly----to space avalable----------6Feb2018--end
-		
-# 		below - before 6Feb2018---------------start--------------------
+#       Before SIMPLIFIED 6Feb2018----------start
+#        ###5Feb2018-start------------ other than existing AMSAS Timetable format
+#         if @weeklytimetable.timetable_friday.name.include?('BK-LAT')
+# 	    ### NOTE - 18Jan2017 - new VS old ISO format - start
+# 	    if @count1 > 8 && @count1 < 12
+# 		##BK-LAT-RAN-01-01 (old ISO format)
+# 		all_col = [55]
+# 		isbreak=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).pluck(:seq)
 # 		1.upto(@count1) do |col|
 # 		  if isbreak.include?(col)
-# 		    all_col << 40
+# 		    all_col << 55
 # 		  else
-# 		    all_col << 40
+# 		    all_col << 90
 # 		  end
 # 		end 
-# 		-before 6Feb2018----------------end---------------------------------
-	    end
-	###- 18Jan2017 - new VS old ISO format - end
-      else
-	
-	##### - 5Feb2018 - other than existing BK-LAT format
-	  all_col = [55]
-          break_count=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).count
-	  classes_count=@count1-break_count
-# 	  same_size=700/@count1
-# 	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
-	  class_size=(700-(55*break_count))/classes_count
-	  isbreak=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).pluck(:seq)
-	  1.upto(@count1) do |col|
-	      if isbreak.include?(col)
-		all_col << 55 #break_size #100
-	      else
-		all_col << class_size #200
-	      end
-	   end  
-	#####end for 5Feb2018
-
-	end
+# 	    elsif @count1 > 11
+# 		##BK-LAT-URK-01-01 (new ISO format)
+# 		all_col = [55]
+# 		isbreak=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).pluck(:seq)
+# 
+# # 		distribute--columns width accordingly----to space avalable----------6Feb2018--start
+#                 break_count=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).count
+#                 classes_count=@count1-break_count
+#                 class_size=(700-(40*break_count))/classes_count   #limit to 40 instead of 55
+#                 1.upto(@count1) do |col|
+#                   if isbreak.include?(col)
+#                     all_col << 40 #limit to 40 instead of 55
+#                   else
+#                     all_col << class_size #200
+#                   end
+# 	        end  
+# # 		distribute--columns width accordingly----to space avalable----------6Feb2018--end
+# 		
+# # 		below - before 6Feb2018---------------start--------------------
+# # 		1.upto(@count1) do |col|
+# # 		  if isbreak.include?(col)
+# # 		    all_col << 40
+# # 		  else
+# # 		    all_col << 40
+# # 		  end
+# # 		end 
+# # 		-before 6Feb2018----------------end---------------------------------
+# 	    end
+# 	###- 18Jan2017 - new VS old ISO format - end
+#       else
+# 	
+# 	##### - 5Feb2018 - other than existing BK-LAT format
+# 	  all_col = [55]
+#           break_count=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).count
+# 	  classes_count=@count1-break_count
+# # 	  same_size=700/@count1
+# # 	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
+# 	  class_size=(700-(55*break_count))/classes_count
+# 	  isbreak=@weeklytimetable.timetable_friday.timetable_periods.where(is_break: true).pluck(:seq)
+# 	  1.upto(@count1) do |col|
+# 	      if isbreak.include?(col)
+# 		all_col << 55 #break_size #100
+# 	      else
+# 		all_col << class_size #200
+# 	      end
+# 	   end  
+# 	#####end for 5Feb2018
+# 
+# 	end
+#       Before SIMPLIFIED 6Feb2018----------end
       
     else
       ###asal-start
@@ -559,27 +614,34 @@ class Weekly_timetablePdf < Prawn::Document
     
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
       #self.width = all_col.sum-80 #use this if below error #750 #705
-      if @count1==9 && @count2==7
-        self.width = 705
-      elsif @count1==10 && @count2==7
-        self.width = 750
-	
-      else
-        if same==1
-	  if count1 > 8 && college_code=='amsas'
-	    #[2]Amsas - TOTAL up column sizes, based on non_class(is_break==true) vs class(is_break==false) cells - MATCH above
-            self.width = all_col.sum#=755#950 #################################
-	  elsif college_code=='amsas' && college_name.include?("AMSAS")==false
-	    self.width = all_col.sum
-	  else
-	    #KSKBJB (evening session) not define
-	    #unremark this if error arise #all_col.sum-95
-          end
-	else
-	  #cather different format use for (Mon-Thurs vs Friday) - 6Feb2018
-	  self.width = all_col.sum
-        end
-      end
+      
+      #SIMPLIFIED one ----start 6Feb2018
+      self.width=all_col.sum
+      #SIMPLIFIED one ----end 6Feb2018
+
+#       Before SIMPLIFIED 6Feb2018----------start
+#       if @count1==9 && @count2==7
+#         self.width = 705
+#       elsif @count1==10 && @count2==7
+#         self.width = 750
+# 	
+#       else
+#         if same==1
+# 	  if count1 > 8 && college_code=='amsas'
+# 	    #[2]Amsas - TOTAL up column sizes, based on non_class(is_break==true) vs class(is_break==false) cells - MATCH above
+#             self.width = all_col.sum#=755#950 #################################
+# 	  elsif college_code=='amsas' && college_name.include?("AMSAS")==false
+# 	    self.width = all_col.sum
+# 	  else
+# 	    #KSKBJB (evening session) not define
+# 	    #unremark this if error arise #all_col.sum-95
+#           end
+# 	else
+# 	  #cather different format use for (Mon-Thurs vs Friday) - 6Feb2018
+# 	  self.width = all_col.sum
+#         end
+#       end
+#       Before SIMPLIFIED 6Feb2018----------end
       
       #2b)Amsas - to ignore styling for default BREAK cells, when same format in use for Mon-Thurs Vs Friday
       if same==1
@@ -603,51 +665,71 @@ class Weekly_timetablePdf < Prawn::Document
     #size & columns count
     #[3]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
     if @college.code=='amsas'
-	###5Feb2018-start------------ other than existing AMSAS Timetable format
-        if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT')
-	    ### NOTE - 18Jan2017 - new VS old ISO format - start
-	    if @count1 > 8 && @count1 < 12 
-		##BK-LAT-RAN-01-01 (old ISO format)
-		all_col = [55]
-		isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
-		1.upto(@count1) do |col|
-		  if isbreak.include?(col)
-		    all_col << 55
-		  else
-		    all_col << 90
-		  end
-		end 
-	    elsif @count1 > 11
-		##BK-LAT-URK-01-01 (new ISO format)
-		all_col = [55]
-		isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
-		1.upto(@count1) do |col|
-		  if isbreak.include?(col)
-		    all_col << 45
-		  else
-		    all_col << 45
-		  end
-		end 
-	    end
-      ###- 18Jan2017 - new VS old ISO format - end
-      else
-	##############5Feb2018- start - other than existing BK-LAT format
-	  all_col = [55]
-          break_count=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
-	  classes_count=@count1-break_count
-# 	  same_size=700/@count1
-# 	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
-	  class_size=(700-(55*break_count))/classes_count
-	  isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
-	  1.upto(@count1) do |col|
-	      if isbreak.include?(col)
-		all_col << 55 #break_size #100
-	      else
-		all_col << class_size #200
-	      end
-	   end
-	##########
-	end
+            
+      #SIMPLIFIED one ----start 6Feb2018
+      all_col = [55]
+      break_count=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
+      classes_count=@count1-break_count
+      class_size=(700-(40*break_count))/classes_count if @count1 > 11
+      class_size=(700-(55*break_count))/classes_count if @count1 < 12
+      isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+      1.upto(@count1) do |col|
+        if isbreak.include?(col)
+          all_col << 40 if @count1 > 11
+          all_col << 55 if @count1 < 12
+        else
+          all_col << class_size #200
+        end
+      end 
+      #SIMPLIFIED one ----end 6Feb2018
+
+#       Before SIMPLIFIED 6Feb2018----------start
+# 	###5Feb2018-start------------ other than existing AMSAS Timetable format
+#         if @weeklytimetable.timetable_monthurs.name.include?('BK-LAT')
+# 	    ### NOTE - 18Jan2017 - new VS old ISO format - start
+# 	    if @count1 > 8 && @count1 < 12 
+# 		##BK-LAT-RAN-01-01 (old ISO format)
+# 		all_col = [55]
+# 		isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+# 		1.upto(@count1) do |col|
+# 		  if isbreak.include?(col)
+# 		    all_col << 55
+# 		  else
+# 		    all_col << 90
+# 		  end
+# 		end 
+# 	    elsif @count1 > 11
+# 		##BK-LAT-URK-01-01 (new ISO format)
+# 		all_col = [55]
+# 		isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+# 		1.upto(@count1) do |col|
+# 		  if isbreak.include?(col)
+# 		    all_col << 45
+# 		  else
+# 		    all_col << 45
+# 		  end
+# 		end 
+# 	    end
+#       ###- 18Jan2017 - new VS old ISO format - end
+#       else
+# 	##############5Feb2018- start - other than existing BK-LAT format
+# 	  all_col = [55]
+#           break_count=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).count
+# 	  classes_count=@count1-break_count
+# # 	  same_size=700/@count1
+# # 	  class_size=((same_size*classes_count)+((same_size-55)*break_count))/classes_count
+# 	  class_size=(700-(55*break_count))/classes_count
+# 	  isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:seq)
+# 	  1.upto(@count1) do |col|
+# 	      if isbreak.include?(col)
+# 		all_col << 55 #break_size #100
+# 	      else
+# 		all_col << class_size #200
+# 	      end
+# 	   end
+# 	##########
+# 	end
+#       Before SIMPLIFIED 6Feb2018----------end
       
     else
       all_col = [55]
@@ -750,21 +832,37 @@ class Weekly_timetablePdf < Prawn::Document
     data = [header_col]+allrows_content
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
       #self.width = all_col.sum-80 #use this if below error
-      if header_col.count > 8
-	if college_code=='amsas'
-	  #[3]Amsas - TOTAL up column sizes, based on non_class(is_break==true) vs class(is_break==false) cells - MATCH above
-	  self.width=all_col.sum
-	else
-          #self.width = all_col.sum-80#750
-          self.width = all_col.sum-95 ###9July2015   #KSKBJB (evening session)
-	end
+      
+      #SIMPLIFIED one ----start 6Feb2018
+      if college_code=="amsas"
+        self.width=all_col.sum
       else
-	if college_code=="amsas" && college_name.include?("AMSAS")==false #6Feb2018
-	  self.width=all_col.sum
+	if header_col.count > 8
+          self.width=all_col.sum-95 ###9July2015  #KSKBJB (evening session)
 	else
-          self.width = all_col.sum-45#755
+	  self.width=all_col.sum-45
 	end
       end
+      #SIMPLIFIED one ----end 6Feb2018
+
+#       Before SIMPLIFIED 6Feb2018----------start
+#       if header_col.count > 8
+# 	if college_code=='amsas'
+# 	  #[3]Amsas - TOTAL up column sizes, based on non_class(is_break==true) vs class(is_break==false) cells - MATCH above
+# 	  self.width=all_col.sum
+# 	else
+#           #self.width = all_col.sum-80#750
+#           self.width = all_col.sum-95 ###9July2015   #KSKBJB (evening session)
+# 	end
+#       else
+# 	if college_code=="amsas" && college_name.include?("AMSAS")==false #6Feb2018
+# 	  self.width=all_col.sum
+# 	else
+#           self.width = all_col.sum-45#755
+# 	end
+#       end
+#       Before SIMPLIFIED 6Feb2018----------end
+      
       row(0).background_color = 'ABA9A9'  
       cells[1,2].valign = :center
       if header_col.count > 4 #6Feb2018
