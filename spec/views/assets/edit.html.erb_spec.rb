@@ -34,7 +34,7 @@ RSpec.describe "asset/assets/edit", :type => :view do
 
       #description
       assert_select "input#asset_name[name=?]", "asset[name]"
-      assert_select "input#asset_manufacturer_id[name=?]", "asset[manufacturer_id]"
+      assert_select "select#asset_manufacturer_id[name=?]", "asset[manufacturer_id]"
       assert_select "select#asset_country_id[name=?]", "asset[country_id]"
       assert_select "input#asset_modelname[name=?]", "asset[modelname]"
       assert_select "input#asset_serialno[name=?]", "asset[serialno]"

@@ -32,7 +32,8 @@ RSpec.describe "staff_training/ptdos/index", :type => :view do
     assert_select "td", :text => @ptdo2.try(:ptschedule).try(:course).try(:name)
     assert_select "td", :text => @ptdo1.applicant_details.strip
     assert_select "td", :text => @ptdo2.applicant_details.strip
-    assert_select "td", :text => I18n.t("staff.training.application_status.auto_app_require_director_app")
+    #assert_select "td", :text => I18n.t("staff.training.application_status.auto_app_require_director_app") 
+    assert_select "td", :text => I18n.t("staff.training.application_status.auto_app_require_root_app")
     #@ptdo1.apply_dept_status
     assert_select "td", :text => I18n.t("staff.training.application_status.report_submit")
     #@ptdo2.apply_dept_status

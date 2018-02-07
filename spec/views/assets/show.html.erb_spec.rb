@@ -5,7 +5,7 @@ RSpec.describe "asset/assets/show", :type => :view do
     @admin_user=FactoryGirl.create(:admin_user)
     sign_in(@admin_user)
     @staff=FactoryGirl.create(:basic_staff)
-    @asset=FactoryGirl.create(:fixed_asset, typename: "My Type A", name: "My Name A", modelname: "My Model A", bookable: true, is_maintainable: true, assignedto: @staff, college_id: @staff.college_id, cardno: "1")
+    @asset=FactoryGirl.create(:fixed_asset, typename: "My Type A", name: "My Name A", modelname: "My Model A", bookable: true, is_maintainable: true, assignedto: @staff, college_id: @staff.college_id, cardno: "1", receiveddate: "2018-01-01")
     @asset_placement=FactoryGirl.create(:fixed_asset_placement, asset: @asset)
     @maint=FactoryGirl.create(:maint, asset: @asset)
   end
@@ -17,7 +17,7 @@ RSpec.describe "asset/assets/show", :type => :view do
     assert_select "h1", :text => @asset.assetcode
       
     assert_select "dl>dt", :text => I18n.t('asset.assetcode')
-    assert_select "dd", :text => @asset.assetcode
+    assert_select "dd", :text => @staff.college.name.split(" ").join("_").downcase+"/H/"+@asset.syear+"/1" 
     
     #details
     assert_select "dl>dt", :text => I18n.t('asset.category.title')
@@ -45,7 +45,7 @@ RSpec.describe "asset/assets/show", :type => :view do
     assert_select "dl>dt", :text => I18n.t('asset.located_at')
     assert_select "dd", :text => @asset.hmlocation.try(:location_list)
     assert_select "dl>dt", :text => I18n.t('asset.assigned_to')
-    assert_select "dd", :text => @asset.assignedto.try(:staff_with_rank).strip
+    assert_select "dd", :text => @asset.assignedto.try(:staff_with_rank_position_unit).strip #@asset.assignedto.try(:staff_with_rank).strip
     assert_select "dl>dt", :text => I18n.t('asset.status')
     assert_select "dd", :text => @asset.status
     assert_select "dl>dt", :text => I18n.t('asset.other_information')
@@ -57,9 +57,9 @@ RSpec.describe "asset/assets/show", :type => :view do
     assert_select "dl>dt", :text => I18n.t('asset.purchaseprice')
     assert_select "dd", :text =>     currency(@asset.purchaseprice.to_f)
     assert_select "dl>dt", :text => I18n.t('asset.purchasedate')
-    assert_select "dd", :text => @asset.purchasedate.try(:strftime, "%d/%m/%Y")
+    assert_select "dd", :text => @asset.purchasedate.try(:strftime, "%d/%m/%y")
     assert_select "dl>dt", :text => I18n.t('asset.receiveddate')
-    assert_select "dd", :text => @asset.receiveddate.try(:strftime, "%d/%m/%Y")
+    assert_select "dd", :text => @asset.receiveddate.try(:strftime, "%d/%m/%y")
     assert_select "dl>dt", :text => I18n.t('asset.receivedby')
     assert_select "dd", :text => @asset.receiver.try(:name)
     assert_select "dl>dt", :text => I18n.t('asset.suppliedby')

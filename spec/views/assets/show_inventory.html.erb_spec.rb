@@ -6,7 +6,7 @@ RSpec.describe "asset/assets/show", :type => :view do
     sign_in(@admin_user)
     @staff1=FactoryGirl.create(:basic_staff)
     @staff2=FactoryGirl.create(:basic_staff)
-    @asset=FactoryGirl.create(:inventory, typename: "My Type B", name: "My Name B", modelname: "My Model B", assignedto: @staff1, quantity: 3, college_id: @staff1.college_id, cardno: "1")
+    @asset=FactoryGirl.create(:inventory, typename: "My Type B", name: "My Name B", modelname: "My Model B", assignedto: @staff1, quantity: 3, college_id: @staff1.college_id, cardno: "1", receiveddate: "2018-01-01")
     @room1=FactoryGirl.create(:admin_room)
     @room2=FactoryGirl.create(:admin_room)
     @asset_placement1=FactoryGirl.create(:inventory_placement, asset: @asset, staff: @staff1, quantity: 2, location: @room1)
@@ -20,8 +20,7 @@ RSpec.describe "asset/assets/show", :type => :view do
     assert_select "h1", :text => @asset.assetcode
       
     assert_select "dl>dt", :text => I18n.t('asset.assetcode')
-    assert_select "dd", :text => @asset.assetcode
-    
+    assert_select "dd", :text => @staff1.college.name.split(" ").join("_").downcase+"/I/"+@asset.syear+"/1" #@asset.assetcode
     #details
     assert_select "dl>dt", :text => I18n.t('asset.category.title')
     assert_select "dd", :text => @asset.category.try(:description)
@@ -55,10 +54,24 @@ RSpec.describe "asset/assets/show", :type => :view do
 #        +</div>
 #        +</dd>
 
-    assert_select "dd>div.col-md-8", :text => "#{@asset.asset_placements.first.location.name} \n#{@asset.asset_placements[1].location.name}"
+    #assert_select "dd>div.col-md-8", :text => "#{@asset.asset_placements.first.location.name} \n#{@asset.asset_placements[1].location.name}"
+
+#  +<dd style='padding-left: 70px;'>
+#        +Room 1
+#        +, 
+#        +Room 2
+
+    assert_select "dd", :text => "#{@asset.asset_placements.first.location.name}\n, \n#{@asset.asset_placements[1].location.name}"
     
+#       +<dt>Assigned To</dt>
+#        +<dd>
+#        + Bob2 Uncle - -
+#        + Bob2 Uncle,  Bob3 Uncle
+#        +</dd>
+
+
     assert_select "dl>dt", :text => I18n.t('asset.assigned_to')
-    assert_select "dd", :text => @asset.assignedto.try(:staff_with_rank).strip
+    assert_select "dd", :text => "#{@asset.assignedto.try(:staff_with_rank_position_unit).strip}\n#{@asset.asset_placements.first.staff.staff_with_rank}, #{@asset.asset_placements[1].staff.staff_with_rank}" #@asset.assignedto.try(:staff_with_rank).strip
     assert_select "dl>dt", :text => I18n.t('asset.status')
     assert_select "dd", :text => @asset.status
     assert_select "dl>dt", :text => I18n.t('asset.other_information')
@@ -70,9 +83,9 @@ RSpec.describe "asset/assets/show", :type => :view do
     assert_select "dl>dt", :text => I18n.t('asset.purchaseprice')
     assert_select "dd", :text =>     currency(@asset.purchaseprice.to_f)
     assert_select "dl>dt", :text => I18n.t('asset.purchasedate')
-    assert_select "dd", :text => @asset.purchasedate.try(:strftime, "%d/%m/%Y")
+    assert_select "dd", :text => @asset.purchasedate.try(:strftime, "%d/%m/%y")
     assert_select "dl>dt", :text => I18n.t('asset.receiveddate')
-    assert_select "dd", :text => @asset.receiveddate.try(:strftime, "%d/%m/%Y")
+    assert_select "dd", :text => @asset.receiveddate.try(:strftime, "%d/%m/%y")
     assert_select "dl>dt", :text => I18n.t('asset.receivedby')
     assert_select "dd", :text => @asset.receiver.try(:name)
     assert_select "dl>dt", :text => I18n.t('asset.suppliedby')

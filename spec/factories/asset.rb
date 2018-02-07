@@ -55,7 +55,8 @@ FactoryGirl.define do
     association :college, factory: :college
 #     association :stationery, factory: :stationery #unremark this line (for method 1)
     sequence(:lpono) {|n| "Lpo No #{n}"}
-    sequence(:document) { |n| "Supplier #{n}"}
+#     sequence(:document) { |n| "Supplier #{n}"}
+    association :supplier, factory: :address_book
     quantity 100
     unitcost 1.0
     received { Date.today-2.days }  

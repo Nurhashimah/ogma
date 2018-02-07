@@ -14,13 +14,15 @@
      .panel-body{:style => "min-height:120px"}
       - if bulletin.data.exists? then
        - if ['image/png', 'image/jpeg'].include?(bulletin.data_content_type)
-        = image_tag(bulletin.data, width: '330px', height: '150px')   
+        = image_tag(bulletin.data, style: 'thumbnail')   
         %br
       = bulletin.content
      .panel-body{:style => "min-height:100px"}
       - if bulletin.data.exists? then
        - if ['image/png', 'image/jpeg'].include?(bulletin.data_content_type) == false
         = link_to (t 'download'), bulletin.data.url
+       - if ['image/png', 'image/jpeg'].include?(bulletin.data_content_type) == true
+        = link_to (t 'download'), bulletin.data.url(:original)
       -else
        %br
    - counter += 1

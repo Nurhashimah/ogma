@@ -24,7 +24,7 @@ RSpec.describe "staff/travel_claims/show", :type => :view do
     assert_select "h1", :text => I18n.t('staff.travel_claim.title')
     
     assert_select "dt", :text => I18n.t('staff.travel_claim.month_year').gsub("&", "&amp;")
-    assert_select "dd", :text => l(@travel_claim.claim_month, :format => "%B %Y") 
+    assert_select "dd", :text => l(@travel_claim.claim_month, :format => "%B %Y")
     assert_select "dt", :text => I18n.t('staff.travel_claim.staff_id')
     assert_select "dd", :text => @travel_claim.staff.staff_with_rank_position.strip
     
@@ -104,8 +104,8 @@ RSpec.describe "staff/travel_claims/show", :type => :view do
     expect(rendered).to match("#{l(@travel_claim.submitted_on).to_s}")
     assert_select "dt", :text => I18n.t('staff.travel_claim.is_approved')
     expect(rendered).to match("#{I18n.t('staff.travel_claim.no2')}")
-    assert_select "dt", :text => I18n.t('staff.travel_claim.to_be_approved_by')
-
+    #assert_select "dt", :text => I18n.t('staff.travel_claim.to_be_approved_by') 
+    assert_select "dt", :text => "#{@travel_claim.is_approved? ?  (I18n.t 'staff.travel_claim.approved_by') : (I18n.t 'staff.travel_claim.to_be_approved_by')}"
 
     #page - buttons / links
     assert_select "a[href=?]", staff_travel_claims_path, {text: "#{I18n.t("helpers.links.back")}" }

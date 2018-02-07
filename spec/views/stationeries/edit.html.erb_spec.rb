@@ -24,7 +24,7 @@ puts "#{@stationery.stationery_adds.count}~~#{@stationery.stationery_uses.count}
       
       #addition
       assert_select "input#stationery_stationery_adds_attributes_0_lpono[name=?]", "stationery[stationery_adds_attributes][0][lpono]"
-      assert_select "input#stationery_stationery_adds_attributes_0_document[name=?]", "stationery[stationery_adds_attributes][0][document]"
+      assert_select "select#stationery_stationery_adds_attributes_0_supplier_id[name=?]", "stationery[stationery_adds_attributes][0][supplier_id]"
       assert_select "input#stationery_stationery_adds_attributes_0_quantity[name=?]", "stationery[stationery_adds_attributes][0][quantity]"
       assert_select "input#stationery_stationery_adds_attributes_0_unitcost[name=?]", "stationery[stationery_adds_attributes][0][unitcost]"
       assert_select "input#stationery_stationery_adds_attributes_0_received[name=?]", "stationery[stationery_adds_attributes][0][received]"

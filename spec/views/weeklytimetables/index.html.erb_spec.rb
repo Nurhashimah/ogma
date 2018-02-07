@@ -34,7 +34,8 @@ RSpec.describe "training/weeklytimetables/index", :type => :view do
     assert_select "tr>td>a", :text => @weeklytimetable2.schedule_programme.programme_list, :count => 1
     assert_select "td", :text => @weeklytimetable1.schedule_intake.siri_name, :count => 1
     assert_select "td", :text => @weeklytimetable2.schedule_intake.siri_name, :count => 1
-    assert_select "td", :text => @weeklytimetable1.timetable_monthurs.name, :count => 2
+#     assert_select "td", :text => @weeklytimetable1.timetable_monthurs.name, :count => 2
+    assert_select "td", :text => "#{@weeklytimetable1.timetable_monthurs.name+" / "+@weeklytimetable1.timetable_friday.name}", :count => 2
     assert_select "td", text: @weeklytimetable1.try(:startdate).try(:strftime, "%d-%m-%Y"), :count  => 1
     assert_select "td", text: @weeklytimetable2.try(:startdate).try(:strftime, "%d-%m-%Y"), :count  => 1
     assert_select "td", text: @weeklytimetable1.try(:enddate).try(:strftime, "%d-%m-%Y"), :count => 1 

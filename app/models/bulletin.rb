@@ -10,7 +10,8 @@ class Bulletin < ActiveRecord::Base
    
    has_attached_file :data,
                      :url => "/assets/bulletins/:id/:style/:basename.:extension",
-                     :path => ":rails_root/public/assets/bulletins/:id/:style/:basename.:extension"
+                     :path => ":rails_root/public/assets/bulletins/:id/:style/:basename.:extension",
+                     :styles => { :original => "660x300>", :thumbnail => "330x150" } #default size of uploaded image
                     
                      
    validates_attachment_content_type :data, 

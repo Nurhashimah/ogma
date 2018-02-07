@@ -19,6 +19,7 @@ FactoryGirl.define do
     current_salary {rand(300..15000)}
     association :staffgrade, factory: :employgrade
     association :college, factory: :college
+    thumb_id {(0...4).map {rand(10).to_s}.join }#"9012"
     #association :timetables, factory: :timetable
     factory :basic_staff_with_position do
       after(:create) {|basic_staff| create(:position, staff: basic_staff)}
@@ -267,7 +268,7 @@ FactoryGirl.define do
   end
 
   factory :travel_request, :class => 'TravelRequest' do
-    association :applicant, factory: :staff_with_login
+    association :applicant, factory: :basic_staff #staff_with_login
     association :replacement, factory: :basic_staff
     association :headofdept, factory: :basic_staff
     association :college, factory: :college

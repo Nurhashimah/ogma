@@ -19,7 +19,8 @@ RSpec.describe "cofiles/show", :type => :view do
     assert_select "dt", :text => I18n.t('cofile.owner')
     assert_select "dd", :text => @cofile.owner.staff_with_rank.strip
     assert_select "dt", :text => I18n.t('cofile.onloan')
-    assert_select "dd", :text => I18n.t('yes2')
+#     assert_select "dd", :text => I18n.t('yes2')
+    assert_select "dd>i.fa.fa-tick", 1
     
     assert_select "dt", :text => I18n.t('cofile.onloan_to')
     assert_select "dd", :text => @cofile.borrower.name
