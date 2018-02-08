@@ -29,7 +29,7 @@ RSpec.describe "training/timetables/edit", :type => :view do
       assert_select "b", :text => I18n.t('training.weeklytimetable.non_class')
       assert_select "b", :text => I18n.t('helpers.links.destroy')
       
-      assert_select "select#timetable_timetable_periods_attributes_0_sequence[name=?]", "timetable[timetable_periods_attributes][0][sequence]"
+      assert_select "select#timetable_timetable_periods_attributes_0_seq[name=?]", "timetable[timetable_periods_attributes][0][seq]"
       assert_select "select#timetable_timetable_periods_attributes_0_day_name[name=?]", "timetable[timetable_periods_attributes][0][day_name]"
       assert_select "input#timetable_timetable_periods_attributes_0_start_at[name=?]", "timetable[timetable_periods_attributes][0][start_at]"
       assert_select "input#timetable_timetable_periods_attributes_0_end_at[name=?]", "timetable[timetable_periods_attributes][0][end_at]"

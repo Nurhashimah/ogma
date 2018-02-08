@@ -24,6 +24,12 @@ FactoryGirl.define do
     factory :basic_staff_with_position do
       after(:create) {|basic_staff| create(:position, staff: basic_staff)}
     end
+    factory :basic_staff_with_position_hod do
+      after(:create) {|basic_staff| create(:hod_position, staff: basic_staff)}
+    end
+    factory :basic_staff_with_position_pyd do
+      after(:create) {|basic_staff| create(:pyd_position, staff: basic_staff)}
+    end
     factory :basic_staff_with_rank do
       association :rank, factory: :rank
 #       after(:create) {|basic_staff| create(:rank, staff: basic_staff)}
@@ -61,8 +67,14 @@ FactoryGirl.define do
 #   agrade=Employgrade.new(name: 'grade 11', group_id: 1)
   factory :employgrade do
 #     name {|n| "Grade Name #{[1,2].sample}#{n}"}
-    sequence(:name) {|n| "Grade Name 4#{n}" }
-    group_id {[1,2,4].sample}
+    sequence(:name) {|n| "Grade Name 5#{n}" }
+    group_id 4 #{[1,2,4].sample}
+    factory :hod_employgrade do
+      after(:create) {|employgrade| create(:employgrade, name: "Grade Name 4"+employgrade.name.split(" ").last[1,employgrade.name.split(" ").last.size], group_id: 2)}  #[a.size-1,1]
+    end
+    factory :pyd_employgrade do
+      after(:create) {|employgrade| create(:hod_employgrade, name: "Grade Name 1"+employgrade.name.split(" ").last[1,employgrade.name.split(" ").last.size], group_id: 1)}
+    end
   end
 
   factory :position do
@@ -73,6 +85,14 @@ FactoryGirl.define do
     association :college, factory: :college
     association :staff, factory: :basic_staff
     association :staffgrade, factory: :employgrade #min grade
+    factory :hod_position do
+      after(:create) {|position| create(:position, parent: position)} 
+      association :staffgrade, factory: :hod_employgrade
+    end
+    factory :pyd_position do
+      after(:create) {|hod_position| create(:hod_position, parent: hod_position)}
+      association :staffgrade, factory: :pyd_employgrade
+    end
   end
   
   factory :rank do
@@ -441,27 +461,27 @@ FactoryGirl.define do
 
   end
   
-#   factory :leaveforstaff do
-#     association :applicant, factory: :basic_staff
-#     association :replacement, factory: :basic_staff
-#     association :seconder, factory: :basic_staff
-#     association :approver, factory: :basic_staff
-#     association :college, factory: :college
-#     leavetype 1
-#     leavestartdate {Date.today.tomorrow+(366*rand()).to_f}
-#     leaveenddate {Date.today+2.days+(366*rand()).to_f}
-#     leavedays 1.0
-#     reason "Some reason"
-#     notes "Some notes"
-#     submit {rand(2)==1}
-#     approval1 {rand(2)==1}
-#     approval1date {Date.today+(366*rand()).to_f}
-#     approver2 {rand(2)==1}
-#     approval2date {Date.today+(366*rand()).to_f}
-#     data {{}}
-#     address_on_leave "Some address"
-#     phone_on_leave (0...12).map {rand(10).to_s}.join
-#   end
+  factory :leaveforstaff do
+    association :applicant, factory: :basic_staff_with_position_pyd
+    association :replacement, factory: :basic_staff_with_position_pyd
+    association :seconder, factory: :basic_staff_with_position_hod
+    association :approver, factory: :basic_staff_with_position
+    association :college, factory: :college
+    leavetype 1
+    leavestartdate {Date.today.tomorrow} #+(366*rand()).to_f}
+    leavenddate {Date.today+2.days} #+(366*rand()).to_f}
+    leavedays 1.0
+    reason "Some reason"
+    notes "Some notes"
+    submit true #{rand(2)==1}
+    approval1 true #{rand(2)==1}
+    approval1date {Date.today+(366*rand()).to_f}
+    approver2 true #{rand(2)==1}
+    approval2date {Date.today+(366*rand()).to_f}
+    data ""
+    address_on_leave "Some address"
+#     phone_on_leave (0...12).map{rand(10).to_s}.join
+  end
 
 end
 

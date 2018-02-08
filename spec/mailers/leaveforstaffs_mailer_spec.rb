@@ -15,13 +15,23 @@ RSpec.describe LeaveforstaffsMailer, :type => :mailer do
 #     end
 #   end
   before(:each) do
-    leaveforstaff = assign(:leaveforstaff, Leaveforstaff.create!(
-      :staff_id => 1,
-      :leavetype => 1,
-      :college_id => 1,
-      :leavestartdate => "2017-10-21 08:00",
-      :leavenddate => "2017-10-22 08:00",                                                        
-      :data => {}))
+#     leaveforstaff = assign(:leaveforstaff, Leaveforstaff.create!(
+#       :staff_id => 1,
+#       :leavetype => 1,
+#       :college_id => 1,
+#       :leavestartdate => "2017-10-21 08:00",
+#       :leavenddate => "2017-10-22 08:00",                                                        
+#       :data => {}))
+#     leaveforstaff = assign(:leaveforstaff, FactoryGirl.create(:leaveforstaff))
+    @pyd=FactoryGirl.create(:basic_staff_with_position_pyd)
+    @ppp=FactoryGirl.create(:basic_staff_with_position_hod)
+    @ppk=FactoryGirl.create(:basic_staff_with_position)
+    @leaveforstaff=FactoryGirl.create(:leaveforstaff, applicant: @pyd, seconder: @ppp, approver: @ppk)
+    @page=FactoryGirl.create(:page)
+    @ahost="http://127.0.0.1:3003"
+    @view=ActionController::Base.new.view_context
+    @final=@leaveforstaff.final_status
+    @arecipient=College.where(code: @page.college.code).first.library_email #College.first.library_email #College.where(code: @page.college.code).first.library_email
   end
   
 #   #####
@@ -47,13 +57,13 @@ RSpec.describe LeaveforstaffsMailer, :type => :mailer do
 #   #####
   
   describe "support_approve_leave_notification" do
-    let(:mail) { LeaveforstaffsMailer.support_approve_leave_notification(leaveforstaff, ahost, view)}
+    let(:mail) { LeaveforstaffsMailer.support_approve_leave_notification(@leaveforstaff, @ahost, @view)} 
 
     it "renders the headers" do
       #expect(mail.subject).to eq("Staff leave notification")
       #asubject=leaveforstaff.approval1==true ? I18n.t('staff_leave.mailer.approval_subject') : I18n.t('staff_leave.mailer.support_subject')
-      expect(mail.to).to eq(["to@example.org"])
-      expect(mail.from).to eq(["from@example.com"])
+      expect(mail.to).to eq(["#{@arecipient}"]) #expect(mail.to).to eq(["to@example.org"])
+      expect(mail.from).to eq(["#{@arecipient}"]) #expect(mail.from).to eq(["from@example.com"])
     end
 
     it "renders the body" do
@@ -62,12 +72,12 @@ RSpec.describe LeaveforstaffsMailer, :type => :mailer do
   end
   
    describe "successfull_leave_notification" do
-    let(:mail) { LeaveforstaffsMailer.successfull_leave_notification(leaveforstaff, ahost, view) }
+    let(:mail) { LeaveforstaffsMailer.successfull_leave_notification(@leaveforstaff, @ahost, @view) }
 
     it "renders the headers" do
-      expect(mail.subject).to eq("#{I18n.t('staff_leave.mailer.final_subject')}")
-      expect(mail.to).to eq(["to@example.org"])
-      expect(mail.from).to eq(["from@example.com"])
+      expect(mail.subject).to eq("#{I18n.t('staff_leave.mailer.final_subject')} #{@final.downcase}")
+      expect(mail.to).to eq(["#{@arecipient}"])
+      expect(mail.from).to eq(["#{@arecipient}"])
     end
 
     it "renders the body" do

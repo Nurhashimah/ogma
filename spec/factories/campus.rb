@@ -60,7 +60,8 @@ FactoryGirl.define do
   factory :college do
      code "amsas"
      name "Kolej Satu"
-     data {{ foo: "foobar", baz: "baff" }}
+     data {{ library_email: "testing@example.com", library_pwd: "mypassword"}}
+     #data {{ foo: "foobar", baz: "baff" }}
    end
    
   factory :page do

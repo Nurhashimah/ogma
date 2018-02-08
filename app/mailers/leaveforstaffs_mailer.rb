@@ -4,7 +4,7 @@ class LeaveforstaffsMailer < ActionMailer::Base
   
   def support_approve_leave_notification(leaveforstaff, ahost, view)
     apage=leaveforstaff.approval1==true ? "processing_level_2" : "processing_level_1"
-    arecipient=College.where(code: Page.find(1).college.code).first.library_email
+    arecipient=College.where(code: Page.first.college.code).first.library_email
     asubject=leaveforstaff.approval1==true ? I18n.t('staff_leave.mailer.approval_subject') : I18n.t('staff_leave.mailer.support_subject')
     #arecipient=@leaveforstaff.approval1==true ? @leaveforstaff.approver.coemail : @leaveforstaff.seconder.coemail
     @leaveforstaff = leaveforstaff
@@ -14,7 +14,7 @@ class LeaveforstaffsMailer < ActionMailer::Base
   end
   
   def successfull_leave_notification(leaveforstaff, ahost, view)
-    arecipient=College.where(code: Page.find(1).college.code).first.library_email
+    arecipient=College.where(code: Page.first.college.code).first.library_email
     #arecipient=@leaveforstaff.applicant.coemail
     @leaveforstaff = leaveforstaff
     @view=view

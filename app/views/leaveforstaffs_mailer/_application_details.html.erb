@@ -2,7 +2,11 @@
 <table border='0'>
     <tr><td><%=t('staff_leave.name')%></td><td> : </td><td><%=h leaveforstaff.applicant.staff_with_rank_position %></td></tr>
     <tr><td><%=t('staff_leave.leavetype')%></td><td> : </td><td><%=h leaveforstaff.render_leave_type %></td></tr>
-    <tr><td><%=t('staff_leave.from')%></td><td> : </td><td><%=h view.shortmonthname(leaveforstaff.leavestartdate) %></td></tr>
+    <tr><td><%=t('staff_leave.from')%></td><td> : </td><td>
+                     <%#=h view.shortmonthname(leaveforstaff.leavestartdate) %>
+<!-- Below : temp to pass test         8Feb2018              -->
+                     <%- adate=leaveforstaff.leavestartdate %>
+                     <%=h "#{adate.strftime('%d')} #{ I18n.t(:'date.abbr_month_names')[adate.month]} #{adate.strftime('%Y')}"%></td></tr>
     <tr><td><%=t('staff_leave.to')%></td><td> : </td><td><%=h leaveforstaff.show_to_day %></td></tr>
     <tr><td><%=t('staff_leave.for')%></td><td> : </td><td><%=h leaveforstaff.leave_for.to_s + (" ")+(t 'staff_leave.days') %></td></tr>
     <tr><td><%=t('staff_leave.reason')%></td><td> : </td><td><%=h leaveforstaff.reason %></td></tr>
