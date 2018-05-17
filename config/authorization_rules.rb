@@ -14,6 +14,11 @@ authorization do
    has_omnipotence
    has_permission_on :authorization_rules, :to => :read
  end
+ 
+ role :digital_library do
+   has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
+   has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show, :new_digital_library]
+ end
 
  role :administration do
    has_permission_on :authorization_rules, :to => :read

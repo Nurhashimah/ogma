@@ -820,6 +820,7 @@ en:
     staff_registry: Staff Registry
     student_affairs: Student Affairs
     asset_facilities_residences: "Asset, Facilities & Residences"
+    digital_library: Digital Library
     
     staff_administrator_modules: "Staffs, Staff Attendances, Fingerprints, Positions, Banks, Titles, Staff Shifts, Ranks, Employment Grades, Post Information"
     finance_unit_modules: "Travel Claims, Training Budget, Transport Groups, Mileage Rates"
@@ -5776,7 +5777,9 @@ en:
       search: Repository Search
       search2: Technical Document Equery
       document_title: Document Title
+      list_all_iso: Listing All MS ISO Documents
       list_all: Listing All Technical Documents
+      list_iso: MS ISO Documents List
       list: Technical Documents List
       total: Total documents
       method: Method

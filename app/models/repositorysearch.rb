@@ -83,7 +83,11 @@ class Repositorysearch < ActiveRecord::Base
 
   def find_repositories
     if repotype=='1'
-      Repository.where(data: nil).where(conditions).order(orders)
+      if college.name.include?("AMSAS")
+        Repository.where(data: nil).where(category: [1,2,3,4,5,6]).where(conditions).order(orders)
+      else
+        Repository.where(data: nil).where(category: 7).where(conditions).order(orders)
+      end
     elsif repotype=='2'
       Repository.digital_library.where(conditions).order(orders)
     end

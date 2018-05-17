@@ -799,7 +799,7 @@ ms_MY:
     staff_registry: Daftar Staf
     student_affairs: Hal Ehwal Pelajar
     asset_facilities_residences: "Aset, Kemudahan & Kediaman"
-   
+    digital_library: Perpustakaan Digital
     
     staff_administrator_modules: "Staf, Kedatangan Staf, Fingerprint, Perjawatan, Bank, Gelaran, Jadual Waktu Anjal, Pangkat, Gred Perkhidmatan, Butiran Perjawatan"
     finance_unit_modules: "Tuntutan Perjalanan, Belanjawan Latihan, Kumpulan Kenderaan, Kadar Batuan"
@@ -5690,7 +5690,9 @@ ms_MY:
       search: "Carian Lanjut Dokumen MS:ISO"
       search2: Carian Lanjut Dokumen Teknikal #Marin #Digital
       document_title: Tajuk Dokumen
+      list_all_iso: Senarai Penuh Dokumen MS ISO
       list_all: Senarai Penuh Dokumen Teknikal #Marin #Digital
+      list_iso: Senarai Dokumen MS ISO
       list: Senarai Dokumen Teknikal #Marin #Digital
       total: Jumlah dokumen
       method: Kaedah

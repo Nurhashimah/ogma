@@ -127,10 +127,19 @@ class RepositoriesController < ApplicationController
   
   def repository_list
     if params[:ids]
-      @repositories=Repository.where(id: params[:ids])
+      @repositories=Repository.where(data: nil).where(id: params[:ids])
+      #fr ../views/equery_report/repositorysearches/iso/_show.html.haml
     else
-      @search = Repository.where(data: nil).search(params[:q])
+      #@search = Repository.where(data: nil).search(params[:q])
+      ##
+      if current_user.college.name.include?("AMSAS")
+        @search=Repository.where(data: nil).where(category: [1,2,3,4,5,6]).search(params[:q])
+      else
+        @search=Repository.where(data: nil).where(category: 7).search(params[:q])
+      end
+      ##
       @repositories = @search.result
+      #fr ../views/repositories/index.html.haml
     end
     respond_to do |format|
       format.pdf do
