@@ -18,6 +18,7 @@ authorization do
  role :digital_library do
    has_permission_on :repositories, :to => [:manage, :download, :repository_list, :repository_list2, :index2, :new2, :loan]
    has_permission_on :equery_report_repositorysearches, :to => [:new, :create, :show, :new_digital_library]
+   has_permission_on :library_librarytransactions, :to => :repository_loan
  end
 
  role :administration do
